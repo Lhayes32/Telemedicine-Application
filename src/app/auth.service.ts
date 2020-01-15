@@ -62,4 +62,21 @@ export class AuthService {
     })
   }
 
+// Sign up with email/password
+SignUp(email, password) {
+  return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+    .then((result) => {
+      this.SetUserData(result.user);
+    }).catch((error) => {
+      window.alert(error.message)
+    })
+}
+
+SignOut() {
+  return this.afAuth.auth.signOut().then(() => {
+    localStorage.removeItem('result.user');
+    this.router.navigate(['login']);
+  })
+}
+
 }
