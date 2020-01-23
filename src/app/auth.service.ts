@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
-    public router: Router,  
+    public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) { }
 
@@ -35,14 +35,14 @@ export class AuthService {
   // Auth logic to run auth providers
   AuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
-    .then((result) => {
-       this.ngZone.run(() => {
+      .then((result) => {
+        this.ngZone.run(() => {
           this.router.navigate(['home']);
         })
-      this.SetUserData(result.user);
-    }).catch((error) => {
-      window.alert(error)
-    })
+        this.SetUserData(result.user);
+      }).catch((error) => {
+        window.alert(error)
+      })
   }
 
   /* Setting up user data when sign in with username/password, 
@@ -62,21 +62,22 @@ export class AuthService {
     })
   }
 
-// Sign up with email/password
-SignUp(email, password) {
-  return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-    .then((result) => {
-      this.SetUserData(result.user);
-    }).catch((error) => {
-      window.alert(error.message)
-    })
-}
+  // Sign up with email/password
+  SignUp(email, password) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.SetUserData(result.user);
+        window.alert("Sign Up Successful, Please Login!")
+      }).catch((error) => {
+        window.alert(error.message)
+      })
+  }
 
-SignOut() {
-  return this.afAuth.auth.signOut().then(() => {
-    localStorage.removeItem('result.user');
-    this.router.navigate(['login']);
-  })
-}
+  SignOut() {
+    return this.afAuth.auth.signOut().then(() => {
+      localStorage.removeItem('result.user');
+      this.router.navigate(['login']);
+    })
+  }
 
 }

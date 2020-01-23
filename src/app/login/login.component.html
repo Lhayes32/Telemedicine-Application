@@ -1,21 +1,44 @@
-<div class="displayTable">
-    <div class="displayTableCell">
-  
-      <div class="authBlock">
-        <h3>Sign In</h3>
-        <div class="formGroup">
-          <input type="text" class="formControl" placeholder="Username" #userName required>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<div class="l_body">
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form action="#">
+        <h1>Create Account</h1>
+        <span>use your email for registration</span>
+        <input type="email" placeholder="Email" #userEmail required />
+        <input type="password" placeholder="Password" #userPwd required />
+        <p></p>
+        <input type="button" class="buttonC" value="Sign Up"
+          (click)="authService.SignUp(userEmail.value, userPwd.value)">
+      </form>
+    </div>
+
+    <div class="form-container sign-in-container">
+      <form action="#">
+        <h1>Sign in</h1>
+        <span>or use your account</span>
+        <input type="email" placeholder="Email" #userName required />
+        <input type="password" placeholder="Password" #userPassword required />
+        <a href="#">Forgot your password?</a>
+        <input type="button" class="buttonC" value="Sign in"
+          (click)="authService.SignIn(userName.value, userPassword.value)">
+      </form>
+    </div>
+
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>Sign in with your existing account</p>
+          <button class="ghost" id="signIn">Sign In</button>
         </div>
-  
-        <div class="formGroup">
-          <input type="password" class="formControl" placeholder="Password" #userPassword required>
+        <div class="overlay-panel overlay-right">
+          <h1>New Here?</h1>
+          <p>Welcome to Telemedicine. Start here to begin</p>
+          <button class="ghost" id="signUp">Sign Up</button>
         </div>
-  
-        <!-- Calling SignIn Api from AuthService -->
-        <div class="formGroup">
-          <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
-        </div>
-  
+      </div>
     </div>
   </div>
   

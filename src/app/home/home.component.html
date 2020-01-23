@@ -1,5 +1,16 @@
-<p>home works, finally!</p>
-<div class="formGroup">
-    <input type="button" class="btn btnPrimary" value="Sign Out"  (click)="authService.SignOut()">
-  </div>
+<p> home works, finally! </p>
 
+<p></p>
+
+<nav>
+  <ul>
+     <li><a routerLink="/myfiles" routerLinkActive="active">My Files</a></li>
+     <li><a routerLink="/myaccount" routerLinkActive="active">My Account</a></li>
+  </ul>
+<nav>
+
+<p></p>
+
+  <div class="formGroup">
+    <input type="button" value="Sign Out" (click)="authService.SignOut()">
+  </div>

@@ -11,6 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
+import { MyfilesComponent } from './myfiles/myfiles.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { SignupComponent } from './signup/signup.component';
     AppComponent,
     HomeComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    MyaccountComponent,
+    MyfilesComponent
   ],
   imports: [
     BrowserModule,
