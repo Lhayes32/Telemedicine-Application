@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { MyfilesComponent } from './myfiles/myfiles.component';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { MyfilesComponent } from './myfiles/myfiles.component';
     LoginComponent,
     SignupComponent,
     MyaccountComponent,
-    MyfilesComponent
+    MyfilesComponent,
+    ResetpasswordComponent
   ],
   imports: [
     BrowserModule,

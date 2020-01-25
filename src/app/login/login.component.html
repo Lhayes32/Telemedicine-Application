@@ -20,7 +20,7 @@
         <span>or use your account</span>
         <input type="email" placeholder="Email" #userName required />
         <input type="password" placeholder="Password" #userPassword required />
-        <a href="#">Forgot your password?</a>
+        <a href="/resetpassword">Forgot your password?</a>
         <input type="button" class="buttonC" value="Sign in"
           (click)="authService.SignIn(userName.value, userPassword.value)">
       </form>
