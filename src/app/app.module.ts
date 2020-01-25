@@ -14,6 +14,10 @@ import { SignupComponent } from './signup/signup.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
+
 
 
 @NgModule({
@@ -32,6 +36,12 @@ import { ResetpasswordComponent } from './resetpassword/resetpassword.component'
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [
     AuthService
