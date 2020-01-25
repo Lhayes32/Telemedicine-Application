@@ -1,16 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
-import {MatListModule} from '@angular/material/list';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
-
-
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -23,7 +14,10 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { MyfilesComponent } from './myfiles/myfiles.component';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
 
 
 
@@ -35,7 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SignupComponent,
     MyaccountComponent,
     MyfilesComponent,
-  
+    ResetpasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -44,19 +38,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    MatToolbarModule,
     MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
     MatCardModule,
     MatTableModule,
-    MatListModule,
-    MatIconModule,
-    MatToolbarModule,
-  ],
-
-  exports:[
-    MatSidenavModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatListModule,
   ],
 
   providers: [
