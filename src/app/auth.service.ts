@@ -73,6 +73,16 @@ export class AuthService {
       })
   }
 
+  // Reset Forggot password
+  ForgotPassword(passwordResetEmail) {
+    return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
+      .then(() => {
+        window.alert('Password reset email sent, check your inbox.');
+      }).catch((error) => {
+        window.alert(error)
+      })
+  }
+
   SignOut() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.removeItem('result.user');
@@ -81,3 +91,4 @@ export class AuthService {
   }
 
 }
+
