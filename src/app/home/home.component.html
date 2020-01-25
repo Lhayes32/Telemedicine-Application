@@ -1,17 +1,46 @@
-<p> home works, finally! </p>
+<mat-drawer-container>
+  <mat-drawer mode="side" opened>
+    <mat-nav-list>
 
-<p></p>
+      <a mat-list-item [routerLink]="'/home'"> Home </a>
+      <a mat-list-item [routerLink]="'/myfiles'"> My Files </a>
+      <a mat-list-item [routerLink]="'/myaccount'"> My Account </a>
+      <a mat-list-item (click)= "authService.SignOut()"> Sign Out </a>
 
-<nav>
-  <ul>
-    <li><a routerLink="/myfiles" routerLinkActive="active">My Files</a></li>
-    <li><a routerLink="/myaccount" routerLinkActive="active">My Account</a></li>
-  </ul>
-  <nav>
-
-    <p></p>
-
-    <div class="formGroup">
-      <input type="button" value="Sign Out" (click)="authService.SignOut()">
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div style="height: 100vh;">
+      <mat-card>
+        <mat-card-title>Upcoming Appointments</mat-card-title>
+        <br>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="doctor">
+            <th mat-header-cell *matHeaderCellDef> Doctor </th>
+            <td mat-cell *matCellDef="let element"> {{element.doctor}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="appointment">
+            <th mat-header-cell *matHeaderCellDef> Appointments </th>
+            <td mat-cell *matCellDef="let element"> {{element.appointment}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <br>
+      </mat-card>
+  
     </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+
+    
+
     
