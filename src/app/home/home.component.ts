@@ -45,6 +45,22 @@ export class HomeComponent implements OnInit {
     }
  
   }
+
+  isMenuOpen = true;
+  contentMargin = 240;
+
   displayedColumns: string[] = ['doctor', 'date', 'appointment'];
   dataSource = ELEMENT_DATA;
+
+  onToolbarMenuToggle() {
+    console.log('On toolbar toggled', this.isMenuOpen);
+    this.isMenuOpen = !this.isMenuOpen;
+
+    if(!this.isMenuOpen) {
+      this.contentMargin = 70;
+    } else {
+      this.contentMargin = 240;
+    }
+  }
+
 }
