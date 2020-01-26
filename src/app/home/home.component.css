@@ -3,7 +3,7 @@ table {
   }
 
 
-mat-card {
+.appointment-card {
     width: 80%;
     padding: 5%;
 }
@@ -14,6 +14,7 @@ mat-card {
 
 .home-icon{
   margin-right: 5%;
+  font-weight: 500;
 }
 
 .mat-list-item.active { 
@@ -24,9 +25,69 @@ mat-card {
 
 .mat-list-item {
   font-size: 14px;
+  font-weight: 500;
+}
+
+.mat-card-header .mat-card-title{
+  font-size: 16px;
 }
 
 .mat-toolbar{
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 14px;
+  font-size: 18px;
+}
+
+#toolbarMenu {
+  cursor: pointer;
+  margin-right: 20px;
+}
+#mainToolbar .toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+#mainToolbar .toolbar-icon {
+  cursor: pointer;
+  margin: 0 8px;
+}
+
+#sidenavContainer {
+  margin-top: 64px;
+}
+
+#sidenav {
+  width: 240px;
+}
+
+#sidenav.menu-close {
+  width: 74px
+}
+
+#sidenav.menu-open {
+  width: 240px
+}
+
+#sidenav .avatar {
+  background-image: url('http://i.pravatar.cc/300');
+  background-size: cover;
+}
+
+#sidenav .mat-list-item-content {
+  padding: 0;
+}
+
+#sidenav .menu-item {
+  width: 100%;
+  border-radius: 0;
+  text-align: left;
+  padding: 0px;
+}
+
+
+#sidenav .menu-item mat-icon {
+  margin-right: 20px;
+  margin-left: 12px;
+}
+
+.dash-list h3 {
+  padding: 12px;
 }
