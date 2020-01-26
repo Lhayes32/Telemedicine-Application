@@ -5,14 +5,28 @@ table {
 
 mat-card {
     width: 80%;
+    padding: 5%;
 }
-
-.example-container {
-    width: 100%;
-    height: 100%;
-  }
 
 .container{
     padding: 5%;
 }
 
+.home-icon{
+  margin-right: 5%;
+}
+
+.mat-list-item.active { 
+  color: #2A8Bf2; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+
+}
+
+.mat-list-item {
+  font-size: 14px;
+}
+
+.mat-toolbar{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
