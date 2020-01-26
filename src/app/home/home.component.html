@@ -1,12 +1,15 @@
 <mat-drawer-container>
   <mat-drawer mode="side" opened>
-  Hello
-  {{displayemail}}
+    <mat-toolbar color="primary" style="text-align-last: center;">
+      <mat-icon class="home-icon"aria-hidden="false" aria-label="Example file icon" style="font-size: 35px; margin-right: 30px; margin-bottom: 15px;">account_circle</mat-icon>
+      Hello {{displayemail}}
+      <br>Patient
+    </mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="'/home'"> Home </a>
-      <a mat-list-item [routerLink]="'/myfiles'"> My Files </a>
-      <a mat-list-item [routerLink]="'/myaccount'"> My Account </a>
-      <a mat-list-item (click)= "authService.SignOut()"> Sign Out </a>
+      <a mat-list-item [routerLink]="'/home'" [routerLinkActive]="['active']"><mat-icon class="home-icon"aria-hidden="false" aria-label="Example home icon">home</mat-icon>Home</a>
+      <a mat-list-item [routerLink]="'/myfiles'" [routerLinkActive]="['active']"><mat-icon class="home-icon"aria-hidden="false" aria-label="Example file icon">upload_file</mat-icon>My Files </a>
+      <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']"><mat-icon class="home-icon"aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My Account </a>
+      <a mat-list-item (click)= "authService.SignOut()"><mat-icon class="home-icon"aria-hidden="false" aria-label="Example file icon">logout</mat-icon>Sign Out </a>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content>
