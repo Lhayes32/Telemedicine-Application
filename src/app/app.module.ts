@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -42,7 +43,10 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
     MatListModule,
     MatButtonModule,
     MatIconModule,
+    MatCardModule,
+    MatTableModule,
   ],
+
   providers: [
     AuthService
   ],
