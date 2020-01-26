@@ -1,16 +1,17 @@
 <mat-drawer-container>
   <mat-drawer mode="side" opened>
+  Hello
+  {{displayemail}}
     <mat-nav-list>
-
       <a mat-list-item [routerLink]="'/home'"> Home </a>
       <a mat-list-item [routerLink]="'/myfiles'"> My Files </a>
       <a mat-list-item [routerLink]="'/myaccount'"> My Account </a>
       <a mat-list-item (click)= "authService.SignOut()"> Sign Out </a>
-
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content>
     <div style="height: 100vh;">
+    <div class="container">
       <mat-card>
         <mat-card-title>Upcoming Appointments</mat-card-title>
         <br>
@@ -34,11 +35,13 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
         <br>
-      </mat-card>
-  
+      </mat-card>  
+    </div>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>
+
+
 
 
     
