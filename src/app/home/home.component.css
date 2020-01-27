@@ -37,6 +37,10 @@ table {
   font-size: 18px;
 }
 
+.mat-toolbar.mat-primary {
+  background: #3E6E8C;
+}
+
 #toolbarMenu {
   cursor: pointer;
   margin-right: 20px;
