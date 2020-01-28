@@ -16,6 +16,7 @@ import { MyaccountComponent } from './myaccount/myaccount.component';
 import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
 
@@ -45,6 +46,7 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
     MatIconModule,
     MatCardModule,
     MatTableModule,
+    MatSnackBarModule,
   ],
 
   providers: [

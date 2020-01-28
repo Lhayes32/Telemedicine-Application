@@ -3,6 +3,7 @@ import { User } from "../app/user";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
+import { MatSnackBar } from '@angular/material';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ export class AuthService {
   userData: any; // Save logged in user data
 
   constructor(
+    private snackBar: MatSnackBar,
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
@@ -39,7 +41,7 @@ export class AuthService {
         });
         this.SetUserData(result.user);
       }).catch((error) => {
-        window.alert(error.message)
+        let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
   }
 
@@ -78,19 +80,19 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         this.SetUserData(result.user);
-        window.alert("Sign Up Successful, Please Login!")
+        let snackBarRef = this.snackBar.open('Successfully registered, please login!', '', {duration: 3000});
       }).catch((error) => {
-        window.alert(error.message)
+        let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
   }
 
-  // Reset Forggot password
+  // Reset Forgot password
   ForgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        let snackBarRef = this.snackBar.open('Password reset email sent, check your inbox.', '', {duration: 3000});
       }).catch((error) => {
-        window.alert(error)
+        let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
   }
 
