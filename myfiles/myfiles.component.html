@@ -58,6 +58,11 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
             <br>
+            <form action="myform.cgi"> <input type="file" name="fileupload" value="fileupload" id="fileupload"> 
+              <input type="hidden" id="ipaddr" name="ipaddr" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"> 
+              <input type="hidden" id="referer" name="referer" value="<?php echo $_SERVER['HTTP_REFERER']; ?>"> 
+              <input type="submit" class="btn btn-success" value="submit"> 
+            </form>
         </mat-card>
         </div>
       </div>
