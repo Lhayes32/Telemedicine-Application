@@ -42,30 +42,30 @@
             <br>
             <div class="form-group">
               <label for="First_Name">First Name</label>
-              <input type="text" class="form-control" id="First_Name" value="Mickey" required>
+              <input type="text" class="form-control" id="First_Name" value={{displayemail}} #firstName required>
               <br>
               <label for="Last_Name">Last Name</label>
-              <input type="text" class="form-control" id="Last_Name" value="Mouse" required>
+              <input type="text" class="form-control" id="Last_Name" value="Mouse" #lastName required>
               <br>
               <label for="Email_Address">Email Address</label>
-              <input type="text" class="form-control" id="Email_Address" value="Mickey@MagicalKingdom.com"required>
+              <input type="text" class="form-control" id="Email_Address" value="Mickey@MagicalKingdom.com" readonly required>
               <br>
               <label for="Password">Password</label>
-              <input type="text, hidden" class="form-control" id="Password" value="Disney123" required>
+              <input type="password" class="form-control" id="Password" value="Disney123" readonly required>
               <br>
               <label for="Date_of_Birth">Date of Birth</label>
-              <input type="text" class="form-control" id="Date_of_Birth" value="01-01-2020"required>
+              <input type="text" class="form-control" id="Date_of_Birth" value="01-01-2020" #dateofbirth required>
               <br>
               <label for="Address">Address</label>
-              <input type="text" class="form-control" id="Address" value="123 Disney Drive"required>
+              <input type="text" class="form-control" id="Address" value="123 Disney Drive" #address required>
               <br>
               <label for="Insurance Company">Insurance Company</label>
-              <input type="text" class="form-control" id="Insurance Company" value="Green Cross Green Shield"required>
+              <input type="text" class="form-control" id="Insurance Company" value="Green Cross Green Shield" #insurancecompany required>
               <br>
               <label for="Insurance_ID">Insurance ID</label>
-              <input type="text" class="form-control" id="Insurance_ID" value="000-000-000"required>
+              <input type="text" class="form-control" id="Insurance_ID" value="000-000-000" #insuranceid required>
               <br>
-              <button type="submit" class="btn btn-success">Submit Changes</button>
+              <button type="submit" class="btn btn-success" (click)="addData(firstName.value, lastName.value, dateofbirth.value, address.value, insurancecompany.value, insuranceid.value)">Submit Changes</button>
             </div>
           </form>
           <br>

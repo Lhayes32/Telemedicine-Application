@@ -68,7 +68,13 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      firstName: null,
+      lastName: null,
+      dateofbirth: null,
+      address: null,
+      insurancecompany: null,
+      insuranceid: null
     }
     return userRef.set(userData, {
       merge: true

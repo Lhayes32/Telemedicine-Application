@@ -1,20 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 export interface FileList {
   name: string;
   date: string;
 }
-
-const FILE_DATA: FileList[] = [
-  {name: 'FileUpload01.jpg', date: "01-01-2020"},
-  {name: 'FileUpload02.jpg', date: "01-02-2020"},
-  {name: 'FileUpload03.jpg', date: "01-03-2020"},
-  {name: 'FileUpload04.jpg', date: "01-04-2020"},
-  {name: 'FileUpload05.jpg', date: "01-05-2020"},
-];
 
 @Component({
   selector: 'app-myaccount',
@@ -22,9 +14,8 @@ const FILE_DATA: FileList[] = [
   styleUrls: ['./myaccount.component.css']
 })
 export class MyaccountComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'date'];
-  dataSource = FILE_DATA;
   displayemail: string;
+  firstName: string;
 
   constructor(
     private authService: AuthService,
@@ -34,9 +25,8 @@ export class MyaccountComponent implements OnInit {
   }
 
   ngOnInit() {
-
     try {
-      this.displayemail = this.afAuth.auth.currentUser.email;
+      this.displayemail = this.afAuth.auth.currentUser.email
       localStorage.setItem("displayemail", this.displayemail);
       console.log(this.displayemail);
     } catch (error) {
@@ -59,5 +49,31 @@ export class MyaccountComponent implements OnInit {
       this.contentMargin = 240;
     }
   }
+  addData(firstName, lastName, dateofbirth, address, insurancecompany, insuranceid) {
+    this.afs.collection('users').doc(this.afAuth.auth.currentUser.uid).set({
+      uid: this.afAuth.auth.currentUser.uid,
+      email: this.afAuth.auth.currentUser.email,
+      displayName: this.afAuth.auth.currentUser.displayName,
+      photoURL: this.afAuth.auth.currentUser.photoURL,
+      emailVerified: this.afAuth.auth.currentUser.emailVerified,
+      firstName: firstName,
+      lastName: lastName,
+      dateofbirth: dateofbirth,
+      address: address,
+      insurancecompany: insurancecompany,
+      insuranceid: insuranceid
+    })
+    .then(function() {
+      console.log("Data Written")
+    });
 
+  }
+
+  // This function doesn't work
+  firstname()
+  {
+    return this.afAuth.auth.currentUser.uid
+  }
 }
+
+
