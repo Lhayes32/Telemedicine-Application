@@ -3,11 +3,6 @@ import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
-export interface FileList {
-  name: string;
-  date: string;
-}
-
 @Component({
   selector: 'app-myaccount',
   templateUrl: './myaccount.component.html',
