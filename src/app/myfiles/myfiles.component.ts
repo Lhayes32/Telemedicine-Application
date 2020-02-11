@@ -26,13 +26,13 @@ export class MyfilesComponent implements OnInit {
   displayedColumns: string[] = ['name', 'date'];
   dataSource = FILE_DATA;
   displayemail: string;
+  selectedFile: File
 
   constructor(
     private authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     
@@ -44,21 +44,20 @@ export class MyfilesComponent implements OnInit {
       this.displayemail = localStorage.getItem("displayemail");
       console.log(this.displayemail);
     }
-    interface HTMLInputEvent extends Event {
-      target: HTMLInputElement & EventTarget;
-    }
-    var selectedFile
-    document.getElementById("fileupload").onchange = function(e? :HTMLInputEvent){
-        selectedFile = e.target.files[0];
-    };
-    function uploadFile(){
-      var storageRef = firebase.storage().ref('/fileuploads/' + filename)
-      var filename = selectedFile.name;
-      var uploadTask = storageRef.put(selectedFile);
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL);
-      });
-    }
+
+  }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+  }
+
+  onUpload() {
+    var filename = this.selectedFile.name;
+    var storageRef = firebase.storage().ref('/fileuploads/' + filename)
+    var uploadTask = storageRef.put(this.selectedFile);
+    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+      console.log('File available at', downloadURL);
+    });
   }
 
   isMenuOpen = true;
