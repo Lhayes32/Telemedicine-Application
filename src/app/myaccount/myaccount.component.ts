@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-myaccount',
@@ -10,7 +10,12 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 })
 export class MyaccountComponent implements OnInit {
   displayemail: string;
-  firstName: string;
+  firstNameDisplay: string;
+  lastNameDisplay: string;
+  dobDisplay: string;
+  addressDisplay:string;
+  insuranceCompanyDisplay: string;
+  insuranceIdDisplay: string;
 
   constructor(
     private authService: AuthService,
@@ -20,6 +25,24 @@ export class MyaccountComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    var docRef = this.afs.collection('users').doc(this.afAuth.auth.currentUser.uid);
+
+    docRef.get().toPromise().then((doc) => {
+      if (doc.exists) {
+          this.firstNameDisplay = doc.data().firstName;
+          this.lastNameDisplay = doc.data().lastName;
+          this.dobDisplay = doc.data().dateofbirth;
+          this.addressDisplay = doc.data().address;
+          this.insuranceCompanyDisplay = doc.data().insurancecompany;
+          this.insuranceIdDisplay = doc.data().insuranceid;
+      } else {
+          console.log("No such document!");
+      }
+  }).catch(function(error) {
+      console.log("Error getting document:", error);
+  });
+
     try {
       this.displayemail = this.afAuth.auth.currentUser.email
       localStorage.setItem("displayemail", this.displayemail);
@@ -58,17 +81,12 @@ export class MyaccountComponent implements OnInit {
       insurancecompany: insurancecompany,
       insuranceid: insuranceid
     })
-    .then(function() {
-      console.log("Data Written")
-    });
+      .then(function () {
+        console.log("Data Written")
+      });
 
   }
-
-  // This function doesn't work
-  firstname()
-  {
-    return this.afAuth.auth.currentUser.uid
-  }
+  
 }
 
 

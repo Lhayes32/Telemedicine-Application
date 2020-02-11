@@ -39,7 +39,7 @@ export class AuthService {
         this.ngZone.run(() => {
           this.router.navigate(['home']);
         });
-        this.SetUserData(result.user);
+        // this.SetUserData(result.user);
       }).catch((error) => {
         let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
