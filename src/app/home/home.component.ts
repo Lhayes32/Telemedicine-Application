@@ -12,8 +12,9 @@ export interface userapp {
 const ELEMENT_DATA: userapp[] = [
   { doctor: 'Ronak Desai', date: '12.08.2019', appointment: 'Walk-In' },
   { doctor: 'Rohan Desai', date: '13.08.2019', appointment: 'Video' },
-  { doctor: 'Leo Hayes', date: '14.08.2019', appointment: 'Walk-in' },
+  { doctor: 'Leo Hayes', date: '14.08.2019', appointment: 'Walk-In' },
   { doctor: 'Tyler Odom', date: '15.08.2019', appointment: 'Video' },
+  { doctor: 'Juan Huaca', date: '16.08.2019', appointment: 'Walk-In' },
 ];
 
 @Component({
@@ -63,3 +64,5 @@ export class HomeComponent implements OnInit {
   }
 
 }
+
+//<div *ngIf="authService.userData as user"> <h1>Hello: {{(user.displayName) ? user.displayName : 'User'}}
