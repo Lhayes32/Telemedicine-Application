@@ -24,7 +24,8 @@ export class MyaccountComponent implements OnInit {
     public afs: AngularFirestore,   // Inject Firestore service
   ) {
   }
-
+ 
+  
   ngOnInit() {
 
     try {
