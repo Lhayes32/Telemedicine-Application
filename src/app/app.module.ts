@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
@@ -54,4 +54,9 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private db: AngularFirestore) {
+    const things = db.collection('Users').valueChanges();
+    things.subscribe(console.log);
+  }
+ }

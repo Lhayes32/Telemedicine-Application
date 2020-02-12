@@ -3,7 +3,9 @@
     Telemedicine Application
     <span class="toolbar-spacer"></span>
   </mat-toolbar>
-  
+  <script>
+
+  </script>
   <mat-sidenav-container id="sidenavContainer" fullscreen>
     <mat-sidenav mode="side" #sidenav id="sidenav" [class.menu-open]="isMenuOpen" [class.menu-close]="!isMenuOpen" opened>
       <mat-list id="menus">
@@ -58,14 +60,15 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
             <br>
-            <form action="myform.cgi"> <input type="file" name="fileupload" value="fileupload" id="fileupload"> 
-              <input type="hidden" id="ipaddr" name="ipaddr" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"> 
-              <input type="hidden" id="referer" name="referer" value="<?php echo $_SERVER['HTTP_REFERER']; ?>"> 
-              <input type="submit" class="btn btn-success" value="submit"> 
-            </form>
+
+            <h1>Upload</h1>
+            <input type="file" (change)="onFileChanged($event)">
+            <button type="button" (click)="onUpload()">Upload</button>
+
         </mat-card>
         </div>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
+  
   

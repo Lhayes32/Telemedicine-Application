@@ -39,7 +39,7 @@ export class AuthService {
         this.ngZone.run(() => {
           this.router.navigate(['home']);
         });
-        this.SetUserData(result.user);
+        // this.SetUserData(result.user);
       }).catch((error) => {
         let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
@@ -68,7 +68,13 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      firstName: null,
+      lastName: null,
+      dateofbirth: null,
+      address: null,
+      insurancecompany: null,
+      insuranceid: null
     }
     return userRef.set(userData, {
       merge: true
