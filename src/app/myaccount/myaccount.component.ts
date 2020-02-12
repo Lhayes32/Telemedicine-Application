@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class MyaccountComponent implements OnInit {
   displayemail: string;
+  displayuid: string;
   firstNameDisplay: string;
   lastNameDisplay: string;
   dobDisplay: string;
@@ -26,7 +27,16 @@ export class MyaccountComponent implements OnInit {
 
   ngOnInit() {
 
-    var docRef = this.afs.collection('users').doc(this.afAuth.auth.currentUser.uid);
+    try {
+      this.displayuid = this.afAuth.auth.currentUser.uid
+      localStorage.setItem("displayuid", this.displayuid);
+      console.log(this.displayuid);
+    } catch (error) {
+      this.displayuid = localStorage.getItem("displayuid");
+      console.log(this.displayuid);
+    }
+
+    var docRef = this.afs.collection('users').doc(this.displayuid);
 
     docRef.get().toPromise().then((doc) => {
       if (doc.exists) {
