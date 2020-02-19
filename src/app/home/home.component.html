@@ -35,9 +35,11 @@
     <div style="height: 80vh;">
       <div class="container">
         <h2>Home</h2><br>
-        <h6>Today is {{today | date: "fullDate"}}</h6>
-        <h6>{{today | date: "shortTime"}}</h6>
         <mat-card class="appointment-card">
+          <mat-card-title>Appointments</mat-card-title>
+          <div class="container text-right">
+            <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary">Create Appointment</button>
+          </div>
           
         </mat-card>
       </div>

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
-import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -17,8 +16,10 @@ import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {FormsModule} from '@angular/forms'
 
 import { MatToolbarModule, 
+  MatTableModule,
   MatInputModule,
   MatDialogModule,
   MatButtonModule,
@@ -26,7 +27,8 @@ import { MatToolbarModule,
   MatFormFieldModule,
   MatIconModule, 
   MatSidenavModule, 
-  MatListModule } from  '@angular/material';
+  MatListModule, 
+  MatDialog} from  '@angular/material';
 
 
 
@@ -49,6 +51,11 @@ import { MatToolbarModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    FormsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatInputModule,
     MatToolbarModule,
     MatSelectModule,
     MatFormFieldModule,

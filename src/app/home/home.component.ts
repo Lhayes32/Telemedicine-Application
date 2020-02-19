@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
+  displayedColumns: string[] = ['doctor', 'date', 'appointment'];
+  dataSource = ELEMENT_DATA;
 
   constructor(
     private authService: AuthService,
@@ -76,11 +78,16 @@ export class HomeComponent implements OnInit {
 
   }
 
+  openDialog(action,obj) {
+    obj.action = action;
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      width: '250px',
+      data:obj
+    });
+  }
+
   isMenuOpen = true;
   contentMargin = 240;
-
-  displayedColumns: string[] = ['doctor', 'date', 'appointment'];
-  dataSource = ELEMENT_DATA;
 
   onToolbarMenuToggle() {
     console.log('On toolbar toggled', this.isMenuOpen);
