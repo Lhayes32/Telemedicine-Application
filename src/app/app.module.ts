@@ -18,7 +18,15 @@ import { ResetpasswordComponent } from './resetpassword/resetpassword.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
-import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
+import { MatToolbarModule, 
+  MatInputModule,
+  MatDialogModule,
+  MatButtonModule,
+  MatSelectModule,
+  MatFormFieldModule,
+  MatIconModule, 
+  MatSidenavModule, 
+  MatListModule } from  '@angular/material';
 
 
 
@@ -35,11 +43,15 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatInputModule,
+    MatDialogModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatFormFieldModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,

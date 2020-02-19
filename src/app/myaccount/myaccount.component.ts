@@ -2,6 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatListModule } from '@angular/material/list'
+import { MatInputModule, MatInput } from '@angular/material/input'
+import { MatMenuModule } from '@angular/material/menu'
+import { NgModule } from '@angular/core'
+
+@NgModule ({
+  exports: [
+    MatInputModule,
+    MatListModule,
+    MatMenuModule
+  ]
+})
 
 @Component({
   selector: 'app-myaccount',
@@ -17,6 +29,7 @@ export class MyaccountComponent implements OnInit {
   addressDisplay:string;
   insuranceCompanyDisplay: string;
   insuranceIdDisplay: string;
+  isDoctorDisplay:string;
 
   constructor(
     private authService: AuthService,
@@ -47,6 +60,11 @@ export class MyaccountComponent implements OnInit {
           this.addressDisplay = doc.data().address;
           this.insuranceCompanyDisplay = doc.data().insurancecompany;
           this.insuranceIdDisplay = doc.data().insuranceid;
+          if (doc.data().isDoctor) {
+            this.isDoctorDisplay = "Doctor";
+          } else {
+            this.isDoctorDisplay = "Patient";
+          }
       } else {
           console.log("No such document!");
       }
