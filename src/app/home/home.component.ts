@@ -109,13 +109,12 @@ export class HomeComponent implements OnInit {
         // If you are a doctor
         if (this.isDoctorDisplay == "Doctor") {
           // and they are not a doctor
-          if (doc.data().isDoctor == "Patient") {
-          } else {
+          if (doc.data().isDoctor == false) {
             // and they are not you
             if (doc.data().firstName != this.firstNameDisplay) {
               // then print their name
               console.log(doc.data().firstName + " " + doc.data().lastName);
-            }
+              } 
             }
           }
         // If you are a patient
