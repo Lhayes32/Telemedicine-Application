@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { templateJitUrl } from '@angular/compiler';
 import { async } from '@angular/core/testing';
 
@@ -37,7 +38,12 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
+    private dialog: MatDialog,
   ) {
+  }
+
+  openDialog() {
+    // Open our Dialog Component
   }
 
   ngOnInit() {
