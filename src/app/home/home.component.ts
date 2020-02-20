@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { templateJitUrl } from '@angular/compiler';
+import { async } from '@angular/core/testing';
 
 export interface userapp {
   doctor: string;
@@ -50,6 +52,7 @@ export class HomeComponent implements OnInit {
     }
 
     var docRef = this.afs.collection('users').doc(this.displayuid);
+    var colRef = this.afs.collection('users')
 
     docRef.get().toPromise().then((doc) => {
       if (doc.exists) {
@@ -78,14 +81,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  openDialog(action,obj) {
-    obj.action = action;
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '250px',
-      data:obj
-    });
-  }
-
   isMenuOpen = true;
   contentMargin = 240;
 
@@ -100,6 +95,17 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // This is the function to display the first names of users.
+  retrievedata() {
+    this.afs.collection('users').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if (doc.data().firstName != this.firstNameDisplay) {
+          console.log(doc.data().firstName + " " + doc.data().lastName);
+        }
+      });
+    });
+  }
 }
 
 //<div *ngIf="authService.userData as user"> <h1>Hello: {{(user.displayName) ? user.displayName : 'User'}}
