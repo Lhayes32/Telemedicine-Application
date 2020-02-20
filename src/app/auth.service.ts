@@ -74,7 +74,8 @@ export class AuthService {
       dateofbirth: null,
       address: null,
       insurancecompany: null,
-      insuranceid: null
+      insuranceid: null,
+      isDoctor: false
     }
     return userRef.set(userData, {
       merge: true

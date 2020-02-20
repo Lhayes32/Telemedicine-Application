@@ -100,9 +100,30 @@ export class HomeComponent implements OnInit {
     this.afs.collection('users').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
-        if (doc.data().firstName != this.firstNameDisplay) {
-          console.log(doc.data().firstName + " " + doc.data().lastName);
-        }
+        // If you are a doctor
+        if (this.isDoctorDisplay == "Doctor") {
+          // and they are not a doctor
+          if (doc.data().isDoctor == "Patient") {
+          } else {
+            // and they are not you
+            if (doc.data().firstName != this.firstNameDisplay) {
+              // then print their name
+              console.log(doc.data().firstName + " " + doc.data().lastName);
+            }
+            }
+          }
+        // If you are a patient
+        if (this.isDoctorDisplay == "Patient") {
+          // and they are a doctor
+          if (doc.data().isDoctor == true) {
+            // and they are not you
+            if (doc.data().firstName != this.firstNameDisplay) {
+              // then print their name
+              console.log("Dr. " + doc.data().firstName + " " + doc.data().lastName);
+            }
+            }
+          } 
+          // If you are not a doctor
       });
     });
   }
