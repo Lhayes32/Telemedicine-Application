@@ -9,8 +9,9 @@ import { AuthService } from './auth.service';
 export class AppComponent {
   title = 'telemedicine-application';
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService,) { }
 
   ngOnInit() { }
+
 
 }

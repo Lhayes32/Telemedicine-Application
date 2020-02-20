@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { ScheduleappointmentsComponent } from '../scheduleappointments/scheduleappointments.component';
 
 export interface userapp {
   doctor: string;
@@ -17,6 +19,8 @@ const ELEMENT_DATA: userapp[] = [
   { doctor: 'Juan Huaca', date: '16.08.2019', appointment: 'Walk-In' },
 ];
 
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -26,10 +30,13 @@ export class HomeComponent implements OnInit {
 
   displayemail: string;
 
+  fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
+
   constructor(
     private authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
+    private dialog: MatDialog,
   ) {
   }
 
@@ -44,6 +51,10 @@ export class HomeComponent implements OnInit {
       console.log(this.displayemail);
     }
 
+  }
+
+  openAddFileDialog() {
+    this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }
 
   isMenuOpen = true;

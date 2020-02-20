@@ -17,8 +17,13 @@ import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
+import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleappointments.component';
 
 
 
@@ -30,7 +35,8 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
     SignupComponent,
     MyaccountComponent,
     MyfilesComponent,
-    ResetpasswordComponent
+    ResetpasswordComponent,
+    ScheduleappointmentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,12 +53,21 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
     MatCardModule,
     MatTableModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRippleModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule, 
+    MatOptionModule,
   ],
 
   providers: [
     AuthService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ScheduleappointmentsComponent]
 })
 export class AppModule {
   constructor(private db: AngularFirestore) {
