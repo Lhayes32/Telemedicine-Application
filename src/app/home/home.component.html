@@ -34,17 +34,13 @@
   <mat-sidenav-content>
     <div style="height: 80vh;">
       <div class="container">
-        <div class="row">
         <h2 style="padding-right: 55%;">Home </h2>
-        <button mat-raised-button color="primary" (click)="openAddFileDialog()" >Schedule Appointments</button>
-        </div>
         <br>
         <mat-card class="appointment-card">
           <mat-card-title>Appointments</mat-card-title>
           <div class="container text-right">
-            <button mat-button (click)="retrievedata()" mat-flat-button color="primary">Create Appointment</button>
+            <button mat-button (click)="openAddFileDialog()" mat-flat-button color="primary">Create Appointment</button>
           </div>
-          
         </mat-card>
       </div>
     </div>
