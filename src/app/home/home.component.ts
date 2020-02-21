@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { templateJitUrl } from '@angular/compiler';
-import { async } from '@angular/core/testing';
+import { AngularFirestore } from '@angular/fire/firestore';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { ScheduleappointmentsComponent } from '../scheduleappointments/scheduleappointments.component';
 
 export interface userapp {
   doctor: string;
@@ -19,6 +18,8 @@ const ELEMENT_DATA: userapp[] = [
   { doctor: 'Tyler Odom', date: '15.08.2019', appointment: 'Video' },
   { doctor: 'Juan Huaca', date: '16.08.2019', appointment: 'Walk-In' },
 ];
+
+
 
 @Component({
   selector: 'app-home',
@@ -36,6 +37,8 @@ export class HomeComponent implements OnInit {
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
   doctors:string[] = [];
   patients:string[] = [];
+
+  fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
 
   constructor(
     private authService: AuthService,
@@ -61,7 +64,6 @@ export class HomeComponent implements OnInit {
     }
 
     var docRef = this.afs.collection('users').doc(this.displayuid);
-    var colRef = this.afs.collection('users')
 
     docRef.get().toPromise().then((doc) => {
       if (doc.exists) {
@@ -78,39 +80,6 @@ export class HomeComponent implements OnInit {
   }).catch(function(error) {
       console.log("Error getting document:", error);
   });
-  
-  // Take the names of users of opposing status and push to list.
-  this.afs.collection('users').get().toPromise()
-    .then(querySnapshot => {
-      querySnapshot.docs.forEach(doc => {
-        // If you are a doctor
-        if (this.isDoctorDisplay == "Doctor") {
-          // and they are not a doctor
-          if (doc.data().isDoctor == false) {
-            // and they are not you
-            if (doc.data().firstName != this.firstNameDisplay) {
-              // then print their name
-              console.log(doc.data().firstName + " " + doc.data().lastName);
-              this.patients.push(doc.data().firstName + " " + doc.data().lastName);
-              console.log(this.patients);
-              } 
-            }
-          }
-        // If you are a patient
-        if (this.isDoctorDisplay == "Patient") {
-          // and they are a doctor
-          if (doc.data().isDoctor == true) {
-            // and they are not you
-            if (doc.data().firstName != this.firstNameDisplay) {
-              // then print their name
-              console.log("Dr. " + doc.data().firstName + " " + doc.data().lastName);
-              this.doctors.push("Dr. " + doc.data().firstName + " " + doc.data().lastName);
-              console.log(this.doctors);
-            }
-            }
-          } 
-      });
-    });
 
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;
@@ -121,6 +90,10 @@ export class HomeComponent implements OnInit {
       console.log(this.displayemail);
     }
 
+  }
+
+  openAddFileDialog() {
+    this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }
 
   isMenuOpen = true;
