@@ -1,25 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ScheduleappointmentsComponent } from '../scheduleappointments/scheduleappointments.component';
+import {MatTableDataSource} from '@angular/material';
+
 
 export interface userapp {
-  doctor: string;
+  whom: string;
   date: string;
-  appointment: string;
+  time: string;
 }
 
-const ELEMENT_DATA: userapp[] = [
-  { doctor: 'Ronak Desai', date: '12.08.2019', appointment: 'Walk-In' },
-  { doctor: 'Rohan Desai', date: '13.08.2019', appointment: 'Video' },
-  { doctor: 'Leo Hayes', date: '14.08.2019', appointment: 'Walk-In' },
-  { doctor: 'Tyler Odom', date: '15.08.2019', appointment: 'Video' },
-  { doctor: 'Juan Huaca', date: '16.08.2019', appointment: 'Walk-In' },
+var ELEMENT_DATA: userapp[] = [
 ];
-
-
 
 @Component({
   selector: 'app-home',
@@ -32,8 +27,8 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
-  displayedColumns: string[] = ['doctor', 'date', 'appointment'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['whom', 'date', 'time', 'status','accept', 'decline'];
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
   doctors:string[] = [];
   patients:string[] = [];
@@ -53,7 +48,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-
     try {
       this.displayuid = this.afAuth.auth.currentUser.uid
       localStorage.setItem("displayuid", this.displayuid);
@@ -77,9 +71,41 @@ export class HomeComponent implements OnInit {
       } else {
           console.log("No such document!");
       }
+      /* var test = {whom: doc.data().firstName + " " + doc.data().lastName, date: doc.data().firstName, time: doc.data().firstName}
+      ELEMENT_DATA.push(test);
+      this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+      console.log(this.dataSource);
+      */
   }).catch(function(error) {
       console.log("Error getting document:", error);
+      
   });
+
+  // Clear the table when refreshing or going back to the page.
+  ELEMENT_DATA = [];
+  this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+
+  // Loop to find all appointments
+  this.afs.collection('appointments').get().toPromise()
+  .then(querySnapshot => {
+    querySnapshot.docs.forEach(doc => {
+        // If you are the sender
+        if (doc.data().sender == this.firstNameDisplay) {
+            var test = {whom: doc.data().receiver, date: doc.data().date, time: doc.data().time, status: doc.data().status};
+            ELEMENT_DATA.push(test);
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            }
+        // If you are the receiver
+        if (doc.data().receiver == this.firstNameDisplay) {
+            var test = {whom: doc.data().sender, date: doc.data().date, time: doc.data().time, status: doc.data().status};
+            ELEMENT_DATA.push(test);
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            } 
+        });
+      });
+
+  
 
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;
@@ -95,6 +121,7 @@ export class HomeComponent implements OnInit {
   openAddFileDialog() {
     this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }
+
 
   isMenuOpen = true;
   contentMargin = 240;

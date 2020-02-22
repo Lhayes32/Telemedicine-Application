@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 
 export interface userdoc {
@@ -94,6 +94,10 @@ export class ScheduleappointmentsComponent implements OnInit {
           } 
       });
     });
+  }
+  testbutton() {
+    var test = {whom: this.time.values}
+    console.log(test);
   }
 
 }
