@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AuthService } from '../auth.service';
+import { MatDialogModule, MatDialogRef } from '@angular/material';
 
 
 export interface userdoc {
@@ -95,9 +97,15 @@ export class ScheduleappointmentsComponent implements OnInit {
       });
     });
   }
-  testbutton() {
-    var test = {whom: this.time.values}
-    console.log(test);
-  }
 
+  testbutton(Date2, Time, Doctor) {
+    let id = this.afs.createId()
+    this.afs.collection('appointments').doc(id).set({
+      sender: this.firstNameDisplay + " " + this.lastNameDisplay,
+      status: "Pending",
+      Date: Date2,
+      Time: Time,
+      receiver: this.userdoc[Doctor - 1].doctor,
+    });
+  }
 }

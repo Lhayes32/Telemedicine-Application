@@ -86,18 +86,19 @@ export class HomeComponent implements OnInit {
   this.dataSource = new MatTableDataSource(ELEMENT_DATA);
 
 
+
   // Loop to find all appointments
   this.afs.collection('appointments').get().toPromise()
   .then(querySnapshot => {
     querySnapshot.docs.forEach(doc => {
         // If you are the sender
-        if (doc.data().sender == this.firstNameDisplay) {
+        if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
             var test = {whom: doc.data().receiver, date: doc.data().date, time: doc.data().time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             }
         // If you are the receiver
-        if (doc.data().receiver == this.firstNameDisplay) {
+        if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
             var test = {whom: doc.data().sender, date: doc.data().date, time: doc.data().time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
