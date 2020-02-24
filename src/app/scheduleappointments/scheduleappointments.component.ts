@@ -98,12 +98,8 @@ export class ScheduleappointmentsComponent implements OnInit {
     });
   }
 
-  // Button to update the time slots once a date and doctor have been picked.
-  // Instructions --
-  // Pass the date and doctor
-  // Re-init time to its original values at the start of the function.
-  // Loop through all of the documents, if it has the sender or the receivers full name and the date in it, the appointment time from the time list.
-
+  // This function loops through the documents and provides appropriate times based the the selected date and doctor.
+  // Current bug --> This button only works if you select the date first, then the doctor.
   testbutton2(date, doctor) {
     this.time = [
       {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
@@ -114,11 +110,13 @@ export class ScheduleappointmentsComponent implements OnInit {
       querySnapshot.docs.forEach(doc => {
         if (doc.data().Date == date)
         {
+          // If the current doc has the user's first or last name in it as the sender or receiver.
           if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
           {
             this.time = this.time.filter(order => order.value !== doc.data().Time);
             console.log(doc.data().Time);
           }
+          // If the current doc has the currently selected doctor in it as the sender or receiver.
           if (doc.data().sender == doctor || doc.data().receiver == doctor)
           {
             this.time = this.time.filter(order => order.value !== doc.data().Time);
@@ -129,7 +127,8 @@ export class ScheduleappointmentsComponent implements OnInit {
     })
     }
 
-  // Working save button
+  // Saves the selected appointment data as a document to firebase.
+  // Note: The variable "Doctor" is just the person selected for the appointment, and can either be a patient or a doctor.
   testbutton(Date2, Time, Doctor) {
     let id = this.afs.createId()
     this.afs.collection('appointments').doc(id).set({
