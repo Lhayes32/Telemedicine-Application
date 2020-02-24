@@ -98,6 +98,7 @@ export class ScheduleappointmentsComponent implements OnInit {
     });
   }
 
+
   // This function loops through the documents and provides appropriate times based the the selected date and doctor.
   // Current bug --> This button only works if you select the date first, then the doctor.
   testbutton2(date, doctor) {
@@ -134,7 +135,7 @@ export class ScheduleappointmentsComponent implements OnInit {
     this.afs.collection('appointments').doc(id).set({
       appointment_id: id,
       sender: this.firstNameDisplay + " " + this.lastNameDisplay,
-      status: "Pending",
+      status: "Active",
       Date: Date2,
       Time: Time,
       receiver: Doctor

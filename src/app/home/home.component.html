@@ -39,7 +39,8 @@
         <mat-card class="appointment-card">
           <mat-card-title>Appointments</mat-card-title>
           <div class="container text-right">
-            <button mat-button (click)="openAddFileDialog()" mat-flat-button color="primary">Create Appointment</button>
+            <button mat-button (click)="goToAppointment()" mat-flat-button color="primary">Go To Appointment</button>
+            <button mat-button (click)="openAddFileDialog()" mat-flat-button color="warn">Create Appointment</button>
           </div>
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -81,6 +82,7 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
           </table>
         </mat-card>
       </div>

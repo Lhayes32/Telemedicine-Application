@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ScheduleappointmentsComponent } from '../scheduleappointments/scheduleappointments.component';
 import {MatTableDataSource} from '@angular/material';
+import { DatePipe } from '@angular/common';
 
 
 export interface userapp {
@@ -41,6 +42,7 @@ export class HomeComponent implements OnInit {
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
     private dialog: MatDialog,
+    private datePipe: DatePipe,
   ) {
   }
 
@@ -58,8 +60,8 @@ export class HomeComponent implements OnInit {
       console.log(this.displayuid);
     }
 
+    // Retrieve user data
     var docRef = this.afs.collection('users').doc(this.displayuid);
-
     docRef.get().toPromise().then((doc) => {
       if (doc.exists) {
           this.firstNameDisplay = doc.data().firstName;
@@ -72,11 +74,6 @@ export class HomeComponent implements OnInit {
       } else {
           console.log("No such document!");
       }
-      /* var test = {whom: doc.data().firstName + " " + doc.data().lastName, date: doc.data().firstName, time: doc.data().firstName}
-      ELEMENT_DATA.push(test);
-      this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-      console.log(this.dataSource);
-      */
   }).catch(function(error) {
       console.log("Error getting document:", error);
       
@@ -86,30 +83,41 @@ export class HomeComponent implements OnInit {
   ELEMENT_DATA = [];
   this.dataSource = new MatTableDataSource(ELEMENT_DATA);
 
-
-
-  // Loop to find all appointments
+  // Loop to find and update the home page with all appointments relevant to the user.
+  const currentdate = this.datePipe.transform(new Date(), "MM/dd/yyyy");
+  console.log(currentdate);
   this.afs.collection('appointments').get().toPromise()
   .then(querySnapshot => {
     querySnapshot.docs.forEach(doc => {
+      // Import the current date and compare it to the current date.
+      var date = this.datePipe.transform(doc.data().Date, "MM/dd/yyyy");
+      // If the appointment is outdated, then delete it.
+      if (date < currentdate) {
+        this.afs.collection('appointments').doc(doc.data().appointment_id).delete().then(function() {
+          console.log("Document succesfully deleted");
+        }).catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
+        // If the document is not outdated, add it to the list for the user to see.
+      } else {
         // If you are the sender
         if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var test = {whom: doc.data().receiver, date: doc.data().Date, time: doc.data().Time, status: doc.data().status};
+            var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             this.appointment_id = doc.data().appointment_id;
             }
         // If you are the receiver
         if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var test = {whom: doc.data().sender, date: doc.data().Date, time: doc.data().Time, status: doc.data().status};
+            var date = this.datePipe.transform(doc.data().Date, "MM/dd/yyyy");
+            var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             this.appointment_id = doc.data().appointment_id;
             } 
+          }
         });
       });
-
-  
 
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;
@@ -119,19 +127,14 @@ export class HomeComponent implements OnInit {
       this.displayemail = localStorage.getItem("displayemail");
       console.log(this.displayemail);
     }
-
   }
 
   openAddFileDialog() {
     this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }
 
-  redirectToDelete() {
-    this.afs.collection("appointments").doc(this.appointment_id).delete().then(function() {
-      console.log("Document successfully deleted!");
-  }).catch(function(error) {
-      console.error("Error removing document: ", error);
-  });
+  // This will be the button that goes to the current open appointment.,
+  goToAppointment() {
   }
 
   isMenuOpen = true;
