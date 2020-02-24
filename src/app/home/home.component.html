@@ -70,19 +70,10 @@
                 <td mat-cell *matCellDef="let element"> {{element.status}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="accept">
-              <th mat-header-cell *matHeaderCellDef> Accept </th>
+            <ng-container matColumnDef="cancel">
+              <th mat-header-cell *matHeaderCellDef> Cancel</th>
               <td mat-cell *matCellDef="let element">
-                <button mat-icon-button color=green (click)="redirectToDelete(element.id)">
-                    <mat-icon color="primary">done</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="decline">
-              <th mat-header-cell *matHeaderCellDef> Decline </th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button color=red (click)="redirectToDelete(element.id)">
+                <button mat-icon-button color=red (click)="redirectToDelete()">
                     <mat-icon color="warn">clear</mat-icon>
                 </button>
               </td>

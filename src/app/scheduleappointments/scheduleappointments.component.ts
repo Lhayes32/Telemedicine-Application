@@ -27,9 +27,9 @@ export class ScheduleappointmentsComponent implements OnInit {
   firstNameDisplay: string;
   lastNameDisplay: string;
   patients:string[] = [];
-  userdoc: userdoc[] = [
-  ];
+  userdoc:userdoc[] = [];
   count = 1;
+  doctor_selected = '';
 
   time: time[] = [
     {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
@@ -88,7 +88,7 @@ export class ScheduleappointmentsComponent implements OnInit {
             // and they are not you
             if (doc.data().firstName != this.firstNameDisplay) {
               // then print their name
-              var test = {doctor: "Dr. " + doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
+              var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
               this.userdoc.push(test);
               this.count = this.count + 1;
             }
@@ -98,14 +98,50 @@ export class ScheduleappointmentsComponent implements OnInit {
     });
   }
 
+  // Button to update the time slots once a date and doctor have been picked.
+  // Instructions --
+  // Pass the date and doctor
+  // Re-init time to its original values at the start of the function.
+  // Loop through all of the documents, if it has the sender or the receivers full name and the date in it, the appointment time from the time list.
+
+  testbutton2(date, doctor) {
+    this.time = [
+      {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
+    ];
+    console.log(this.time);
+    this.afs.collection('appointments').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if (doc.data().Date == date)
+        {
+          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
+          {
+            this.time = this.time.filter(order => order.value !== doc.data().Time);
+            console.log(doc.data().Time);
+          }
+          if (doc.data().sender == doctor || doc.data().receiver == doctor)
+          {
+            this.time = this.time.filter(order => order.value !== doc.data().Time);
+            console.log(doc.data().Time);
+          }
+        }
+      });
+    })
+    }
+
+  // Working save button
   testbutton(Date2, Time, Doctor) {
     let id = this.afs.createId()
     this.afs.collection('appointments').doc(id).set({
+      appointment_id: id,
       sender: this.firstNameDisplay + " " + this.lastNameDisplay,
       status: "Pending",
       Date: Date2,
       Time: Time,
-      receiver: this.userdoc[Doctor - 1].doctor,
+      receiver: Doctor
     });
+  }
+  returnuserdoc() {
+    console.log(this.userdoc)
   }
 }

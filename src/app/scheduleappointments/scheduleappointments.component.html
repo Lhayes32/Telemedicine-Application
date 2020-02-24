@@ -6,19 +6,19 @@
   </mat-form-field>
   <br>
   <mat-form-field appearance="fill">
+    <mat-label>Appointment with:</mat-label>
+    <mat-select #Doctor (selectionChange)="testbutton2(Date.value, Doctor.value)">
+      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{userdoc.doctor}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill">
     <mat-label>Select Time</mat-label>
     <mat-select #Time>
       <mat-option *ngFor="let time of time" [value]="time.value">{{time.value}}</mat-option>
     </mat-select>
   </mat-form-field>
   <br>
-  <mat-form-field appearance="fill">
-    <mat-label>Appointment with:</mat-label>
-    <mat-select [(value)]="Doctor">
-      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.value">{{userdoc.doctor}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <br>
-  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="testbutton(Date.value, Time.value, Doctor)" color="accent">Save</button></div>
+  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="testbutton(Date.value, Time.value, Doctor.value)" color="accent">Save</button></div>
 
 

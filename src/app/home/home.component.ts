@@ -27,11 +27,12 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
-  displayedColumns: string[] = ['whom', 'date', 'time', 'status','accept', 'decline'];
+  displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
   doctors:string[] = [];
   patients:string[] = [];
+  appointment_id: string;
 
   fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
 
@@ -93,15 +94,17 @@ export class HomeComponent implements OnInit {
     querySnapshot.docs.forEach(doc => {
         // If you are the sender
         if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var test = {whom: doc.data().receiver, date: doc.data().date, time: doc.data().time, status: doc.data().status};
+            var test = {whom: doc.data().receiver, date: doc.data().Date, time: doc.data().Time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            this.appointment_id = doc.data().appointment_id;
             }
         // If you are the receiver
         if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var test = {whom: doc.data().sender, date: doc.data().date, time: doc.data().time, status: doc.data().status};
+            var test = {whom: doc.data().sender, date: doc.data().Date, time: doc.data().Time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            this.appointment_id = doc.data().appointment_id;
             } 
         });
       });
@@ -123,6 +126,13 @@ export class HomeComponent implements OnInit {
     this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }
 
+  redirectToDelete() {
+    this.afs.collection("appointments").doc(this.appointment_id).delete().then(function() {
+      console.log("Document successfully deleted!");
+  }).catch(function(error) {
+      console.error("Error removing document: ", error);
+  });
+  }
 
   isMenuOpen = true;
   contentMargin = 240;
