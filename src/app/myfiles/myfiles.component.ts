@@ -60,9 +60,28 @@ export class MyfilesComponent implements OnInit {
     });
   }
 
+listAllFiles()
+{
+  var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/');
+  storageRef.listAll().then(function(res) {
+    res.prefixes.forEach(function(folderRef) {
+      // All the prefixes under listRef.
+      // You may call listAll() recursively on them.
+      console.log(folderRef);
+    });
+    res.items.forEach(function(itemRef) {
+      // All the items under listRef.
+      console.log(itemRef);
+    });
+  }).catch(function(error) {
+    // Uh-oh, an error occurred!
+  });
+  
+}
+
 downloadFiles() {
   // Create a reference to the file we want to download
-var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + "intro.odp");
+var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + "mywebpage.html");
 //var starsRef = storageRef.child('images/stars.jpg');
 
 // Get the download URL
