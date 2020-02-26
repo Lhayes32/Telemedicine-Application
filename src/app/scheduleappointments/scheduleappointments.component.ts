@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { DatePipe } from '@angular/common';
 
 
 export interface userdoc {
@@ -30,6 +31,7 @@ export class ScheduleappointmentsComponent implements OnInit {
   userdoc:userdoc[] = [];
   count = 1;
   doctor_selected = '';
+  currentdate = new Date();
 
   time: time[] = [
     {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
@@ -46,9 +48,15 @@ export class ScheduleappointmentsComponent implements OnInit {
     } catch (error) {
       this.displayuid = localStorage.getItem("displayuid");
     }
+    // First we get the user's data. 
+    this.fetchuserdata();
 
+    // Secondly we update the appointment's list with available doctors.
+    this.updateappointments();
+  }
+
+  fetchuserdata() {
     var docRef = this.afs.collection('users').doc(this.displayuid);
-
     docRef.get().toPromise().then((doc) => {
       if (doc.exists) {
           this.firstNameDisplay = doc.data().firstName;
@@ -64,7 +72,9 @@ export class ScheduleappointmentsComponent implements OnInit {
   }).catch(function(error) {
       console.log("Error getting document:", error);
   });
+  }
 
+  updateappointments() {
     this.afs.collection('users').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {

@@ -74,7 +74,7 @@
             <ng-container matColumnDef="cancel">
               <th mat-header-cell *matHeaderCellDef> Cancel</th>
               <td mat-cell *matCellDef="let element">
-                <button mat-icon-button color=red (click)="redirectToDelete()">
+                <button mat-icon-button color=red (click)="cancelAppointment(element.whom, element.date, element.time, element.status)">
                     <mat-icon color="warn">clear</mat-icon>
                 </button>
               </td>

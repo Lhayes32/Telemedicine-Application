@@ -46,18 +46,12 @@ export class HomeComponent implements OnInit {
   ) {
   }
 
-  openDialog() {
-    // Open our Dialog Component
-  }
-
   ngOnInit() {
     try {
       this.displayuid = this.afAuth.auth.currentUser.uid
       localStorage.setItem("displayuid", this.displayuid);
-      console.log(this.displayuid);
     } catch (error) {
       this.displayuid = localStorage.getItem("displayuid");
-      console.log(this.displayuid);
     }
 
     // Retrieve user data
@@ -85,16 +79,15 @@ export class HomeComponent implements OnInit {
 
   // Loop to find and update the home page with all appointments relevant to the user.
   const currentdate = this.datePipe.transform(new Date(), "MM/dd/yyyy");
-  console.log(currentdate);
   this.afs.collection('appointments').get().toPromise()
   .then(querySnapshot => {
     querySnapshot.docs.forEach(doc => {
       // Import the current date and compare it to the current date.
-      var date = this.datePipe.transform(doc.data().Date, "MM/dd/yyyy");
+      var date = this.datePipe.transform(doc.data().Date, "M/dd/yyyy");
       // If the appointment is outdated, then delete it.
       if (date < currentdate) {
         this.afs.collection('appointments').doc(doc.data().appointment_id).delete().then(function() {
-          console.log("Document succesfully deleted");
+          console.log("Found and deleted outdated documents.");
         }).catch(function(error) {
           console.error("Error removing document: ", error);
         });
@@ -105,15 +98,12 @@ export class HomeComponent implements OnInit {
             var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-            this.appointment_id = doc.data().appointment_id;
             }
         // If you are the receiver
         if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var date = this.datePipe.transform(doc.data().Date, "MM/dd/yyyy");
             var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: doc.data().status};
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-            this.appointment_id = doc.data().appointment_id;
             } 
           }
         });
@@ -122,10 +112,8 @@ export class HomeComponent implements OnInit {
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;
       localStorage.setItem("displayemail", this.displayemail);
-      console.log(this.displayemail);
     } catch (error) {
       this.displayemail = localStorage.getItem("displayemail");
-      console.log(this.displayemail);
     }
   }
 
@@ -135,6 +123,34 @@ export class HomeComponent implements OnInit {
 
   // This will be the button that goes to the current open appointment.,
   goToAppointment() {
+  }
+
+  cancelAppointment(whom, date, time, status) {
+    this.afs.collection('appointments').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if (doc.data().Date == date) 
+        {
+          if (doc.data().Time == time)
+          {
+            if (doc.data().sender || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
+            {
+              if (doc.data().sender || doc.data().receiver == whom)
+              {
+                if (doc.data().status == status)
+                {
+                  this.afs.collection('appointments').doc(doc.data().appointment_id).update({
+                    status : "Cancelled",
+                  }).catch(function(error) {
+                    console.error("Error removing document: ", error);
+                  });
+                }
+              }
+            }
+         }
+        }
+      });
+    });
   }
 
   isMenuOpen = true;
