@@ -97,7 +97,7 @@ export class MyaccountComponent implements OnInit {
     }
   }
   addData(firstName, lastName, dateofbirth, address, insurancecompany, insuranceid) {
-    this.afs.collection('users').doc(this.afAuth.auth.currentUser.uid).set({
+    this.afs.collection('users').doc(this.afAuth.auth.currentUser.uid).update({
       uid: this.afAuth.auth.currentUser.uid,
       email: this.afAuth.auth.currentUser.email,
       displayName: this.afAuth.auth.currentUser.displayName,
@@ -113,7 +113,7 @@ export class MyaccountComponent implements OnInit {
       .then(function () {
         console.log("Data Written")
       });
-
+      this.ngOnInit();
   }
   
 }

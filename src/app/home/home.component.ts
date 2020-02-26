@@ -6,6 +6,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { ScheduleappointmentsComponent } from '../scheduleappointments/scheduleappointments.component';
 import {MatTableDataSource} from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { timer } from 'rxjs';
 
 
 export interface userapp {
@@ -70,44 +71,7 @@ export class HomeComponent implements OnInit {
       }
   }).catch(function(error) {
       console.log("Error getting document:", error);
-      
   });
-
-  // Clear the table when refreshing or going back to the page.
-  ELEMENT_DATA = [];
-  this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-
-  // Loop to find and update the home page with all appointments relevant to the user.
-  const currentdate = this.datePipe.transform(new Date(), "MM/dd/yyyy");
-  this.afs.collection('appointments').get().toPromise()
-  .then(querySnapshot => {
-    querySnapshot.docs.forEach(doc => {
-      // Import the current date and compare it to the current date.
-      var date = this.datePipe.transform(doc.data().Date, "M/dd/yyyy");
-      // If the appointment is outdated, then delete it.
-      if (date < currentdate) {
-        this.afs.collection('appointments').doc(doc.data().appointment_id).delete().then(function() {
-          console.log("Found and deleted outdated documents.");
-        }).catch(function(error) {
-          console.error("Error removing document: ", error);
-        });
-        // If the document is not outdated, add it to the list for the user to see.
-      } else {
-        // If you are the sender
-        if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: doc.data().status};
-            ELEMENT_DATA.push(test);
-            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-            }
-        // If you are the receiver
-        if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
-            var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: doc.data().status};
-            ELEMENT_DATA.push(test);
-            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-            } 
-          }
-        });
-      });
 
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;
@@ -115,14 +79,57 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       this.displayemail = localStorage.getItem("displayemail");
     }
+
+    // Fetch all appointments for the user when opening or refreshing the page.
+    this.fetchappointments()
+
   }
+
+  // This method will fetch all appointments
+  fetchappointments () {
+    // Clear the table when refreshing or going back to the page.
+    ELEMENT_DATA = [];
+    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+    // Loop to find and update the home page with all appointments relevant to the user.
+    const currentdate = this.datePipe.transform(new Date(), "MM/dd/yyyy");
+    this.afs.collection('appointments').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        // Import the current date and compare it to the current date.
+        var date = this.datePipe.transform(doc.data().Date, "M/dd/yyyy");
+        // If the appointment is outdated, then delete it.
+        if (date < currentdate) {
+          this.afs.collection('appointments').doc(doc.data().appointment_id).delete().then(function() {
+            console.log("Found and deleted outdated documents.");
+          }).catch(function(error) {
+            console.error("Error removing document: ", error);
+          });
+          // If the document is not outdated, add it to the list for the user to see.
+        } else {
+          // If you are the sender
+          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
+              var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: doc.data().status};
+              ELEMENT_DATA.push(test);
+              this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+              }
+          // If you are the receiver
+          if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
+              var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: doc.data().status};
+              ELEMENT_DATA.push(test);
+              this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+              } 
+            }
+          });
+        });
+    }
 
   openAddFileDialog() {
     this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }
 
   // This will be the button that goes to the current open appointment.,
-  goToAppointment() {
+  goToAppointment() { 
   }
 
   cancelAppointment(whom, date, time, status) {
@@ -151,6 +158,7 @@ export class HomeComponent implements OnInit {
         }
       });
     });
+    timer(1).subscribe(x => { this.ngOnInit });
   }
 
   isMenuOpen = true;

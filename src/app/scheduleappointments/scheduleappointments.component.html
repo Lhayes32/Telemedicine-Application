@@ -1,13 +1,13 @@
 <mat-form-field>
     <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker" #Date>
+    <input matInput [matDatepicker]="picker" (dateChange)="testfunction(Date.value)" #Date>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <br>
   <mat-form-field appearance="fill">
     <mat-label>Appointment with:</mat-label>
-    <mat-select #Doctor (selectionChange)="testbutton2(Date.value, Doctor.value)">
+    <mat-select #Doctor (selectionChange)="updateTimeSelection(Date.value, Doctor.value)">
       <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{userdoc.doctor}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -19,6 +19,6 @@
     </mat-select>
   </mat-form-field>
   <br>
-  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="testbutton(Date.value, Time.value, Doctor.value)" color="accent">Save</button></div>
+  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="saveAppointment(Date.value, Time.value, Doctor.value)" color="accent">Save</button></div>
 
 
