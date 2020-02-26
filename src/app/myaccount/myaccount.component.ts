@@ -114,6 +114,7 @@ export class MyaccountComponent implements OnInit {
         console.log("Data Written")
       });
       this.ngOnInit();
+      // hi
   }
   
 }
