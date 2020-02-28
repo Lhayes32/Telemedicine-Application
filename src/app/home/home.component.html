@@ -37,10 +37,9 @@
         <h2 style="padding-right: 55%;">Home </h2>
         <br>
         <mat-card class="appointment-card">
-          <mat-card-title>Appointments</mat-card-title>
-          <div class="container text-right">
-            <button mat-button (click)="openAddFileDialog()" mat-flat-button color="warn">Create Appointment</button>
-          </div>
+          <mat-card-title>Appointments <button mat-button (click)="openAddFileDialog()" mat-flat-button color="warn" style="float: right;">Create Appointment</button> </mat-card-title>
+          
+          <div class="container">
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
             <!--- Note that these columns can be defined in any order.
@@ -101,6 +100,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
           </table>
+          </div>
         </mat-card>
       </div>
     </div>
