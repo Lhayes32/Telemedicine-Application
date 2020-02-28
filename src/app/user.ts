@@ -10,4 +10,5 @@ export interface User {
     address: string;
     insurancecompany: string;
     insuranceid: string;
+    isDoctor: boolean;
 }

@@ -96,3 +96,13 @@ table {
 .dash-list h3 {
   padding: 12px;
 }
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100px;
+}
+
+.example-full-width {
+  width: 100%;
+}

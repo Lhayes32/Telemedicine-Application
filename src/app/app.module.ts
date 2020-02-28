@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
-import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -21,9 +20,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
-
+import { FormsModule } from '@angular/forms'
+import { MatTableModule} from '@angular/material'
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
 import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleappointments.component';
+import { DatePipe } from '@angular/common';
+
 
 
 
@@ -41,11 +43,20 @@ import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleap
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatInputModule,
+    MatDialogModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    FormsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatInputModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatFormFieldModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
@@ -64,7 +75,8 @@ import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleap
   ],
 
   providers: [
-    AuthService
+    AuthService,
+    DatePipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [ScheduleappointmentsComponent]

@@ -1,98 +1,120 @@
 table {
-    width: 90%;
-  }
+  width: 90%;
+}
 
 
 .appointment-card {
-    width: 80%;
-    padding: 4%;
+  width: 80%;
+  padding: 4%;
 }
 
 .container{
-    padding: 4%;
+  padding: 4%;
 }
 
 .home-icon{
-  margin-right: 5%;
-  font-weight: 500;
+margin-right: 5%;
+font-weight: 500;
 }
 
 .mat-list-item.active { 
-  color: #2A8Bf2; 
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+color: #2A8Bf2; 
+font-family: Roboto, "Helvetica Neue", sans-serif;
 
 }
 
 .mat-list-item {
-  font-size: 14px;
-  font-weight: 500;
+font-size: 14px;
+font-weight: 500;
 }
 
 .mat-card-header .mat-card-title{
-  font-size: 16px;
+font-size: 16px;
 }
 
 .mat-toolbar{
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 18px;
+font-family: Roboto, "Helvetica Neue", sans-serif;
+font-size: 18px;
 }
 
 .mat-toolbar.mat-primary {
-  background: #3E6E8C;
+background: #3E6E8C;
 }
 
 #toolbarMenu {
-  cursor: pointer;
-  margin-right: 20px;
+cursor: pointer;
+margin-right: 20px;
 }
 #mainToolbar .toolbar-spacer {
-  flex: 1 1 auto;
+flex: 1 1 auto;
 }
 
 #mainToolbar .toolbar-icon {
-  cursor: pointer;
-  margin: 0 8px;
+cursor: pointer;
+margin: 0 8px;
 }
 
 #sidenavContainer {
-  margin-top: 64px;
-  background: linear-gradient(180deg, #F3F3FB 0%, #FDFBFD 100%);
+margin-top: 64px;
+background: linear-gradient(180deg, #F3F3FB 0%, #FDFBFD 100%);
 }
 
 #sidenav {
-  width: 240px;
+width: 240px;
 }
 
 #sidenav.menu-close {
-  width: 74px
+width: 74px
 }
 
 #sidenav.menu-open {
-  width: 240px
+width: 240px
 }
 
 #sidenav .avatar {
-  background-image: url('http://i.pravatar.cc/300');
-  background-size: cover;
+background-image: url('http://i.pravatar.cc/300');
+background-size: cover;
 }
 
 #sidenav .mat-list-item-content {
-  padding: 0;
+padding: 0;
 }
 
 #sidenav .menu-item {
-  width: 100%;
-  border-radius: 0;
-  text-align: left;
-  padding: 0px;
+width: 100%;
+border-radius: 0;
+text-align: left;
+padding: 0px;
 }
 
 
 #sidenav .menu-item mat-icon {
-  margin-right: 20px;
-  margin-left: 12px;
+margin-right: 20px;
+margin-left: 12px;
 }
 
 .dash-list h3 {
-  padding: 12px;
+padding: 12px;
+}
+
+.example-form {
+min-width: 150px;
+max-width: 500px;
+width: 100px;
+}
+
+.example-full-width {
+width: 100%;
+}
+
+table {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 500px;
+}
+ 
+th.mat-header-cell {
+    text-align: left;
+    max-width: 300px;
 }

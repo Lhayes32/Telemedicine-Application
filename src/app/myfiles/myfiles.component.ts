@@ -26,7 +26,11 @@ export class MyfilesComponent implements OnInit {
   displayedColumns: string[] = ['name', 'date'];
   dataSource = FILE_DATA;
   displayemail: string;
-  selectedFile: File
+  selectedFile: File;
+  isDoctorDisplay:string;
+  firstNameDisplay: string;
+  lastNameDisplay: string;
+  displayuid: string;
 
   constructor(
     private authService: AuthService,
@@ -35,6 +39,33 @@ export class MyfilesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    try {
+      this.displayuid = this.afAuth.auth.currentUser.uid
+      localStorage.setItem("displayuid", this.displayuid);
+      console.log(this.displayuid);
+    } catch (error) {
+      this.displayuid = localStorage.getItem("displayuid");
+      console.log(this.displayuid);
+    }
+
+    var docRef = this.afs.collection('users').doc(this.displayuid);
+
+    docRef.get().toPromise().then((doc) => {
+      if (doc.exists) {
+          this.firstNameDisplay = doc.data().firstName;
+          this.lastNameDisplay = doc.data().lastName;
+          if (doc.data().isDoctor) {
+            this.isDoctorDisplay = "Doctor";
+          } else {
+            this.isDoctorDisplay = "Patient";
+          }
+      } else {
+          console.log("No such document!");
+      }
+  }).catch(function(error) {
+      console.log("Error getting document:", error);
+  });
     
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;

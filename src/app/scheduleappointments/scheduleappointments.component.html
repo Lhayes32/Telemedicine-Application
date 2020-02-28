@@ -1,24 +1,24 @@
 <mat-form-field>
     <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker">
+    <input matInput [matDatepicker]="picker" (dateChange)="testfunction(Date.value)" [min]="currentdate" #Date>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <br>
   <mat-form-field appearance="fill">
-    <mat-label>Select Time</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let time of time" [value]="time.value">{{time.value}}</mat-option>
+    <mat-label>Appointment with:</mat-label> <!-- updateTimeSelection(Date.value, Doctor.value) -->
+    <mat-select #Doctor >
+      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{userdoc.doctor}}</mat-option>
     </mat-select>
   </mat-form-field>
   <br>
   <mat-form-field appearance="fill">
-    <mat-label>Select Doctor</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.value">{{userdoc.doctor}}</mat-option>
+    <mat-label>Select Time</mat-label>
+    <mat-select #Time required>
+      <mat-option *ngFor="let time of time" [value]="time.value">{{time.value}}</mat-option>
     </mat-select>
   </mat-form-field>
   <br>
-  <div mat-dialog-actions style="float: right;"><button mat-raised-button color="accent">Save</button></div>
+  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="[saveAppointment(Date.value, Time.value, Doctor.value), refresh()]" color="accent">Save</button></div>
 
 
