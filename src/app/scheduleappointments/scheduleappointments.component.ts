@@ -7,7 +7,6 @@ import { DatePipe } from '@angular/common';
 
 
 export interface userdoc {
-  value: string;
   doctor: string;
 }
 
@@ -30,7 +29,6 @@ export class ScheduleappointmentsComponent implements OnInit {
   patients:string[] = [];
   userdoc:userdoc[] = [];
   count = 1;
-  doctor_selected = '';
   currentdate = new Date();
 
   time: time[] = [
@@ -38,7 +36,8 @@ export class ScheduleappointmentsComponent implements OnInit {
   ];
 
   constructor(public afs: AngularFirestore,
-    public afAuth: AngularFireAuth,) { }
+    public afAuth: AngularFireAuth,
+    public dialogRef: MatDialogRef<ScheduleappointmentsComponent>) { }
 
   ngOnInit() {
 
@@ -87,9 +86,8 @@ export class ScheduleappointmentsComponent implements OnInit {
               // Remove all users without names
               if (doc.data().firstName != null || doc.data().firstName != null) {
                 // then print their name
-                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName}
                 this.userdoc.push(test);
-                this.count = this.count + 1;
               }
               } 
             }
@@ -103,9 +101,8 @@ export class ScheduleappointmentsComponent implements OnInit {
               // Remove all users without names
               if (doc.data().firstName != null || doc.data().firstName != null) {
                 // then print their name
-                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName}
                 this.userdoc.push(test);
-                this.count = this.count + 1;
               }
             }
             }
@@ -114,35 +111,6 @@ export class ScheduleappointmentsComponent implements OnInit {
     });
   }
 
-
-  // This function loops through the documents and provides appropriate times based the the selected date and doctor.
-  // Current bug --> This button only works if you select the date first, then the doctor.
-  updateTimeSelection(date, doctor) {
-    this.time = [
-      {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
-    ];
-    console.log(this.time);
-    this.afs.collection('appointments').get().toPromise()
-    .then(querySnapshot => {
-      querySnapshot.docs.forEach(doc => {
-        if (doc.data().Date == date)
-        {
-          // If the current doc has the user's first or last name in it as the sender or receiver.
-          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
-          {
-            this.time = this.time.filter(order => order.value !== doc.data().Time);
-            console.log(doc.data().Time);
-          }
-          // If the current doc has the currently selected doctor in it as the sender or receiver.
-          if (doc.data().sender == doctor || doc.data().receiver == doctor)
-          {
-            this.time = this.time.filter(order => order.value !== doc.data().Time);
-            console.log(doc.data().Time);
-          }
-        }
-      });
-    })
-    }
 
   // Saves the selected appointment data as a document to firebase.
   // Note: The variable "Doctor" is just the person selected for the appointment, and can either be a patient or a doctor.
@@ -156,26 +124,42 @@ export class ScheduleappointmentsComponent implements OnInit {
       Time: Time,
       receiver: Doctor
     });
+    this.dialogRef.close();
   }
 
   // This method makes sure that one person can only make only one appointment with another unique person.
-  testfunction(date) {
+  // This method also updates times based on availability of recipients.
+  testfunction(date, doctor) {
+    this.time = [
+      {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
+    ];
     this.afs.collection('appointments').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
         if (doc.data().Date == date)
         {
           // If the current doc has the user's first or last name in it as the sender or receiver.
-          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay)
+          if (this.firstNameDisplay + " " + this.lastNameDisplay == doc.data().sender || doc.data().receiver)
           {
             this.userdoc = this.userdoc.filter(order => order.doctor !== doc.data().receiver);
             console.log(this.userdoc);
           }
-          if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
           for (var i = 0; i < this.userdoc.length; i++)
           {
             this.userdoc.filter(order => order.doctor !== doc.data().sender);
             console.log(this.userdoc);
+          }
+          // If the current doc has the user's first or last name in it as the sender or receiver.
+          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
+          {
+            this.time = this.time.filter(order => order.value !== doc.data().Time);
+            console.log(doc.data().Time);
+          }
+          // If the current doc has the currently selected doctor in it as the sender or receiver.
+          if (doc.data().sender == doctor || doc.data().receiver == doctor)
+          {
+            this.time = this.time.filter(order => order.value !== doc.data().Time);
+            console.log(doc.data().Time);
           }
         }
       });
