@@ -63,7 +63,7 @@
 
             <h1>Upload</h1>
             <input type="file" (change)="onFileChanged($event)">
-            <button type="button" (click)="onUpload()">Upload</button>
+            <button type="button" (click)="[onUpload(), fileData()]">Upload</button>
 
 
             <h1>Download</h1>

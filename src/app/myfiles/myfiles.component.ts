@@ -6,15 +6,11 @@ import * as firebase from 'firebase';
 
 export interface FileList {
   name: string;
-  date: string;
+  download: string;
 }
 
 const FILE_DATA: FileList[] = [
-  {name: 'FileUpload01.jpg', date: "01-01-2020"},
-  {name: 'FileUpload02.jpg', date: "01-02-2020"},
-  {name: 'FileUpload03.jpg', date: "01-03-2020"},
-  {name: 'FileUpload04.jpg', date: "01-04-2020"},
-  {name: 'FileUpload05.jpg', date: "01-05-2020"},
+  
 ];
 
 @Component({
@@ -31,6 +27,9 @@ export class MyfilesComponent implements OnInit {
   firstNameDisplay: string;
   lastNameDisplay: string;
   displayuid: string;
+  filename: string;
+  FileID: string;
+  _file: string;
 
   constructor(
     private authService: AuthService,
@@ -76,6 +75,9 @@ export class MyfilesComponent implements OnInit {
       console.log(this.displayemail);
     }
 
+    this.listFiles();
+
+
   }
 
   onFileChanged(event) {
@@ -83,32 +85,58 @@ export class MyfilesComponent implements OnInit {
   }
 
   onUpload() {
-    var filename = this.selectedFile.name;
-    var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + filename);
+    this.filename = this.selectedFile.name;
+    var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + this.filename);
     var uploadTask = storageRef.put(this.selectedFile);
     uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
       console.log('File available at', downloadURL);
     });
   }
 
-listAllFiles()
-{
-  var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/');
-  storageRef.listAll().then(function(res) {
-    res.prefixes.forEach(function(folderRef) {
-      // All the prefixes under listRef.
-      // You may call listAll() recursively on them.
-      console.log(folderRef);
+  fileData() {
+    let id = this.afs.createId()
+    this.afs.collection('files').doc(id).set({
+      Name: this.filename,
+      Download: null,
+      User: this.displayuid,
+      FileID: id,
     });
-    res.items.forEach(function(itemRef) {
-      // All the items under listRef.
-      console.log(itemRef);
+  }
+
+  listFiles()
+  {
+    this.afs.collection('files').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        this.afs.collection('files').doc(doc.data().FileID).get().toPromise().then((doc) => {
+          if(doc.exists) {
+            this._file = doc.data().Name;
+            console.log(this._file);
+          }
+        }
+      );
     });
-  }).catch(function(error) {
-    // Uh-oh, an error occurred!
   });
-  
 }
+
+// listAllFiles()
+// {
+//   var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/');
+//   storageRef.listAll().then(function(res) {
+//     res.prefixes.forEach(function(folderRef) {
+//       // All the prefixes under listRef.
+//       // You may call listAll() recursively on them.
+//       console.log(folderRef.listAll);
+//     });
+//     res.items.forEach(function(itemRef) {
+//       // All the items under listRef.
+//       console.log(itemRef);
+//     });
+//   }).catch(function(error) {
+//     // Uh-oh, an error occurred!
+//   });
+  
+// }
 
 downloadFiles() {
   // Create a reference to the file we want to download
