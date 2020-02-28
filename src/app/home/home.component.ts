@@ -6,6 +6,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { ScheduleappointmentsComponent } from '../scheduleappointments/scheduleappointments.component';
 import {MatTableDataSource} from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { timer } from 'rxjs';
 
 
@@ -13,6 +14,8 @@ export interface userapp {
   whom: string;
   date: string;
   time: string;
+  status: string;
+  appointment_id: string;
 }
 
 var ELEMENT_DATA: userapp[] = [
@@ -29,12 +32,13 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
-  displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel'];
+  displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel', 'text', 'video'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
   doctors:string[] = [];
   patients:string[] = [];
   appointment_id: string;
+  currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy");
 
   fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
 
@@ -44,6 +48,7 @@ export class HomeComponent implements OnInit {
     public afs: AngularFirestore,   // Inject Firestore service
     private dialog: MatDialog,
     private datePipe: DatePipe,
+    private snackbar: MatSnackBar,
   ) {
   }
 
@@ -54,6 +59,8 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       this.displayuid = localStorage.getItem("displayuid");
     }
+
+    console.log(this.currentdate);
 
     // Retrieve user data
     var docRef = this.afs.collection('users').doc(this.displayuid);
@@ -92,7 +99,7 @@ export class HomeComponent implements OnInit {
     this.dataSource = new MatTableDataSource(ELEMENT_DATA);
 
     // Loop to find and update the home page with all appointments relevant to the user.
-    const currentdate = this.datePipe.transform(new Date(), "MM/dd/yyyy");
+    const currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy");
     this.afs.collection('appointments').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
@@ -108,17 +115,26 @@ export class HomeComponent implements OnInit {
           // If the document is not outdated, add it to the list for the user to see.
         } else {
           // If you are the sender
+          var apptstatus = "Cancelled"
           if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
-              var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: doc.data().status};
-              ELEMENT_DATA.push(test);
-              this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-              }
+            if (doc.data().isActive == true)
+            {
+              apptstatus = "Active"
+            }
+            var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            ELEMENT_DATA.push(test);
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            }
           // If you are the receiver
           if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
-              var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: doc.data().status};
-              ELEMENT_DATA.push(test);
-              this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-              } 
+            if (doc.data().isActive == true)
+            {
+              apptstatus = "Active"
+            }
+            var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            ELEMENT_DATA.push(test);
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            } 
             }
           });
         });
@@ -129,37 +145,26 @@ export class HomeComponent implements OnInit {
   }
 
   // This will be the button that goes to the current open appointment.,
-  goToAppointment() { 
+  goToVideoAppointment(whom) { 
+    this.snackbar.open("Going to a video appointment with " + whom + "...")._dismissAfter(2000);
   }
 
-  cancelAppointment(whom, date, time, status) {
-    this.afs.collection('appointments').get().toPromise()
-    .then(querySnapshot => {
-      querySnapshot.docs.forEach(doc => {
-        if (doc.data().Date == date) 
-        {
-          if (doc.data().Time == time)
-          {
-            if (doc.data().sender || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
-            {
-              if (doc.data().sender || doc.data().receiver == whom)
-              {
-                if (doc.data().status == status)
-                {
-                  this.afs.collection('appointments').doc(doc.data().appointment_id).update({
-                    status : "Cancelled",
-                  }).catch(function(error) {
-                    console.error("Error removing document: ", error);
-                  });
-                }
-              }
-            }
-         }
-        }
-      });
-    });
-    timer(1).subscribe(x => { this.ngOnInit });
+  goToTextAppointment(whom) {
+    this.snackbar.open("Opening text chat with " + whom + "...")._dismissAfter(2000);
   }
+
+  // This method cancels the currently selected appointment.
+  async cancelAppointment(whom, date, time, status) { 
+    for (var i = 0; i < ELEMENT_DATA.length; i++) {
+      if (ELEMENT_DATA[i].whom == whom && ELEMENT_DATA[i].date == date && ELEMENT_DATA[i].time == time && ELEMENT_DATA[i].status == status) {
+        this.afs.collection('appointments').doc(ELEMENT_DATA[i].appointment_id).update({
+          isActive: false,
+        }).catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
+      }
+  }
+}
 
   isMenuOpen = true;
   contentMargin = 240;

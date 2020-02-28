@@ -83,11 +83,14 @@ export class ScheduleappointmentsComponent implements OnInit {
           // and they are not a doctor
           if (doc.data().isDoctor == false) {
             // and they are not you
-            if (doc.data().firstName != this.firstNameDisplay) {
-              // then print their name
-              var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
-              this.userdoc.push(test);
-              this.count = this.count + 1;
+            if (doc.data().firstName + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
+              // Remove all users without names
+              if (doc.data().firstName != null || doc.data().firstName != null) {
+                // then print their name
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
+                this.userdoc.push(test);
+                this.count = this.count + 1;
+              }
               } 
             }
           }
@@ -96,11 +99,14 @@ export class ScheduleappointmentsComponent implements OnInit {
           // and they are a doctor
           if (doc.data().isDoctor == true) {
             // and they are not you
-            if (doc.data().firstName != this.firstNameDisplay) {
-              // then print their name
-              var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
-              this.userdoc.push(test);
-              this.count = this.count + 1;
+            if (doc.data().firstName + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
+              // Remove all users without names
+              if (doc.data().firstName != null || doc.data().firstName != null) {
+                // then print their name
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, value: this.count.toString()}
+                this.userdoc.push(test);
+                this.count = this.count + 1;
+              }
             }
             }
           } 
@@ -145,7 +151,7 @@ export class ScheduleappointmentsComponent implements OnInit {
     this.afs.collection('appointments').doc(id).set({
       appointment_id: id,
       sender: this.firstNameDisplay + " " + this.lastNameDisplay,
-      status: "Active",
+      isActive: true,
       Date: Date2,
       Time: Time,
       receiver: Doctor
