@@ -140,6 +140,12 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    refresh() {
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+
   openAddFileDialog() {
     this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
   }

@@ -73,7 +73,7 @@
             <ng-container matColumnDef="cancel">
               <th mat-header-cell *matHeaderCellDef>Cancel</th>
               <td mat-cell *matCellDef="let element">
-                <button *ngIf="element.status == 'Active'" mat-icon-button color=red (click)="cancelAppointment(element.whom, element.date, element.time, element.status)">
+                <button *ngIf="element.status == 'Active'" mat-icon-button color=red (click)="[cancelAppointment(element.whom, element.date, element.time, element.status), refresh()]">
                     <mat-icon color="warn">clear</mat-icon>
                 </button>
               </td>

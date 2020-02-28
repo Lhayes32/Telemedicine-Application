@@ -127,6 +127,12 @@ export class ScheduleappointmentsComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  refresh() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  }
+
   // This method makes sure that one person can only make only one appointment with another unique person.
   // This method also updates times based on availability of recipients.
   testfunction(date, doctor) {

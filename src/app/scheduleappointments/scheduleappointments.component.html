@@ -19,6 +19,6 @@
     </mat-select>
   </mat-form-field>
   <br>
-  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="saveAppointment(Date.value, Time.value, Doctor.value)" color="accent">Save</button></div>
+  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="[saveAppointment(Date.value, Time.value, Doctor.value), refresh()]" color="accent">Save</button></div>
 
 
