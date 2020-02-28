@@ -84,12 +84,63 @@ export class MyfilesComponent implements OnInit {
 
   onUpload() {
     var filename = this.selectedFile.name;
-    var storageRef = firebase.storage().ref('/fileuploads/' + filename)
+    var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + filename);
     var uploadTask = storageRef.put(this.selectedFile);
     uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
       console.log('File available at', downloadURL);
     });
   }
+
+listAllFiles()
+{
+  var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/');
+  storageRef.listAll().then(function(res) {
+    res.prefixes.forEach(function(folderRef) {
+      // All the prefixes under listRef.
+      // You may call listAll() recursively on them.
+      console.log(folderRef);
+    });
+    res.items.forEach(function(itemRef) {
+      // All the items under listRef.
+      console.log(itemRef);
+    });
+  }).catch(function(error) {
+    // Uh-oh, an error occurred!
+  });
+  
+}
+
+downloadFiles() {
+  // Create a reference to the file we want to download
+var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + "mywebpage.html");
+//var starsRef = storageRef.child('images/stars.jpg');
+
+// Get the download URL
+storageRef.getDownloadURL().then(function(url) {
+  // Insert url into an <img> tag to "download"
+  console.log(url);
+  window.open(url,'_blank');
+
+}).catch(function(error) {
+
+  // A full list of error codes is available at
+  // https://firebase.google.com/docs/storage/web/handle-errors
+  switch (error.code) {
+    case 'storage/object-not-found':
+      // File doesn't exist
+      break;
+    case 'storage/unauthorized':
+      // User doesn't have permission to access the object
+      break;
+    case 'storage/canceled':
+      // User canceled the upload
+      break;
+    case 'storage/unknown':
+      // Unknown error occurred, inspect the server response
+      break;
+  }
+});
+}
 
   isMenuOpen = true;
   contentMargin = 240;
