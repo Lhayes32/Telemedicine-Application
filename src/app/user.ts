@@ -11,4 +11,5 @@ export interface User {
     insurancecompany: string;
     insuranceid: string;
     isDoctor: boolean;
+    isOnline: boolean; 
 }

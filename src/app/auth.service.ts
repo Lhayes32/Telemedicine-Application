@@ -36,10 +36,10 @@ export class AuthService {
   SignIn(email, password) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
+        this.ngZone.run(async () => {
           this.router.navigate(['home']);
+         await this.afs.doc(`users/${result.user.uid}`).update({isOnline: true});
         });
-        // this.SetUserData(result.user);
       }).catch((error) => {
         let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
@@ -75,7 +75,8 @@ export class AuthService {
       address: null,
       insurancecompany: null,
       insuranceid: null,
-      isDoctor: false
+      isDoctor: false,
+      isOnline: false
     }
     return userRef.set(userData, {
       merge: true
@@ -103,7 +104,9 @@ export class AuthService {
       })
   }
 
-  SignOut() {
+  async SignOut() {
+    let currentLoggedInUser = await JSON.parse(localStorage.getItem('user')).uid;
+    await this.afs.doc(`users/${currentLoggedInUser}`).update({isOnline: false});
     return this.afAuth.auth.signOut().then(() => {
       localStorage.removeItem('result.user');
       this.router.navigate(['login']);
