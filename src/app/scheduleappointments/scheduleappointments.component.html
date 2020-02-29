@@ -1,15 +1,15 @@
-<mat-form-field appearance="fill">
-  <mat-label>Appointment with:</mat-label> <!-- updateTimeSelection(Date.value, Doctor.value) -->
-  <mat-select #Doctor >
-    <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{userdoc.doctor}}</mat-option>
-  </mat-select>
-</mat-form-field>
-<br>
 <mat-form-field>
     <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="testfunction(Date.value)" [min]="currentdate" #Date>
+    <input matInput [matDatepicker]="picker" [matDatepickerFilter]="myFilter" (dateChange)="filterdoctor(Date.value)" [min]="currentdate" #Date>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>Appointment with:</mat-label> <!-- updateTimeSelection(Date.value, Doctor.value) -->
+    <mat-select #Doctor (selectionChange)="filtertimes(Doctor.value, Date.value)">
+      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{userdoc.doctor}}</mat-option>
+    </mat-select>
   </mat-form-field>
   <br>
   <mat-form-field appearance="fill">
