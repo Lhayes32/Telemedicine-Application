@@ -31,6 +31,7 @@ export class MyfilesComponent implements OnInit {
   FileID: string;
   _file: string;
   test: any;
+  _fileDownload: any;
 
   constructor(
     private authService: AuthService,
@@ -87,9 +88,11 @@ export class MyfilesComponent implements OnInit {
     this.filename = this.selectedFile.name;
     var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + this.filename);
     var uploadTask = storageRef.put(this.selectedFile);
-    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-      console.log('File available at', downloadURL);
-    });
+    uploadTask.then((snapshot) => {
+      snapshot.ref.getDownloadURL().then((url) => {
+        console.log('File available at, click here!', url);
+      });
+  });
   }
 
   fileData() {
@@ -115,7 +118,6 @@ export class MyfilesComponent implements OnInit {
             this.test = {name: this._file}
             FILE_DATA.push(this.test);
             this.dataSource = new MatTableDataSource(FILE_DATA);
-            console.log(this._file);
           }
         }
       );
@@ -130,7 +132,7 @@ refresh() {
 
 downloadFiles() {
   // Create a reference to the file we want to download
-var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + "mywebpage.html");
+var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/' + "3d-Wallpapers.jpg");
 //var starsRef = storageRef.child('images/stars.jpg');
 
 // Get the download URL
