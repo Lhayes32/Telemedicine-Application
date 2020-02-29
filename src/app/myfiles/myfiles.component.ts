@@ -20,7 +20,7 @@ var FILE_DATA: FileList[] = [
   styleUrls: ['./myfiles.component.css']
 })
 export class MyfilesComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'download'];
+  displayedColumns: string[] = ['name','download'];
   dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
   selectedFile: File;
