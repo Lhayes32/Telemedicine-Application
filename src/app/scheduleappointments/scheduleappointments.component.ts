@@ -14,7 +14,6 @@ export interface time {
   value: string;
 }
 
-
 @Component({
   selector: 'app-scheduleappointments',
   templateUrl: './scheduleappointments.component.html',
@@ -82,7 +81,7 @@ export class ScheduleappointmentsComponent implements OnInit {
           // and they are not a doctor
           if (doc.data().isDoctor == false) {
             // and they are not you
-            if (doc.data().firstName + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
+            if (doc.data().firstName + " " + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
               // Remove all users without names
               if (doc.data().firstName != null || doc.data().firstName != null) {
                 // then print their name
@@ -97,7 +96,7 @@ export class ScheduleappointmentsComponent implements OnInit {
           // and they are a doctor
           if (doc.data().isDoctor == true) {
             // and they are not you
-            if (doc.data().firstName + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
+            if (doc.data().firstName + " " + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
               // Remove all users without names
               if (doc.data().firstName != null || doc.data().firstName != null) {
                 // then print their name
@@ -133,9 +132,30 @@ export class ScheduleappointmentsComponent implements OnInit {
     }, 500);
   }
 
+
   // This method makes sure that one person can only make only one appointment with another unique person.
   // This method also updates times based on availability of recipients.
-  testfunction(date, doctor) {
+  filterdoctor(date) {
+    this.afs.collection('appointments').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if (doc.data().Date == date)
+        {
+          // If the current doc has the user's first or last name in it as the sender or receiver.
+          if (this.firstNameDisplay + " " + this.lastNameDisplay == doc.data().sender)
+          {
+            this.userdoc = this.userdoc.filter(order => order.doctor !== doc.data().receiver);
+          }
+          if (this.firstNameDisplay + " " + this.lastNameDisplay == doc.data().receiver)
+          {
+            this.userdoc = this.userdoc.filter(order => order.doctor !== doc.data().sender);
+          }
+        }
+      });
+    })
+  }
+
+  filtertimes(doctor, date){
     this.time = [
       {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
     ];
@@ -144,17 +164,6 @@ export class ScheduleappointmentsComponent implements OnInit {
       querySnapshot.docs.forEach(doc => {
         if (doc.data().Date == date)
         {
-          // If the current doc has the user's first or last name in it as the sender or receiver.
-          if (this.firstNameDisplay + " " + this.lastNameDisplay == doc.data().sender || doc.data().receiver)
-          {
-            this.userdoc = this.userdoc.filter(order => order.doctor !== doc.data().receiver);
-            console.log(this.userdoc);
-          }
-          for (var i = 0; i < this.userdoc.length; i++)
-          {
-            this.userdoc.filter(order => order.doctor !== doc.data().sender);
-            console.log(this.userdoc);
-          }
           // If the current doc has the user's first or last name in it as the sender or receiver.
           if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay || doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay)
           {
