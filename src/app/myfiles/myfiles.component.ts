@@ -111,13 +111,22 @@ export class MyfilesComponent implements OnInit {
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
         this.afs.collection('files').doc(doc.data().FileID).get().toPromise().then((doc) => {
-          if(doc.exists && doc.data().User == this.displayuid) {
+          if(this.isDoctorDisplay == "Doctor"){
+            if(doc.exists) {
+              this._file = doc.data().Name;
+              this.test = {name: this._file}
+              FILE_DATA.push(this.test);
+              this.dataSource = new MatTableDataSource(FILE_DATA);
+            }
+          }
+          else if(doc.exists && doc.data().User == this.displayuid){
             this._file = doc.data().Name;
             this._download = doc.data().Download;
             this.test = {name: this._file, download: this._download}
             FILE_DATA.push(this.test);
             this.dataSource = new MatTableDataSource(FILE_DATA);
           }
+          
         }
       );
     });
