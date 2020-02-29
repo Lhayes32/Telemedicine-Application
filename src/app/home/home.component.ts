@@ -141,9 +141,7 @@ export class HomeComponent implements OnInit {
     }
 
     refresh() {
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
+    this.fetchappointments();
     }
 
   openAddFileDialog() {

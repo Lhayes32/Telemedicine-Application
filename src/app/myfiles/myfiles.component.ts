@@ -3,13 +3,13 @@ import { AuthService } from '../auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
+import {MatTableDataSource} from '@angular/material';
 
 export interface FileList {
   name: string;
-  download: string;
 }
 
-const FILE_DATA: FileList[] = [
+var FILE_DATA: FileList[] = [
   
 ];
 
@@ -19,8 +19,8 @@ const FILE_DATA: FileList[] = [
   styleUrls: ['./myfiles.component.css']
 })
 export class MyfilesComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'date'];
-  dataSource = FILE_DATA;
+  displayedColumns: string[] = ['name'];
+  dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
   selectedFile: File;
   isDoctorDisplay:string;
@@ -30,6 +30,7 @@ export class MyfilesComponent implements OnInit {
   filename: string;
   FileID: string;
   _file: string;
+  test: any;
 
   constructor(
     private authService: AuthService,
@@ -76,8 +77,6 @@ export class MyfilesComponent implements OnInit {
     }
 
     this.listFiles();
-
-
   }
 
   onFileChanged(event) {
@@ -105,12 +104,17 @@ export class MyfilesComponent implements OnInit {
 
   listFiles()
   {
+    FILE_DATA = [];
+    this.dataSource = new MatTableDataSource(FILE_DATA);    
     this.afs.collection('files').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
         this.afs.collection('files').doc(doc.data().FileID).get().toPromise().then((doc) => {
-          if(doc.exists) {
+          if(doc.exists && doc.data().User == this.displayuid) {
             this._file = doc.data().Name;
+            this.test = {name: this._file}
+            FILE_DATA.push(this.test);
+            this.dataSource = new MatTableDataSource(FILE_DATA);
             console.log(this._file);
           }
         }
@@ -119,24 +123,10 @@ export class MyfilesComponent implements OnInit {
   });
 }
 
-// listAllFiles()
-// {
-//   var storageRef = firebase.storage().ref(this.afAuth.auth.currentUser.uid + '/');
-//   storageRef.listAll().then(function(res) {
-//     res.prefixes.forEach(function(folderRef) {
-//       // All the prefixes under listRef.
-//       // You may call listAll() recursively on them.
-//       console.log(folderRef.listAll);
-//     });
-//     res.items.forEach(function(itemRef) {
-//       // All the items under listRef.
-//       console.log(itemRef);
-//     });
-//   }).catch(function(error) {
-//     // Uh-oh, an error occurred!
-//   });
-  
-// }
+
+refresh() { 
+  this.listFiles();
+}
 
 downloadFiles() {
   // Create a reference to the file we want to download

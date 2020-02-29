@@ -39,7 +39,10 @@
         <div class="container">
           <h2> My Files </h2><br>
           <mat-card class="appointment-card">
-            <mat-card-title>File Uploads</mat-card-title>
+            <mat-card-title>File Uploads <input #file type="file"  [hidden]="true" (change)="onFileChanged($event)">
+              <button  mat-button (click)="[onUpload(), fileData(), refresh()]" mat-flat-button color="warn" style="float: right; margin-left: 1%;">Upload</button>
+              <button mat-button (click)="file.click()" mat-flat-button color="primary" style="float: right;">Choose File</button>
+              </mat-card-title>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           
             <!--- Note that these columns can be defined in any order.
@@ -52,25 +55,18 @@
                 </ng-container>
           
             <!-- Weight Column -->
-                <ng-container matColumnDef="date">
+                <!-- <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef> Date </th>
                     <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-                </ng-container>
+                </ng-container> -->
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
             <br>
 
-            <h1>Upload</h1>
-            <input type="file" (change)="onFileChanged($event)">
-            <button type="button" (click)="[onUpload(), fileData()]">Upload</button>
 
+            
 
-            <h1>Download</h1>
-            <button type="button" (click)="downloadFiles()">Download</button>
-
-            <h1>List Files</h1>
-            <button type="button" (click)="listAllFiles()">List</button>
         </mat-card>
         </div>
       </div>
