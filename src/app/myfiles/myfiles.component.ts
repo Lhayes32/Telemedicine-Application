@@ -7,6 +7,7 @@ import {MatTableDataSource} from '@angular/material';
 
 export interface FileList {
   name: string;
+  download: string;
 }
 
 var FILE_DATA: FileList[] = [
@@ -19,7 +20,7 @@ var FILE_DATA: FileList[] = [
   styleUrls: ['./myfiles.component.css']
 })
 export class MyfilesComponent implements OnInit {
-  displayedColumns: string[] = ['name'];
+  displayedColumns: string[] = ['name', 'download'];
   dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
   selectedFile: File;
@@ -30,6 +31,7 @@ export class MyfilesComponent implements OnInit {
   filename: string;
   FileID: string;
   _file: string;
+  _download: string;
   test: any;
 
   constructor(
@@ -89,8 +91,6 @@ export class MyfilesComponent implements OnInit {
     var uploadTask = storageRef.put(this.selectedFile);
     uploadTask.then((snapshot) => {
       snapshot.ref.getDownloadURL().then((url) => {
-        console.log('File available at, click here!', url);
-
         let id = this.afs.createId()
         this.afs.collection('files').doc(id).set({
           Name: this.filename,
@@ -113,7 +113,8 @@ export class MyfilesComponent implements OnInit {
         this.afs.collection('files').doc(doc.data().FileID).get().toPromise().then((doc) => {
           if(doc.exists && doc.data().User == this.displayuid) {
             this._file = doc.data().Name;
-            this.test = {name: this._file}
+            this._download = doc.data().Download;
+            this.test = {name: this._file, download: this._download}
             FILE_DATA.push(this.test);
             this.dataSource = new MatTableDataSource(FILE_DATA);
           }
@@ -125,7 +126,9 @@ export class MyfilesComponent implements OnInit {
 
 
 refresh() { 
-  this.listFiles();
+  setTimeout(() => {
+    this.listFiles();
+  }, 2000); 
 }
 
 downloadFiles() {
