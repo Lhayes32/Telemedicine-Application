@@ -31,7 +31,6 @@ export class MyfilesComponent implements OnInit {
   FileID: string;
   _file: string;
   test: any;
-  _fileDownload: any;
 
   constructor(
     private authService: AuthService,
@@ -91,18 +90,17 @@ export class MyfilesComponent implements OnInit {
     uploadTask.then((snapshot) => {
       snapshot.ref.getDownloadURL().then((url) => {
         console.log('File available at, click here!', url);
+
+        let id = this.afs.createId()
+        this.afs.collection('files').doc(id).set({
+          Name: this.filename,
+          Download: url,
+          User: this.displayuid,
+          FileID: id,
+        });
+        
       });
   });
-  }
-
-  fileData() {
-    let id = this.afs.createId()
-    this.afs.collection('files').doc(id).set({
-      Name: this.filename,
-      Download: null,
-      User: this.displayuid,
-      FileID: id,
-    });
   }
 
   listFiles()
