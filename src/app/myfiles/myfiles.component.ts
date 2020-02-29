@@ -114,7 +114,8 @@ export class MyfilesComponent implements OnInit {
           if(this.isDoctorDisplay == "Doctor"){
             if(doc.exists) {
               this._file = doc.data().Name;
-              this.test = {name: this._file}
+              this._download = doc.data().Download;
+              this.test = {name: this._file, download: this._download}
               FILE_DATA.push(this.test);
               this.dataSource = new MatTableDataSource(FILE_DATA);
             }
