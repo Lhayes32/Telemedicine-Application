@@ -29,6 +29,12 @@ export class ScheduleappointmentsComponent implements OnInit {
   userdoc:userdoc[] = [];
   count = 1;
   currentdate = new Date();
+  /*myFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // THIS FUNCTION CANNOT ACCESS THE VARIABLE 'someDateToBlock'
+    return day !== 0 && day !== 6;
+  }*/
+  surname: string;
 
   time: time[] = [
     {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
@@ -61,8 +67,10 @@ export class ScheduleappointmentsComponent implements OnInit {
           this.lastNameDisplay = doc.data().lastName;
           if (doc.data().isDoctor) {
             this.isDoctorDisplay = "Doctor";
+            this.surname = "";
           } else {
             this.isDoctorDisplay = "Patient";
+            this.surname = "Dr. ";
           }
       } else {
           console.log("No such document!");

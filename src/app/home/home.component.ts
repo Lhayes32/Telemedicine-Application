@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel', 'text', 'video'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
+  surname: string;
   doctors:string[] = [];
   patients:string[] = [];
   appointment_id: string;
@@ -70,6 +71,7 @@ export class HomeComponent implements OnInit {
           this.lastNameDisplay = doc.data().lastName;
           if (doc.data().isDoctor) {
             this.isDoctorDisplay = "Doctor";
+            this.surname = "Dr. "
           } else {
             this.isDoctorDisplay = "Patient";
           }
@@ -121,7 +123,12 @@ export class HomeComponent implements OnInit {
             {
               apptstatus = "Active"
             }
-            var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            if (this.isDoctorDisplay == "Patient")
+            {
+            var test = {whom: "Dr. " + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            } else {
+            var test = {whom: "" + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            }
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             }
@@ -131,7 +138,12 @@ export class HomeComponent implements OnInit {
             {
               apptstatus = "Active"
             }
-            var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            if (this.isDoctorDisplay == "Doctor")
+            {
+            var test = {whom: "" + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            } else {
+            var test = {whom: "Dr. " + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            }
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             } 
