@@ -42,7 +42,9 @@ export class MyfilesComponent implements OnInit {
   test: any;
 
 	filenameSend: string;
-	Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
+  // Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
+  
+  selectedValue: string;
 
   constructor(
     private authService: AuthService,
@@ -131,7 +133,7 @@ export class MyfilesComponent implements OnInit {
 
   onSend() {
     this.filenameSend = this.selectedFile.name;
-    var storageRef = firebase.storage().ref(this.Ronak + '/' + this.filenameSend);
+    var storageRef = firebase.storage().ref(this.selectedValue + '/' + this.filenameSend);
     var uploadTask = storageRef.put(this.selectedFile);
     uploadTask.then((snapshot) => {
       snapshot.ref.getDownloadURL().then((url) => {
@@ -139,7 +141,7 @@ export class MyfilesComponent implements OnInit {
         this.afs.collection('files').doc(id).set({
           Name: this.filenameSend,
           Download: url,
-          User: this.Ronak,
+          User: this.selectedValue,
           FileID: id,
         });
         

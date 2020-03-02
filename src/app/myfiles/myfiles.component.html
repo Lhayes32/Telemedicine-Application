@@ -67,12 +67,14 @@
             <mat-card-title>Send Files</mat-card-title>
             <mat-form-field>
               <mat-label>User</mat-label>
-              <mat-select>
+              <mat-select [(ngModel)]="selectedValue" name="PickToSend">
                 <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend.name">
                   {{PickToSend.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
+            <p> Selected User: {{selectedValue}} </p>
+
             <input #file type="file" [hidden]="true" (change)="onFileChanged($event)">
             <button mat-button (click)="[onSend(), refresh()]" mat-flat-button color="warn"
               style="float: right; margin-left: 1%;">Send</button>
