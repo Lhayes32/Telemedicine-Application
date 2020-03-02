@@ -4,24 +4,36 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import {MatTableDataSource} from '@angular/material';
+import { MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
 
 export interface FileList {
   name: string;
   download: string;
 }
 
+export interface PickToSend {
+  name: string;
+}
+
+
 var FILE_DATA: FileList[] = [
   
 ];
+
+
 
 @Component({
   selector: 'app-myfiles',
   templateUrl: './myfiles.component.html',
   styleUrls: ['./myfiles.component.css']
 })
+
+
 export class MyfilesComponent implements OnInit {
   displayedColumns: string[] = ['name','download'];
   dataSource = new MatTableDataSource(FILE_DATA);
+  PickToSend:PickToSend[] = [];
   displayemail: string;
   selectedFile: File;
   isDoctorDisplay:string;
@@ -79,10 +91,25 @@ export class MyfilesComponent implements OnInit {
     }
 
     this.listFiles();
+    this.fetchfiles();
   }
 
   onFileChanged(event) {
     this.selectedFile = event.target.files[0]
+  }
+
+  fetchfiles() {
+    this.afs.collection('files').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if(this.isDoctorDisplay == "Doctor"){
+          if(doc.exists){
+            var test = {name: doc.data().User}
+            this.PickToSend.push(test);
+          }
+        }
+      });
+    });
   }
 
   onUpload() {
@@ -102,6 +129,7 @@ export class MyfilesComponent implements OnInit {
       });
   });
   }
+
 
   listFiles()
   {
@@ -133,6 +161,7 @@ export class MyfilesComponent implements OnInit {
     });
   });
 }
+
 
 
 refresh() { 

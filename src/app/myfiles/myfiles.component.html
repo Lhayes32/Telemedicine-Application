@@ -40,7 +40,10 @@
           <h2> My Files </h2><br>
           <mat-card class="appointment-card">
             <mat-card-title>File Uploads <input #file type="file"  [hidden]="true" (change)="onFileChanged($event)">
-              <button  mat-button (click)="[onUpload(), refresh()]" mat-flat-button color="warn" style="float: right; margin-left: 1%;">Upload</button>
+              <button  mat-button (click)="[onUpload(), refresh()]" [matMenuTriggerFor]="menu" mat-flat-button color="warn" style="float: right; margin-left: 1%;">Upload</button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item *ngFor="let PickToSend of PickToSend" [value]="PickToSend.name">{{PickToSend.name}}</button>
+                  </mat-menu>
               <button mat-button (click)="file.click()" mat-flat-button color="primary" style="float: right;">Choose File</button>
               </mat-card-title>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
