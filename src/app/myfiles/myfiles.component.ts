@@ -4,10 +4,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import {MatTableDataSource} from '@angular/material';
+import { MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
 
 export interface FileList {
   name: string;
   download: string;
+}
+
+export interface PickToSend {
+  name: string;
 }
 
 var FILE_DATA: FileList[] = [
@@ -21,6 +27,7 @@ var FILE_DATA: FileList[] = [
 })
 export class MyfilesComponent implements OnInit {
   displayedColumns: string[] = ['name','download'];
+  PickToSend:PickToSend[] = [];
   dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
   selectedFile: File;
@@ -33,6 +40,9 @@ export class MyfilesComponent implements OnInit {
   _file: string;
   _download: string;
   test: any;
+
+	filenameSend: string;
+	Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
 
   constructor(
     private authService: AuthService,
@@ -79,10 +89,26 @@ export class MyfilesComponent implements OnInit {
     }
 
     this.listFiles();
+    this.fetchUsers();
   }
 
   onFileChanged(event) {
     this.selectedFile = event.target.files[0]
+  }
+
+
+  fetchUsers() {
+    this.afs.collection('users').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if(this.isDoctorDisplay == "Doctor"){
+          if(doc.exists){
+            var test = {name: doc.data().uid}
+            this.PickToSend.push(test);
+          }
+        }
+      });
+    });
   }
 
   onUpload() {
@@ -96,6 +122,24 @@ export class MyfilesComponent implements OnInit {
           Name: this.filename,
           Download: url,
           User: this.displayuid,
+          FileID: id,
+        });
+        
+      });
+  });
+  }
+
+  onSend() {
+    this.filenameSend = this.selectedFile.name;
+    var storageRef = firebase.storage().ref(this.Ronak + '/' + this.filenameSend);
+    var uploadTask = storageRef.put(this.selectedFile);
+    uploadTask.then((snapshot) => {
+      snapshot.ref.getDownloadURL().then((url) => {
+        let id = this.afs.createId()
+        this.afs.collection('files').doc(id).set({
+          Name: this.filenameSend,
+          Download: url,
+          User: this.Ronak,
           FileID: id,
         });
         

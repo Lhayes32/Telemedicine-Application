@@ -63,6 +63,21 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+
+            <mat-card-title>Send Files</mat-card-title>
+            <mat-form-field>
+              <mat-label>User</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend.name">
+                  {{PickToSend.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <input #file type="file" [hidden]="true" (change)="onFileChanged($event)">
+            <button mat-button (click)="[onSend(), refresh()]" mat-flat-button color="warn"
+              style="float: right; margin-left: 1%;">Send</button>
+            <button mat-button (click)="file.click()" mat-flat-button color="primary" style="float: right;">Choose File</button>
+
             <br>
         </mat-card>
         </div>
