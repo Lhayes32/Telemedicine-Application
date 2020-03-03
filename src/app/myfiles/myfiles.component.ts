@@ -13,9 +13,9 @@ export interface FileList {
 }
 
 export interface PickToSend {
-  name: string;
+  _uid: string;
+  _name: string;
 }
-
 
 var FILE_DATA: FileList[] = [
   
@@ -32,8 +32,8 @@ var FILE_DATA: FileList[] = [
 
 export class MyfilesComponent implements OnInit {
   displayedColumns: string[] = ['name','download'];
-  dataSource = new MatTableDataSource(FILE_DATA);
   PickToSend:PickToSend[] = [];
+  dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
   selectedFile: File;
   isDoctorDisplay:string;
@@ -45,6 +45,13 @@ export class MyfilesComponent implements OnInit {
   _file: string;
   _download: string;
   test: any;
+  surname: string;
+  isDoctor: boolean;
+
+	filenameSend: string;
+  // Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
+  
+  selectedValue: string;
 
   constructor(
     private authService: AuthService,
@@ -62,24 +69,6 @@ export class MyfilesComponent implements OnInit {
       this.displayuid = localStorage.getItem("displayuid");
       console.log(this.displayuid);
     }
-
-    var docRef = this.afs.collection('users').doc(this.displayuid);
-
-    docRef.get().toPromise().then((doc) => {
-      if (doc.exists) {
-          this.firstNameDisplay = doc.data().firstName;
-          this.lastNameDisplay = doc.data().lastName;
-          if (doc.data().isDoctor) {
-            this.isDoctorDisplay = "Doctor";
-          } else {
-            this.isDoctorDisplay = "Patient";
-          }
-      } else {
-          console.log("No such document!");
-      }
-  }).catch(function(error) {
-      console.log("Error getting document:", error);
-  });
     
     try {
       this.displayemail = this.afAuth.auth.currentUser.email;
@@ -90,21 +79,66 @@ export class MyfilesComponent implements OnInit {
       console.log(this.displayemail);
     }
 
+    // Fetch user's data
+    this.fetchuserdata();
+
+    // Show all current files for the user.
     this.listFiles();
-    this.fetchfiles();
+
+    // Fetch all Doctors
+    this.fetchUsers();
+
+    var docRef = this.afs.collection('users').doc(this.displayuid);
+      docRef.get().toPromise().then((doc) => {
+        if (doc.exists) {
+            if (doc.data().isDoctor) {
+              document.getElementById("docsf").style.display = "block";
+            }
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+
+  }
+
+  fetchuserdata() {
+    var docRef = this.afs.collection('users').doc(this.displayuid);
+
+    docRef.get().toPromise().then((doc) => {
+      if (doc.exists) {
+          this.firstNameDisplay = doc.data().firstName;
+          this.lastNameDisplay = doc.data().lastName;
+          if (doc.data().isDoctor == true) {
+            this.isDoctorDisplay = "Doctor";
+            this.surname = "Dr. "
+            this.isDoctor = true;
+          } else {
+            this.isDoctor = false;
+            this.isDoctorDisplay = "Patient";
+          }
+      } else {
+          console.log("No such document!");
+      }
+  }).catch(function(error) {
+      console.log("Error getting document:", error);
+  });
   }
 
   onFileChanged(event) {
     this.selectedFile = event.target.files[0]
   }
 
-  fetchfiles() {
-    this.afs.collection('files').get().toPromise()
+
+  fetchUsers() {
+    this.afs.collection('users').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
         if(this.isDoctorDisplay == "Doctor"){
           if(doc.exists){
-            var test = {name: doc.data().User}
+            var test = {_uid: doc.data().uid, _name: doc.data().firstName}
             this.PickToSend.push(test);
           }
         }
@@ -130,6 +164,23 @@ export class MyfilesComponent implements OnInit {
   });
   }
 
+  onSend() {
+    this.filenameSend = this.selectedFile.name;
+    var storageRef = firebase.storage().ref(this.selectedValue + '/' + this.filenameSend);
+    var uploadTask = storageRef.put(this.selectedFile);
+    uploadTask.then((snapshot) => {
+      snapshot.ref.getDownloadURL().then((url) => {
+        let id = this.afs.createId()
+        this.afs.collection('files').doc(id).set({
+          Name: this.filenameSend,
+          Download: url,
+          User: this.selectedValue,
+          FileID: id,
+        });
+        
+      });
+  });
+  }
 
   listFiles()
   {

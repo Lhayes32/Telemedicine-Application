@@ -32,9 +32,11 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
+  isDoctor: boolean;
   displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel', 'text', 'video'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
+  surname: string;
   doctors:string[] = [];
   patients:string[] = [];
   appointment_id: string;
@@ -59,19 +61,33 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       this.displayuid = localStorage.getItem("displayuid");
     }
+    try {
+      this.displayemail = this.afAuth.auth.currentUser.email;
+      localStorage.setItem("displayemail", this.displayemail);
+    } catch (error) {
+      this.displayemail = localStorage.getItem("displayemail");
+    }
+    // Fetch user's data
+    this.fetchuserdata()
 
-    console.log(this.currentdate);
+    // Fetch all appointments for the user when opening or refreshing the page.
+    this.fetchappointments()
 
+  }
+    fetchuserdata() {
     // Retrieve user data
     var docRef = this.afs.collection('users').doc(this.displayuid);
     docRef.get().toPromise().then((doc) => {
       if (doc.exists) {
           this.firstNameDisplay = doc.data().firstName;
           this.lastNameDisplay = doc.data().lastName;
-          if (doc.data().isDoctor) {
+          if (doc.data().isDoctor == true) {
             this.isDoctorDisplay = "Doctor";
+            this.surname = "Dr. "
+            this.isDoctor = true;
           } else {
             this.isDoctorDisplay = "Patient";
+            this.isDoctor = false;
           }
       } else {
           console.log("No such document!");
@@ -79,17 +95,6 @@ export class HomeComponent implements OnInit {
   }).catch(function(error) {
       console.log("Error getting document:", error);
   });
-
-    try {
-      this.displayemail = this.afAuth.auth.currentUser.email;
-      localStorage.setItem("displayemail", this.displayemail);
-    } catch (error) {
-      this.displayemail = localStorage.getItem("displayemail");
-    }
-
-    // Fetch all appointments for the user when opening or refreshing the page.
-    this.fetchappointments()
-
   }
 
   // This method will fetch all appointments
@@ -116,22 +121,32 @@ export class HomeComponent implements OnInit {
         } else {
           // If you are the sender
           var apptstatus = "Cancelled"
-          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
+          if (doc.data().senderuid == this.displayuid) {
             if (doc.data().isActive == true)
             {
               apptstatus = "Active"
             }
-            var test = {whom: doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            if (this.isDoctor == false)
+            {
+            var test = {whom: "Dr. " + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            } else {
+            var test = {whom: "" + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            }
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             }
           // If you are the receiver
-          if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
+          if (doc.data().receiveruid == this.displayuid) {
             if (doc.data().isActive == true)
             {
               apptstatus = "Active"
             }
-            var test = {whom: doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            if (this.isDoctor == true)
+            {
+            var test = {whom: "" + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            } else {
+            var test = {whom: "Dr. " + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+            }
             ELEMENT_DATA.push(test);
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             } 
@@ -145,7 +160,11 @@ export class HomeComponent implements OnInit {
     }
 
   openAddFileDialog() {
-    this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
+    if (!(this.firstNameDisplay == null || this.lastNameDisplay == null || this.firstNameDisplay == "" || this.lastNameDisplay == "")) {
+      this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
+    } else {
+      this.snackbar.open("Please add a first and/or last name before scheduling an appointment!", 'Dismiss', {duration: 3000});
+    }
   }
 
   // This will be the button that goes to the current open appointment.,

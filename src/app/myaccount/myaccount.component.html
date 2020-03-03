@@ -11,7 +11,7 @@
         <mat-card-header>
           <div mat-card-avatar class="avatar"></div>
 
-          <mat-card-title>{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
+          <mat-card-title>{{surname}}{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
           <mat-card-subtitle>{{isDoctorDisplay}}</mat-card-subtitle>
         </mat-card-header>
       </mat-card>
@@ -21,6 +21,9 @@
         </a>
         <a mat-list-item [routerLink]="'/myfiles'" [routerLinkActive]="['active']">
           <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">upload_file</mat-icon>My Files
+        </a>
+        <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
+          <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
         </a>
         <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
           <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My
@@ -35,8 +38,9 @@
   <mat-sidenav-content>
     <div style="height: 80vh;">
       <div class="container">
-        <h2> My Account </h2><br>
-        <mat-card>
+        <h2 style="padding-right: 55%;">Chats</h2>
+        <br>
+        <mat-card class="appointment-card">
           <mat-card-title>User Information</mat-card-title>
           <form>
             <br>

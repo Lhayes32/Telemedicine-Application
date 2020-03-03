@@ -13,7 +13,7 @@
           <mat-card-header>
             <div mat-card-avatar class="avatar"></div>
   
-            <mat-card-title>{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
+            <mat-card-title>{{surname}}{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
           <mat-card-subtitle>{{isDoctorDisplay}}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
@@ -23,6 +23,9 @@
           </a>
           <a mat-list-item [routerLink]="'/myfiles'" [routerLinkActive]="['active']">
             <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">upload_file</mat-icon>My Files
+          </a>
+          <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
           </a>
           <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
             <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My
@@ -66,6 +69,24 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+
+            <div style="display: none;" id="docsf">
+            <mat-card-title>Send Files</mat-card-title>
+            <mat-form-field>
+              <mat-label>User</mat-label>
+              <mat-select [(ngModel)]="selectedValue" name="PickToSend">
+                <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend._uid">
+                  {{PickToSend._name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p> Selected User: {{selectedValue}} </p>
+
+            <input #file type="file" [hidden]="true" (change)="onFileChanged($event)">
+            <button mat-button (click)="[onSend(), refresh()]" mat-flat-button color="warn"
+              style="float: right; margin-left: 1%;">Send</button>
+            <button mat-button (click)="file.click()" mat-flat-button color="primary" style="float: right;">Choose File</button>
+            </div>
             <br>
         </mat-card>
         </div>

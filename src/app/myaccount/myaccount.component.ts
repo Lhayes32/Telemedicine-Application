@@ -30,6 +30,8 @@ export class MyaccountComponent implements OnInit {
   insuranceCompanyDisplay: string;
   insuranceIdDisplay: string;
   isDoctorDisplay:string;
+  surname: string;
+  isDoctor: boolean;
 
   constructor(
     private authService: AuthService,
@@ -50,28 +52,6 @@ export class MyaccountComponent implements OnInit {
       console.log(this.displayuid);
     }
 
-    var docRef = this.afs.collection('users').doc(this.displayuid);
-
-    docRef.get().toPromise().then((doc) => {
-      if (doc.exists) {
-          this.firstNameDisplay = doc.data().firstName;
-          this.lastNameDisplay = doc.data().lastName;
-          this.dobDisplay = doc.data().dateofbirth;
-          this.addressDisplay = doc.data().address;
-          this.insuranceCompanyDisplay = doc.data().insurancecompany;
-          this.insuranceIdDisplay = doc.data().insuranceid;
-          if (doc.data().isDoctor) {
-            this.isDoctorDisplay = "Doctor";
-          } else {
-            this.isDoctorDisplay = "Patient";
-          }
-      } else {
-          console.log("No such document!");
-      }
-  }).catch(function(error) {
-      console.log("Error getting document:", error);
-  });
-
     try {
       this.displayemail = this.afAuth.auth.currentUser.email
       localStorage.setItem("displayemail", this.displayemail);
@@ -81,6 +61,35 @@ export class MyaccountComponent implements OnInit {
       console.log(this.displayemail);
     }
 
+    // fetch user's data
+    this.fetchuserdata()
+
+  }
+
+  fetchuserdata() {
+  var docRef = this.afs.collection('users').doc(this.displayuid);
+  docRef.get().toPromise().then((doc) => {
+    if (doc.exists) {
+        this.firstNameDisplay = doc.data().firstName;
+        this.lastNameDisplay = doc.data().lastName;
+        this.dobDisplay = doc.data().dateofbirth;
+        this.addressDisplay = doc.data().address;
+        this.insuranceCompanyDisplay = doc.data().insurancecompany;
+        this.insuranceIdDisplay = doc.data().insuranceid;
+        if (doc.data().isDoctor == true) {
+          this.isDoctorDisplay = "Doctor";
+          this.surname = "Dr. "
+          this.isDoctor = true;
+        } else {
+          this.isDoctor = false;
+          this.isDoctorDisplay = "Patient";
+        }
+    } else {
+        console.log("No such document!");
+    }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
   }
 
   isMenuOpen = true;
@@ -113,10 +122,33 @@ export class MyaccountComponent implements OnInit {
       .then(function () {
         console.log("Data Written")
       });
+      this.afs.collection('appointments').get().toPromise()
+      .then(querySnapshot => {
+        querySnapshot.docs.forEach(doc => {
+          var updatedoc = doc.data().appointment_id;
+          if (doc.data().senderuid == this.displayuid)
+          {
+            this.afs.collection('appointments').doc(updatedoc).update({
+              sender: firstName + " " + lastName,
+            })
+            .then(function () {
+              console.log("Data Written")
+            });
+          }
+          if (doc.data().receiveruid == this.displayuid)
+          {
+            this.afs.collection('appointments').doc(updatedoc).update({
+              receiver: firstName + " " + lastName,
+            })
+            .then(function () {
+              console.log("Data Written")
+            });
+          }
+        });
+      })
       this.ngOnInit();
       // hi
   }
-  
 }
 
 
