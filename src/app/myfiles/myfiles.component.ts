@@ -4,10 +4,17 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import {MatTableDataSource} from '@angular/material';
+import { MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
 
 export interface FileList {
   name: string;
   download: string;
+}
+
+export interface PickToSend {
+  _uid: string;
+  _name: string;
 }
 
 var FILE_DATA: FileList[] = [
@@ -21,6 +28,7 @@ var FILE_DATA: FileList[] = [
 })
 export class MyfilesComponent implements OnInit {
   displayedColumns: string[] = ['name','download'];
+  PickToSend:PickToSend[] = [];
   dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
   selectedFile: File;
@@ -35,6 +43,11 @@ export class MyfilesComponent implements OnInit {
   test: any;
   surname: string;
   isDoctor: boolean;
+
+	filenameSend: string;
+  // Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
+  
+  selectedValue: string;
 
   constructor(
     private authService: AuthService,
@@ -84,10 +97,40 @@ export class MyfilesComponent implements OnInit {
     }
 
     this.listFiles();
+    this.fetchUsers();
+
+      docRef.get().toPromise().then((doc) => {
+        if (doc.exists) {
+            if (doc.data().isDoctor) {
+              document.getElementById("docsf").style.display = "block";
+            }
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+
   }
 
   onFileChanged(event) {
     this.selectedFile = event.target.files[0]
+  }
+
+
+  fetchUsers() {
+    this.afs.collection('users').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if(this.isDoctorDisplay == "Doctor"){
+          if(doc.exists){
+            var test = {_uid: doc.data().uid, _name: doc.data().firstName}
+            this.PickToSend.push(test);
+          }
+        }
+      });
+    });
   }
 
   onUpload() {
@@ -108,6 +151,24 @@ export class MyfilesComponent implements OnInit {
   });
   }
 
+  onSend() {
+    this.filenameSend = this.selectedFile.name;
+    var storageRef = firebase.storage().ref(this.selectedValue + '/' + this.filenameSend);
+    var uploadTask = storageRef.put(this.selectedFile);
+    uploadTask.then((snapshot) => {
+      snapshot.ref.getDownloadURL().then((url) => {
+        let id = this.afs.createId()
+        this.afs.collection('files').doc(id).set({
+          Name: this.filenameSend,
+          Download: url,
+          User: this.selectedValue,
+          FileID: id,
+        });
+        
+      });
+  });
+  }
+
   listFiles()
   {
     FILE_DATA = [];
@@ -116,13 +177,23 @@ export class MyfilesComponent implements OnInit {
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
         this.afs.collection('files').doc(doc.data().FileID).get().toPromise().then((doc) => {
-          if(doc.exists && doc.data().User == this.displayuid) {
+          if(this.isDoctorDisplay == "Doctor"){
+            if(doc.exists) {
+              this._file = doc.data().Name;
+              this._download = doc.data().Download;
+              this.test = {name: this._file, download: this._download}
+              FILE_DATA.push(this.test);
+              this.dataSource = new MatTableDataSource(FILE_DATA);
+            }
+          }
+          else if(doc.exists && doc.data().User == this.displayuid){
             this._file = doc.data().Name;
             this._download = doc.data().Download;
             this.test = {name: this._file, download: this._download}
             FILE_DATA.push(this.test);
             this.dataSource = new MatTableDataSource(FILE_DATA);
           }
+          
         }
       );
     });

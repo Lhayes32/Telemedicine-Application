@@ -6,6 +6,7 @@ import { SignupComponent } from './signup/signup.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { ChatboxComponent } from './chatbox/chatbox.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'myaccount', component: MyaccountComponent },
   { path: 'myfiles', component: MyfilesComponent },
   { path: 'resetpassword', component: ResetpasswordComponent },
+  { path: 'chatbox', component: ChatboxComponent },
 
 ];
 
