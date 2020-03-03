@@ -93,6 +93,20 @@ export class MyfilesComponent implements OnInit {
 
     this.listFiles();
     this.fetchUsers();
+
+      docRef.get().toPromise().then((doc) => {
+        if (doc.exists) {
+            if (doc.data().isDoctor) {
+              document.getElementById("docsf").style.display = "block";
+            }
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+
   }
 
   onFileChanged(event) {
