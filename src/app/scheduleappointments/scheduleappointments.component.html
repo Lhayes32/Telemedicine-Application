@@ -8,7 +8,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Appointment with:</mat-label> <!-- updateTimeSelection(Date.value, Doctor.value) -->
     <mat-select #Doctor (selectionChange)="filtertimes(Doctor.value, Date.value)">
-      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{surname}}{{userdoc.doctor}}</mat-option>
+      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{surname}}{{userdoc.doctor}} {{userdoc.email}}</mat-option>
     </mat-select>
   </mat-form-field>
   <br>

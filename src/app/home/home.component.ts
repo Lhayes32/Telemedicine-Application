@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
+  isDoctor: boolean;
   displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel', 'text', 'video'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
@@ -69,11 +70,13 @@ export class HomeComponent implements OnInit {
       if (doc.exists) {
           this.firstNameDisplay = doc.data().firstName;
           this.lastNameDisplay = doc.data().lastName;
-          if (doc.data().isDoctor) {
+          if (doc.data().isDoctor == true) {
             this.isDoctorDisplay = "Doctor";
             this.surname = "Dr. "
+            this.isDoctor = true;
           } else {
             this.isDoctorDisplay = "Patient";
+            this.isDoctor = false;
           }
       } else {
           console.log("No such document!");
@@ -118,12 +121,12 @@ export class HomeComponent implements OnInit {
         } else {
           // If you are the sender
           var apptstatus = "Cancelled"
-          if (doc.data().sender == this.firstNameDisplay + " " + this.lastNameDisplay) {
+          if (doc.data().senderuid == this.displayuid) {
             if (doc.data().isActive == true)
             {
               apptstatus = "Active"
             }
-            if (this.isDoctorDisplay == "Patient")
+            if (this.isDoctor == false)
             {
             var test = {whom: "Dr. " + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
             } else {
@@ -133,12 +136,12 @@ export class HomeComponent implements OnInit {
             this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             }
           // If you are the receiver
-          if (doc.data().receiver == this.firstNameDisplay + " " + this.lastNameDisplay) {
+          if (doc.data().receiveruid == this.displayuid) {
             if (doc.data().isActive == true)
             {
               apptstatus = "Active"
             }
-            if (this.isDoctorDisplay == "Doctor")
+            if (this.isDoctor == true)
             {
             var test = {whom: "" + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
             } else {
