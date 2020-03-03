@@ -12,6 +12,7 @@ export interface FileList {
   download: string;
   user: string;
   fileid: string;
+  action: string;
 }
 
 
@@ -35,7 +36,7 @@ var FILE_DATA: FileList[] = [
 
 
 export class MyfilesComponent implements OnInit {
-  displayedColumns: string[] = ['name','download', 'delete'];
+  displayedColumns: string[] = ['name', 'action','download','delete'];
   PickToSend:PickToSend[] = [];
   dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
@@ -50,6 +51,7 @@ export class MyfilesComponent implements OnInit {
   _download: string;
   _user: string;
   _fileid: string;
+  _action: string;
   test: any;
   surname: string;
   isDoctor: boolean;
@@ -163,6 +165,7 @@ export class MyfilesComponent implements OnInit {
           Name: this.filename,
           Download: url,
           User: this.displayuid,
+          Action: this.displayemail,
           FileID: id,
         });
         
@@ -181,6 +184,7 @@ export class MyfilesComponent implements OnInit {
           Name: this.filenameSend,
           Download: url,
           User: this.selectedValue,
+          Action: this.displayemail,
           FileID: id,
         });
         
@@ -217,22 +221,22 @@ export class MyfilesComponent implements OnInit {
           if(this.isDoctorDisplay == "Doctor"){
             if(doc.exists) {
               this._file = doc.data().Name;
+              this._action = doc.data().Action;
               this._download = doc.data().Download;
               this._fileid = doc.data().FileID;
               this._user = doc.data().User;
-              this.test = {name: this._file, download: this._download, user:this._user, fileid:this._fileid}
+              this.test = {name: this._file, action: this._action, download: this._download, user:this._user, fileid:this._fileid}
               FILE_DATA.push(this.test);
               this.dataSource = new MatTableDataSource(FILE_DATA);
-              
-
             }
           }
           else if(doc.exists && doc.data().User == this.displayuid){
             this._file = doc.data().Name;
+            this._action = doc.data().Action;
             this._download = doc.data().Download;
             this._fileid = doc.data().FileID;
             this._user = doc.data().User;
-            this.test = {name: this._file, download: this._download, user:this._user, fileid:this._fileid}
+            this.test = {name: this._file, action: this._action, download: this._download, user:this._user, fileid:this._fileid}
             FILE_DATA.push(this.test);
             this.dataSource = new MatTableDataSource(FILE_DATA);
           }
