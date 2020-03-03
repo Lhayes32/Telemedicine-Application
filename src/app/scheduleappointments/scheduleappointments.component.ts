@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 
 export interface userdoc {
   doctor: string;
+  email: string;
+  uid: string;
 }
 
 export interface time {
@@ -22,6 +24,7 @@ export interface time {
 export class ScheduleappointmentsComponent implements OnInit {
   displayuid: string;
   isDoctorDisplay:string;
+  isDoctor: boolean;
   doctors:string[] = [];
   firstNameDisplay: string;
   lastNameDisplay: string;
@@ -29,6 +32,12 @@ export class ScheduleappointmentsComponent implements OnInit {
   userdoc:userdoc[] = [];
   count = 1;
   currentdate = new Date();
+  /*myFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // THIS FUNCTION CANNOT ACCESS THE VARIABLE 'someDateToBlock'
+    return day !== 0 && day !== 6;
+  }*/
+  surname: string;
 
   time: time[] = [
     {value: '8 AM'}, {value: '9 AM'}, {value: '10 AM'}, {value: '11 AM'}, {value: '12 PM'}, {value: '1 PM'}, {value: '2 PM'}, {value: '3 PM'}, {value: '4 PM'}, {value: '5 PM'}, {value: '6 PM'},
@@ -59,10 +68,14 @@ export class ScheduleappointmentsComponent implements OnInit {
       if (doc.exists) {
           this.firstNameDisplay = doc.data().firstName;
           this.lastNameDisplay = doc.data().lastName;
-          if (doc.data().isDoctor) {
+          if (doc.data().isDoctor == true) {
             this.isDoctorDisplay = "Doctor";
+            this.isDoctor = true;
+            this.surname = "";
           } else {
             this.isDoctorDisplay = "Patient";
+            this.isDoctor = false;
+            this.surname = "Dr. ";
           }
       } else {
           console.log("No such document!");
@@ -77,30 +90,30 @@ export class ScheduleappointmentsComponent implements OnInit {
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
         // If you are a doctor
-        if (this.isDoctorDisplay == "Doctor") {
+        if (this.isDoctor == true) {
           // and they are not a doctor
           if (doc.data().isDoctor == false) {
             // and they are not you
-            if (doc.data().firstName + " " + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
+            if (doc.data().uid != this.displayuid) {
               // Remove all users without names
               if (doc.data().firstName != null || doc.data().firstName != null) {
                 // then print their name
-                var test = {doctor: doc.data().firstName + " " + doc.data().lastName}
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, email: doc.data().email, uid: doc.data().uid}
                 this.userdoc.push(test);
               }
               } 
             }
           }
         // If you are a patient
-        if (this.isDoctorDisplay == "Patient") {
+        if (this.isDoctor == false) {
           // and they are a doctor
           if (doc.data().isDoctor == true) {
             // and they are not you
-            if (doc.data().firstName + " " + doc.data().lastName != this.firstNameDisplay + " " + this.lastNameDisplay) {
+            if (doc.data().uid != this.displayuid) {
               // Remove all users without names
               if (doc.data().firstName != null || doc.data().firstName != null) {
                 // then print their name
-                var test = {doctor: doc.data().firstName + " " + doc.data().lastName}
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, email: doc.data().email, uid: doc.data().uid}
                 this.userdoc.push(test);
               }
             }
@@ -115,9 +128,17 @@ export class ScheduleappointmentsComponent implements OnInit {
   // Note: The variable "Doctor" is just the person selected for the appointment, and can either be a patient or a doctor.
   saveAppointment(Date2, Time, Doctor) {
     let id = this.afs.createId()
+    for (var i = 0; i < this.userdoc.length; i++) {
+      if (this.userdoc[i].doctor == Doctor)
+      {
+        var receiverid = this.userdoc[i].uid;
+      }
+    }
     this.afs.collection('appointments').doc(id).set({
       appointment_id: id,
       sender: this.firstNameDisplay + " " + this.lastNameDisplay,
+      senderuid: this.displayuid,
+      receiveruid: receiverid,
       isActive: true,
       Date: Date2,
       Time: Time,

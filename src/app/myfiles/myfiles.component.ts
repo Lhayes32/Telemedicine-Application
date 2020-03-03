@@ -41,6 +41,7 @@ export class MyfilesComponent implements OnInit {
   _file: string;
   _download: string;
   test: any;
+  surname: string;
 
 	filenameSend: string;
   // Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
@@ -72,6 +73,7 @@ export class MyfilesComponent implements OnInit {
           this.lastNameDisplay = doc.data().lastName;
           if (doc.data().isDoctor) {
             this.isDoctorDisplay = "Doctor";
+            this.surname = "Dr. "
           } else {
             this.isDoctorDisplay = "Patient";
           }
