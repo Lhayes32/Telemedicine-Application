@@ -96,7 +96,7 @@ export class ScheduleappointmentsComponent implements OnInit {
             // and they are not you
             if (doc.data().uid != this.displayuid) {
               // Remove all users without names
-              if (doc.data().firstName != null || doc.data().firstName != null) {
+              if (!(doc.data().firstName == null || doc.data().firstName == null || doc.data().firstName == "" || doc.data().lastName == "")) {
                 // then print their name
                 var test = {doctor: doc.data().firstName + " " + doc.data().lastName, email: doc.data().email, uid: doc.data().uid}
                 this.userdoc.push(test);
@@ -111,7 +111,7 @@ export class ScheduleappointmentsComponent implements OnInit {
             // and they are not you
             if (doc.data().uid != this.displayuid) {
               // Remove all users without names
-              if (doc.data().firstName != null || doc.data().firstName != null) {
+              if (!(doc.data().firstName == null || doc.data().firstName == null || doc.data().firstName == "" || doc.data().lastName == "")) {
                 // then print their name
                 var test = {doctor: doc.data().firstName + " " + doc.data().lastName, email: doc.data().email, uid: doc.data().uid}
                 this.userdoc.push(test);

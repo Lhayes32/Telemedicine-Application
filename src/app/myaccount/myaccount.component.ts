@@ -118,10 +118,33 @@ export class MyaccountComponent implements OnInit {
       .then(function () {
         console.log("Data Written")
       });
+      this.afs.collection('appointments').get().toPromise()
+      .then(querySnapshot => {
+        querySnapshot.docs.forEach(doc => {
+          var updatedoc = doc.data().appointment_id;
+          if (doc.data().senderuid == this.displayuid)
+          {
+            this.afs.collection('appointments').doc(updatedoc).update({
+              sender: firstName + " " + lastName,
+            })
+            .then(function () {
+              console.log("Data Written")
+            });
+          }
+          if (doc.data().receiveruid == this.displayuid)
+          {
+            this.afs.collection('appointments').doc(updatedoc).update({
+              receiver: firstName + " " + lastName,
+            })
+            .then(function () {
+              console.log("Data Written")
+            });
+          }
+        });
+      })
       this.ngOnInit();
       // hi
   }
-  
 }
 
 
