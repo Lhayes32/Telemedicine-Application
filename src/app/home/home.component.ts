@@ -160,7 +160,11 @@ export class HomeComponent implements OnInit {
     }
 
   openAddFileDialog() {
-    this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
+    if (!(this.firstNameDisplay == null || this.lastNameDisplay == null || this.firstNameDisplay == "" || this.lastNameDisplay == "")) {
+      this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
+    } else {
+      this.snackbar.open("Please add a first and/or last name before scheduling an appointment!");
+    }
   }
 
   // This will be the button that goes to the current open appointment.,
