@@ -32,14 +32,15 @@ export class HomeComponent implements OnInit {
   lastNameDisplay: string;
   displayemail: string;
   isDoctorDisplay:string;
-  displayedColumns: string[] = ['whom', 'date', 'time', 'status', 'cancel', 'text', 'video'];
+  displayedColumns: string[] = ['whom', 'online', 'date', 'time', 'status', 'cancel', 'text', 'video'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   firstandlastname = this.lastNameDisplay + " " + this.firstNameDisplay;
   doctors:string[] = [];
   patients:string[] = [];
   appointment_id: string;
+  online: boolean;
   currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy");
-
+ 
   fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
 
   constructor(
@@ -52,6 +53,8 @@ export class HomeComponent implements OnInit {
   ) {
   }
 
+  
+
   ngOnInit() {
     try {
       this.displayuid = this.afAuth.auth.currentUser.uid
@@ -61,6 +64,7 @@ export class HomeComponent implements OnInit {
     }
 
     console.log(this.currentdate);
+
 
     // Retrieve user data
     var docRef = this.afs.collection('users').doc(this.displayuid);
@@ -89,8 +93,18 @@ export class HomeComponent implements OnInit {
 
     // Fetch all appointments for the user when opening or refreshing the page.
     this.fetchappointments()
+    this.onlineStatus()
 
   }
+
+   async onlineStatus(){
+     this.online = await JSON.parse(localStorage.getItem('user')).uid.isOnline;
+
+  }
+
+  
+  
+  
 
   // This method will fetch all appointments
   fetchappointments () {
@@ -156,6 +170,8 @@ export class HomeComponent implements OnInit {
   goToTextAppointment(whom) {
     this.snackbar.open("Opening text chat with " + whom + "...")._dismissAfter(2000);
   }
+
+  
 
   // This method cancels the currently selected appointment.
   async cancelAppointment(whom, date, time, status) { 

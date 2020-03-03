@@ -1,0 +1,42 @@
+.chat-popup{
+    display: none;
+    position: fixed;
+    bottom:0;
+    right:15px;
+    border:3px solid #f1f1f1;
+    z-index: 9;
+
+}
+
+.form-container{
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+
+}
+
+.form-container textarea{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background:  #3E6E8C;
+    min-height:  200px;
+}
+
+.form-container .btn {
+    background-color: #4CAF50;
+    color:rgba(255,255,255,0.8);
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+  }
+.form-container .canel{
+    background-color: rgba(228, 40, 40, 0.7);
+    color:rgba(255,255,255,0.8);
+    
+}
+
