@@ -13,7 +13,8 @@ export interface FileList {
 }
 
 export interface PickToSend {
-  name: string;
+  _uid: string;
+  _name: string;
 }
 
 var FILE_DATA: FileList[] = [
@@ -105,7 +106,7 @@ export class MyfilesComponent implements OnInit {
       querySnapshot.docs.forEach(doc => {
         if(this.isDoctorDisplay == "Doctor"){
           if(doc.exists){
-            var test = {name: doc.data().uid}
+            var test = {_uid: doc.data().uid, _name: doc.data().firstName}
             this.PickToSend.push(test);
           }
         }

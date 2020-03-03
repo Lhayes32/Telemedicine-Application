@@ -68,8 +68,8 @@
             <mat-form-field>
               <mat-label>User</mat-label>
               <mat-select [(ngModel)]="selectedValue" name="PickToSend">
-                <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend.name">
-                  {{PickToSend.name}}
+                <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend._uid">
+                  {{PickToSend._name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
