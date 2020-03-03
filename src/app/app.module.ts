@@ -26,6 +26,7 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
 import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleappointments.component';
 import { DatePipe } from '@angular/common';
 import { MatMenuModule} from '@angular/material/menu';
+import { ChatboxComponent } from './chatbox/chatbox.component';
 
 
 
@@ -39,6 +40,7 @@ import { MatMenuModule} from '@angular/material/menu';
     MyfilesComponent,
     ResetpasswordComponent,
     ScheduleappointmentsComponent,
+    ChatboxComponent,
   ],
   imports: [
     BrowserModule,
