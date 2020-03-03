@@ -162,12 +162,12 @@ export class ScheduleappointmentsComponent implements OnInit {
       querySnapshot.docs.forEach(doc => {
         if (doc.data().Date == date)
         {
-          // If the current doc has the user's first or last name in it as the sender or receiver.
-          if (this.firstNameDisplay + " " + this.lastNameDisplay == doc.data().sender)
+          // If the current doc has the user's uid in it as the sender or receiver.
+          if (this.displayuid == doc.data().senderuid)
           {
             this.userdoc = this.userdoc.filter(order => order.doctor !== doc.data().receiver);
           }
-          if (this.firstNameDisplay + " " + this.lastNameDisplay == doc.data().receiver)
+          if (this.displayuid == doc.data().receiveruid)
           {
             this.userdoc = this.userdoc.filter(order => order.doctor !== doc.data().sender);
           }

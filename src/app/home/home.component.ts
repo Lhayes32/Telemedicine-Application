@@ -61,9 +61,20 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       this.displayuid = localStorage.getItem("displayuid");
     }
+    try {
+      this.displayemail = this.afAuth.auth.currentUser.email;
+      localStorage.setItem("displayemail", this.displayemail);
+    } catch (error) {
+      this.displayemail = localStorage.getItem("displayemail");
+    }
+    // Fetch user's data
+    this.fetchuserdata()
 
-    console.log(this.currentdate);
+    // Fetch all appointments for the user when opening or refreshing the page.
+    this.fetchappointments()
 
+  }
+    fetchuserdata() {
     // Retrieve user data
     var docRef = this.afs.collection('users').doc(this.displayuid);
     docRef.get().toPromise().then((doc) => {
@@ -84,17 +95,6 @@ export class HomeComponent implements OnInit {
   }).catch(function(error) {
       console.log("Error getting document:", error);
   });
-
-    try {
-      this.displayemail = this.afAuth.auth.currentUser.email;
-      localStorage.setItem("displayemail", this.displayemail);
-    } catch (error) {
-      this.displayemail = localStorage.getItem("displayemail");
-    }
-
-    // Fetch all appointments for the user when opening or refreshing the page.
-    this.fetchappointments()
-
   }
 
   // This method will fetch all appointments

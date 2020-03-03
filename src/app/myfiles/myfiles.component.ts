@@ -65,7 +65,42 @@ export class MyfilesComponent implements OnInit {
       this.displayuid = localStorage.getItem("displayuid");
       console.log(this.displayuid);
     }
+    
+    try {
+      this.displayemail = this.afAuth.auth.currentUser.email;
+      localStorage.setItem("displayemail", this.displayemail);
+      console.log(this.displayemail);
+    } catch (error) {
+      this.displayemail = localStorage.getItem("displayemail");
+      console.log(this.displayemail);
+    }
 
+    // Fetch user's data
+    this.fetchuserdata();
+
+    // Show all current files for the user.
+    this.listFiles();
+
+    // Fetch all Doctors
+    this.fetchUsers();
+
+    var docRef = this.afs.collection('users').doc(this.displayuid);
+      docRef.get().toPromise().then((doc) => {
+        if (doc.exists) {
+            if (doc.data().isDoctor) {
+              document.getElementById("docsf").style.display = "block";
+            }
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+
+  }
+
+  fetchuserdata() {
     var docRef = this.afs.collection('users').doc(this.displayuid);
 
     docRef.get().toPromise().then((doc) => {
@@ -86,32 +121,6 @@ export class MyfilesComponent implements OnInit {
   }).catch(function(error) {
       console.log("Error getting document:", error);
   });
-    
-    try {
-      this.displayemail = this.afAuth.auth.currentUser.email;
-      localStorage.setItem("displayemail", this.displayemail);
-      console.log(this.displayemail);
-    } catch (error) {
-      this.displayemail = localStorage.getItem("displayemail");
-      console.log(this.displayemail);
-    }
-
-    this.listFiles();
-    this.fetchUsers();
-
-      docRef.get().toPromise().then((doc) => {
-        if (doc.exists) {
-            if (doc.data().isDoctor) {
-              document.getElementById("docsf").style.display = "block";
-            }
-        } else {
-            console.log("No such document!");
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
-
-
   }
 
   onFileChanged(event) {

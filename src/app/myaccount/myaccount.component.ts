@@ -52,31 +52,6 @@ export class MyaccountComponent implements OnInit {
       console.log(this.displayuid);
     }
 
-    var docRef = this.afs.collection('users').doc(this.displayuid);
-
-    docRef.get().toPromise().then((doc) => {
-      if (doc.exists) {
-          this.firstNameDisplay = doc.data().firstName;
-          this.lastNameDisplay = doc.data().lastName;
-          this.dobDisplay = doc.data().dateofbirth;
-          this.addressDisplay = doc.data().address;
-          this.insuranceCompanyDisplay = doc.data().insurancecompany;
-          this.insuranceIdDisplay = doc.data().insuranceid;
-          if (doc.data().isDoctor == true) {
-            this.isDoctorDisplay = "Doctor";
-            this.surname = "Dr. "
-            this.isDoctor = true;
-          } else {
-            this.isDoctor = false;
-            this.isDoctorDisplay = "Patient";
-          }
-      } else {
-          console.log("No such document!");
-      }
-  }).catch(function(error) {
-      console.log("Error getting document:", error);
-  });
-
     try {
       this.displayemail = this.afAuth.auth.currentUser.email
       localStorage.setItem("displayemail", this.displayemail);
@@ -86,6 +61,35 @@ export class MyaccountComponent implements OnInit {
       console.log(this.displayemail);
     }
 
+    // fetch user's data
+    this.fetchuserdata()
+
+  }
+
+  fetchuserdata() {
+  var docRef = this.afs.collection('users').doc(this.displayuid);
+  docRef.get().toPromise().then((doc) => {
+    if (doc.exists) {
+        this.firstNameDisplay = doc.data().firstName;
+        this.lastNameDisplay = doc.data().lastName;
+        this.dobDisplay = doc.data().dateofbirth;
+        this.addressDisplay = doc.data().address;
+        this.insuranceCompanyDisplay = doc.data().insurancecompany;
+        this.insuranceIdDisplay = doc.data().insuranceid;
+        if (doc.data().isDoctor == true) {
+          this.isDoctorDisplay = "Doctor";
+          this.surname = "Dr. "
+          this.isDoctor = true;
+        } else {
+          this.isDoctor = false;
+          this.isDoctorDisplay = "Patient";
+        }
+    } else {
+        console.log("No such document!");
+    }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
   }
 
   isMenuOpen = true;
