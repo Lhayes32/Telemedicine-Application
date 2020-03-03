@@ -10,7 +10,11 @@ import {MatSelectModule} from '@angular/material/select';
 export interface FileList {
   name: string;
   download: string;
+  user: string;
+  fileid: string;
 }
+
+
 
 export interface PickToSend {
   _uid: string;
@@ -31,7 +35,7 @@ var FILE_DATA: FileList[] = [
 
 
 export class MyfilesComponent implements OnInit {
-  displayedColumns: string[] = ['name','download'];
+  displayedColumns: string[] = ['name','download', 'delete'];
   PickToSend:PickToSend[] = [];
   dataSource = new MatTableDataSource(FILE_DATA);
   displayemail: string;
@@ -44,6 +48,8 @@ export class MyfilesComponent implements OnInit {
   FileID: string;
   _file: string;
   _download: string;
+  _user: string;
+  _fileid: string;
   test: any;
   surname: string;
   isDoctor: boolean;
@@ -182,6 +188,24 @@ export class MyfilesComponent implements OnInit {
   });
   }
 
+  onDelete(name, user, download, fileid) {
+
+        for (var i = 0; i < FILE_DATA.length; i++) {
+          if(FILE_DATA[i].name == name && FILE_DATA[i].download == download && FILE_DATA[i].user == user && FILE_DATA[i].fileid == fileid){
+            this.afs.collection('files').doc(FILE_DATA[i].fileid).delete().then(function() {
+              console.log("File found and delete in database");
+            }).catch(function(error) {
+              console.error("Error removing document: ", error);
+            });
+            firebase.storage().ref(FILE_DATA[i].user + '/' + FILE_DATA[i].name).delete().then(function() {
+              console.log("File found and deleted in Storage");
+            }).catch(function(error) {
+              console.error("Error removing document: ", error);
+            });
+          }
+        }
+  }
+
   listFiles()
   {
     FILE_DATA = [];
@@ -194,15 +218,21 @@ export class MyfilesComponent implements OnInit {
             if(doc.exists) {
               this._file = doc.data().Name;
               this._download = doc.data().Download;
-              this.test = {name: this._file, download: this._download}
+              this._fileid = doc.data().FileID;
+              this._user = doc.data().User;
+              this.test = {name: this._file, download: this._download, user:this._user, fileid:this._fileid}
               FILE_DATA.push(this.test);
               this.dataSource = new MatTableDataSource(FILE_DATA);
+              
+
             }
           }
           else if(doc.exists && doc.data().User == this.displayuid){
             this._file = doc.data().Name;
             this._download = doc.data().Download;
-            this.test = {name: this._file, download: this._download}
+            this._fileid = doc.data().FileID;
+            this._user = doc.data().User;
+            this.test = {name: this._file, download: this._download, user:this._user, fileid:this._fileid}
             FILE_DATA.push(this.test);
             this.dataSource = new MatTableDataSource(FILE_DATA);
           }
