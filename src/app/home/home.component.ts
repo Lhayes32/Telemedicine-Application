@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
     if (!(this.firstNameDisplay == null || this.lastNameDisplay == null || this.firstNameDisplay == "" || this.lastNameDisplay == "")) {
       this.fileNameDialogRef = this.dialog.open(ScheduleappointmentsComponent);
     } else {
-      this.snackbar.open("Please add a first and/or last name before scheduling an appointment!");
+      this.snackbar.open("Please add a first and/or last name before scheduling an appointment!", 'Dismiss', {duration: 3000});
     }
   }
 
