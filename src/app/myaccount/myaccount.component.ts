@@ -31,6 +31,7 @@ export class MyaccountComponent implements OnInit {
   insuranceIdDisplay: string;
   isDoctorDisplay:string;
   surname: string;
+  isDoctor: boolean;
 
   constructor(
     private authService: AuthService,
@@ -61,10 +62,12 @@ export class MyaccountComponent implements OnInit {
           this.addressDisplay = doc.data().address;
           this.insuranceCompanyDisplay = doc.data().insurancecompany;
           this.insuranceIdDisplay = doc.data().insuranceid;
-          if (doc.data().isDoctor) {
+          if (doc.data().isDoctor == true) {
             this.isDoctorDisplay = "Doctor";
             this.surname = "Dr. "
+            this.isDoctor = true;
           } else {
+            this.isDoctor = false;
             this.isDoctorDisplay = "Patient";
           }
       } else {
