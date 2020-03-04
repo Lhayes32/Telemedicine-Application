@@ -23,6 +23,7 @@ export interface time {
 })
 export class ScheduleappointmentsComponent implements OnInit {
   displayuid: string;
+  displayemail: string;
   isDoctorDisplay:string;
   isDoctor: boolean;
   doctors:string[] = [];
@@ -55,6 +56,16 @@ export class ScheduleappointmentsComponent implements OnInit {
     } catch (error) {
       this.displayuid = localStorage.getItem("displayuid");
     }
+
+    try {
+      this.displayemail = this.afAuth.auth.currentUser.email;
+      localStorage.setItem("displayemail", this.displayemail);
+      console.log(this.displayemail);
+    } catch (error) {
+      this.displayemail = localStorage.getItem("displayemail");
+      console.log(this.displayemail);
+    }
+
     // First we get the user's data. 
     this.fetchuserdata();
 
@@ -132,6 +143,7 @@ export class ScheduleappointmentsComponent implements OnInit {
       if (this.userdoc[i].doctor == Doctor)
       {
         var receiverid = this.userdoc[i].uid;
+        var receiveremail = this.userdoc[i].email;
       }
     }
     this.afs.collection('appointments').doc(id).set({
@@ -139,6 +151,8 @@ export class ScheduleappointmentsComponent implements OnInit {
       sender: this.firstNameDisplay + " " + this.lastNameDisplay,
       senderuid: this.displayuid,
       receiveruid: receiverid,
+      senderemail: this.displayemail,
+      receiveremail: receiveremail,
       isActive: true,
       Date: Date2,
       Time: Time,
