@@ -10,6 +10,8 @@ export class ChatboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
+  
 
 }

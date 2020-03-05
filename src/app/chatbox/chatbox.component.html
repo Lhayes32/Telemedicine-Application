@@ -1,11 +1,119 @@
-<div class="chat-popup" id="myf orm">
-  <form action="" class="form-container">
-    <h1>Chat</h1>
 
-    <label for="msg"><b>Message</b></label>
-    <textarea placeholder="Type message.." name="msg" required></textarea>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css">
+</head>
 
-    <button type="submit" class="btn">Send</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
+	<div class="main-section">
+		<div class="head-section">
+			<div class="headLeft-section">
+				<div class="headLeft-sub">
+					<input type="text" name="search" placeholder="Search...">
+					<button> <i class="fa fa-search"></i> </button>
+				</div>
+			</div>
+			<div class="headRight-section">
+				<div class="headRight-sub">
+					<h3>John Smith</h3>
+					<small>Now Online!</small>
+				</div>
+			</div>
+		</div>
+		<div class="body-section">
+			<div class="left-section mCustomScrollbar" data-mcs-theme="minimal-dark">
+				<ul>
+					<li>
+						<div class="chatList">
+							<div class="img">
+								<i class="fa fa-circle"></i>
+								<img src="">
+							</div>
+							<div class="desc">
+								<small class="time">05:30 am</small>
+								<h5>Luis Yankee</h5>
+								<small>Talk to you later</small>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="chatList">
+							<div class="img">
+								<i class="fa fa-circle"></i>
+								<img src="">
+							</div>
+							<div class="desc">
+								<small class="time">3 day</small>
+								<h5>Jane Doe</h5>
+								<small>Email me back!</small>
+							</div>
+						</div>
+					</li>
+					<li class="active">
+						<div class="chatList">
+							<div class="img">
+								<img src="">
+							</div>
+							<div class="desc">
+								<small class="time">4 day</small>
+								<h5>Bob Hare</h5>
+								<small>There you are!</small>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="chatList">
+							<div class="img">
+								<img src="">
+							</div>
+							<div class="desc">
+								<small class="time">18 day</small>
+								<h5>Lod Kine</h5>
+								<small>Call me!</small>
+							</div>
+						</div>
+					</li>
+			
+				</ul>
+			</div>
+			<div class="right-section">
+				<div class="message mCustomScrollbar" data-mcs-theme="minimal-dark">
+					<ul>
+						<li class="msg-left">
+							<div class="msg-left-sub">
+								<img src="">
+								<div class="msg-desc">
+									Just texting away!
+								</div>
+								<small>05:25 am</small>
+							</div>
+						</li>
+						<li class="msg-right">
+							<div class="msg-left-sub">
+								<img src="/demo/man04.png">
+								<div class="msg-desc">
+									oh okay!
+								</div>
+								<small>05:25 am</small>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="right-section-bottom">
+					<form>
+						<div class="upload-btn">
+						  	<button class="btn"><i class="fa fa-photo"></i></button>
+						  	<input type="file" name="myfile" />
+						</div>
+						<input type="text" name="" placeholder="type here...">
+						<button class="btn-send"><i class="fa fa-send"></i></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<!-- custom scrollbar plugin -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
