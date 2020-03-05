@@ -47,6 +47,7 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
     AppRoutingModule,
     MatInputModule,
     MatDialogModule,
+    MatMenuModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
