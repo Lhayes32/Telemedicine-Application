@@ -25,8 +25,13 @@ import { MatTableModule} from '@angular/material'
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
 import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleappointments.component';
 import { DatePipe } from '@angular/common';
+<<<<<<< HEAD
 import { ChatboxComponent } from './chatbox/chatbox.component';
 
+=======
+import { MatMenuModule} from '@angular/material/menu';
+import { ChatboxComponent } from './chatbox/chatbox.component';
+>>>>>>> Tyler
 
 
 
@@ -41,19 +46,24 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
     ResetpasswordComponent,
     ScheduleappointmentsComponent,
     ChatboxComponent,
+<<<<<<< HEAD
     
+=======
+>>>>>>> Tyler
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MatInputModule,
     MatDialogModule,
+    MatMenuModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     BrowserAnimationsModule,
     FormsModule,
     MatDialogModule,
+    MatMenuModule,
     MatInputModule,
     MatButtonModule,
     MatInputModule,

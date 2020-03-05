@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <head>
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
@@ -117,3 +118,96 @@
 	<!-- custom scrollbar plugin -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+=======
+ <mat-toolbar id="mainToolbar" color="primary">
+    <mat-icon (click)="onToolbarMenuToggle()" id="toolbarMenu">subject</mat-icon>
+    Telemedicine Application
+    <span class="toolbar-spacer"></span>
+  </mat-toolbar>
+  
+  <mat-sidenav-container id="sidenavContainer" fullscreen>
+    <mat-sidenav mode="side" #sidenav id="sidenav" [class.menu-open]="isMenuOpen" [class.menu-close]="!isMenuOpen" opened>
+      <mat-list id="menus">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="avatar"></div>
+            <mat-card-title>{{surname}}{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
+            <mat-card-subtitle>{{isDoctorDisplay}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        <mat-nav-list class="menu-item">
+          <a mat-list-item [routerLink]="'/home'" [routerLinkActive]="['active']">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example home icon">home</mat-icon>Home
+          </a>
+          <a mat-list-item [routerLink]="'/myfiles'" [routerLinkActive]="['active']">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">upload_file</mat-icon>My Files
+          </a>
+          <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
+          </a>
+          <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My
+            Account
+          </a>
+          <a mat-list-item (click)="authService.SignOut()">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">logout</mat-icon>Sign Out
+          </a>
+        </mat-nav-list>
+      </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div style="height: 80vh;">
+            <div class="container">
+              <h2 style="padding-right: 55%;">Chats</h2>
+              <br>
+              <mat-card class="appointment-card">
+                <mat-card-title>My Chats</mat-card-title>
+              <div *ngIf="isDoctor == true">
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>All Doctors:</mat-label>
+                  <mat-select #Doctor>
+                    <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.uid" >Dr. {{doctordoc.doctor}} {{doctordoc.email}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>All Patients:</mat-label>
+                  <mat-select #Patient>
+                    <mat-option *ngFor="let patientdoc of patientdoc" [value]="patientdoc.uid" >{{patientdoc.doctor}} {{patientdoc.email}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>Appointments with:</mat-label>
+                  <mat-select #Appointment>
+                    <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid" >{{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
+                  </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Type Message Here</mat-label>
+                    <input matInput placeholder="Type Message Here" value="" #message>
+                  </mat-form-field>
+                  <button type="submit" class="btn btn-danger" (click)="sendMessageDoctor(Doctor.value, Patient.value, Appointment.value, message.value)">Send Message</button>
+              </div>
+              <div *ngIf="isDoctor == false">
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>Appointments with:</mat-label>
+                  <mat-select #Appointment>
+                    <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid" >Dr. {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br>
+              <mat-form-field class="example-full-width">
+                <mat-label>Type Message Here</mat-label>
+                <input matInput placeholder="Type Message Here" value="" #message>
+              </mat-form-field>
+              <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment.value, message.value)">Send Message</button>
+            </div>
+            </mat-card>
+          </div>
+        </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>  
+>>>>>>> Tyler
