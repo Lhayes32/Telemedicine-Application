@@ -45,21 +45,21 @@
                 <br>
                 <mat-form-field appearance="fill">
                   <mat-label>All Doctors:</mat-label>
-                  <mat-select #Doctor>
+                  <mat-select #Doctor (selectionChange)="showMessages(Doctor.value)">
                     <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.uid" >Dr. {{doctordoc.doctor}} {{doctordoc.email}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <br>
                 <mat-form-field appearance="fill">
                   <mat-label>All Patients:</mat-label>
-                  <mat-select #Patient>
+                  <mat-select #Patient (selectionChange)="showMessages(Patient.value)">
                     <mat-option *ngFor="let patientdoc of patientdoc" [value]="patientdoc.uid" >{{patientdoc.doctor}} {{patientdoc.email}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <br>
                 <mat-form-field appearance="fill">
                   <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment>
+                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
                     <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid" >{{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
                   </mat-select>
                   </mat-form-field>
@@ -73,7 +73,7 @@
                 <br>
                 <mat-form-field appearance="fill">
                   <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment>
+                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
                     <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid" >Dr. {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
                   </mat-select>
                 </mat-form-field>

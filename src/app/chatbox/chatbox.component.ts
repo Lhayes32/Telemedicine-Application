@@ -12,6 +12,13 @@ export interface userdoc {
   uid: string;
 }
 
+export interface messagedoc {
+  sender: any;
+  receiver: any;
+  message: any;
+  time: any;
+}
+
 @Component({
   selector: 'app-chatbox',
   templateUrl: './chatbox.component.html',
@@ -28,6 +35,7 @@ export class ChatboxComponent implements OnInit {
   doctordoc:userdoc[] = [];
   patientdoc:userdoc[] = [];
   appointmentdoc:userdoc[] = [];
+  messagedoc:messagedoc[] = [];
   checkbool: boolean;
   flag: boolean;
   date = new Date();
@@ -60,10 +68,7 @@ export class ChatboxComponent implements OnInit {
     this.fetchuserdata()
 
     // Update doctordoc
-    this.updateDoctors()
-
-    // Update patientdoc
-    this.updatePatients()
+    this.updateDoctorsPatients()
 
     // Update appointments
     this.updateappointments()
@@ -94,7 +99,7 @@ export class ChatboxComponent implements OnInit {
   });
   }
 
-  updateDoctors() {
+  updateDoctorsPatients() {
     this.afs.collection('users').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
@@ -110,27 +115,17 @@ export class ChatboxComponent implements OnInit {
               }
             }
           }
-        }
-        );
-        });
-    }
-
-  updatePatients() {
-    this.afs.collection('users').get().toPromise()
-    .then(querySnapshot => {
-      querySnapshot.docs.forEach(doc => {
-        // If they are not a doctor
-        if (doc.data().isDoctor == false) {
-          // and they are not you
-          if (doc.data().uid != this.displayuid) {
-            // Remove all users without names
-            if (!(doc.data().firstName == null || doc.data().firstName == null || doc.data().firstName == "" || doc.data().lastName == "")) {
-              // then print their name
-              var test = {doctor: doc.data().firstName + " " + doc.data().lastName, email: doc.data().email, uid: doc.data().uid}
-              this.patientdoc.push(test);
+          if (doc.data().isDoctor == false) {
+            // and they are not you
+            if (doc.data().uid != this.displayuid) {
+              // Remove all users without names
+              if (!(doc.data().firstName == null || doc.data().firstName == null || doc.data().firstName == "" || doc.data().lastName == "")) {
+                // then print their name
+                var test = {doctor: doc.data().firstName + " " + doc.data().lastName, email: doc.data().email, uid: doc.data().uid}
+                this.patientdoc.push(test);
+                }
               }
             }
-          }
         }
         );
         });
@@ -173,33 +168,17 @@ export class ChatboxComponent implements OnInit {
               } 
       });
     })
-
   }
+
   sendMessagePatient(Appointment, message) {
-    var testdoc = this.appointmentdoc;
-    console.log(testdoc[0]);
     var personuid = Appointment;
     var message = message; 
-    console.log(personuid);
-    console.log(message);
     for (var i = 0; i < this.appointmentdoc.length; i++) {
-      if (testdoc[i].uid == personuid)
+      if (this.appointmentdoc[i].uid == personuid)
         {
-        var person = testdoc[i].doctor;
+        var person = this.appointmentdoc[i].doctor;
         }
     }
-    /*for (var i = 0; i <= this.doctordoc.length; i++) {
-      if (this.doctordoc[i].uid == personuid)
-      {
-        var person = this.doctordoc[i].doctor;
-      }
-    }
-    for (var i = 0; i <= this.patientdoc.length; i++) {
-      if (this.patientdoc[i].uid == personuid)
-      {
-        var person = this.patientdoc[i].doctor;
-      }
-    }*/
     let autoid = this.afs.createId()
     if (this.displayuid < personuid)
     {
@@ -297,4 +276,31 @@ export class ChatboxComponent implements OnInit {
   isMenuOpen = true;
   contentMargin = 240;
 
+  showMessages(Doctor) {
+    this.messagedoc = [];
+    var personuid = Doctor;
+    if (this.displayuid < personuid)
+    {
+      var id = this.displayuid + personuid;
+    } else {
+      var id = personuid + this.displayuid;
+    }
+    this.afs.collection('chats').doc(id).collection('messages').get().toPromise()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        if (doc.data().senderuid == this.displayuid)
+        {
+          var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().timestamp}
+          this.messagedoc.push(test);
+        }
+        if (doc.data().receiveruid == this.displayuid)
+        {
+          var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().timestamp}
+          this.messagedoc.push(test2);
+        }
+      });
+      this.messagedoc = this.messagedoc.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)
+    });
+    console.log(this.messagedoc);
+  }
 }
