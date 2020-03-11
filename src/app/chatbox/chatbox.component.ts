@@ -41,6 +41,7 @@ export class ChatboxComponent implements OnInit {
   messagedoc:messagedoc[] = [];
   checkbool: boolean;
   flag: boolean;
+  selectedappointment: string;
   date = new Date();
 
   usermessage: any[] = [
@@ -176,14 +177,30 @@ export class ChatboxComponent implements OnInit {
     })
   }
 
-  sendMessagePatient(Appointment, message) {
-    var personuid = Appointment;
+  sendMessagePatient(message) {
+    var personuid = this.selectedappointment;
     var message = message; 
     for (var i = 0; i < this.appointmentdoc.length; i++) {
       if (this.appointmentdoc[i].uid == personuid)
         {
         var person = this.appointmentdoc[i].doctor;
         }
+    }
+    if (person == undefined) {
+      for (var i = 0; i < this.doctordoc.length; i++) {
+        if (this.doctordoc[i].uid == personuid)
+          {
+          var person = this.doctordoc[i].doctor;
+          }
+      }
+    }
+    if (person == undefined) {
+      for (var i = 0; i < this.patientdoc.length; i++) {
+        if (this.patientdoc[i].uid == personuid)
+          {
+          var person = this.patientdoc[i].doctor;
+          }
+      }
     }
     let autoid = this.afs.createId()
     if (this.displayuid < personuid)
@@ -192,6 +209,8 @@ export class ChatboxComponent implements OnInit {
     } else {
       var id = personuid + this.displayuid;
     }
+    console.log(id);
+    console.log(person);
     var docRef = this.afs.collection('chats').doc(id);
     docRef.get().toPromise().then((doc) => {
     if (doc.exists)
@@ -311,5 +330,7 @@ export class ChatboxComponent implements OnInit {
       this.messagedoc = this.messagedoc.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)
     });
     console.log(this.messagedoc);
+    this.selectedappointment = Doctor;
+    console.log(this.selectedappointment);
   }
 }

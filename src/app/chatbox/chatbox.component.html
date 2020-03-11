@@ -112,15 +112,15 @@
                 <br>
                 <mat-form-field>
                   <mat-label>All Doctors:</mat-label>
-                  <mat-select #Doctor id="Appointment1" [(ngModel)]="selectedValue" name="doctordoc">
-                    <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.doctor">Dr. {{doctordoc.doctor}}
+                  <mat-select #Doctor (selectionChange)="showMessages(Doctor.value)">
+                    <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.uid">Dr. {{doctordoc.doctor}}
                       {{doctordoc.email}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <br>
                 <mat-form-field>
                   <mat-label>All Patients:</mat-label>
-                  <mat-select #Patient>
+                  <mat-select #Patient (selectionChange)="showMessages(Patient.value)">
                     <mat-option *ngFor="let patientdoc of patientdoc" [value]="patientdoc.uid">{{patientdoc.doctor}}
                       {{patientdoc.email}}</mat-option>
                   </mat-select>
@@ -128,7 +128,7 @@
                 <br>
                 <mat-form-field>
                   <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment>
+                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
                     <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">
                       {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
                   </mat-select>
@@ -152,14 +152,11 @@
               </div>
             </div>
           </div>
-          <!-- <div class="chatFormWrapper"> -->
           <mat-form-field class="messageForm">
             <mat-label>Type Message Here</mat-label>
             <input matInput placeholder="Type Message Here" value="" #message>
           </mat-form-field>
-          <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment1.value, message.value)">Send Message</button>
-          <!-- </div> -->
-
+          <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(message.value)">Send Message</button>
         </mat-card>
       </div>
     </div>
