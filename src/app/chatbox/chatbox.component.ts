@@ -42,7 +42,6 @@ export class ChatboxComponent implements OnInit {
   checkbool: boolean;
   flag: boolean;
   selectedappointment: string;
-  currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy")
   date = new Date();
 
   usermessage: any[] = [
@@ -180,6 +179,7 @@ export class ChatboxComponent implements OnInit {
 
   sendMessage(message) {
     var currenttime = this.datePipe.transform(new Date(), "h:mm a")
+    var currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy")
     var personuid = this.selectedappointment;
     var message = message; 
     for (var i = 0; i < this.appointmentdoc.length; i++) {
@@ -229,7 +229,7 @@ export class ChatboxComponent implements OnInit {
         sender: this.firstNameDisplay + " " + this.lastNameDisplay,
         senderuid: this.displayuid,
         timestamp: this.date,
-        date: this.currentdate,
+        date: currentdate,
         time: currenttime,
         receiver: person,
         receiveruid: personuid
