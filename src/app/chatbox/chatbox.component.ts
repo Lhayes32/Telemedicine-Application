@@ -43,7 +43,6 @@ export class ChatboxComponent implements OnInit {
   flag: boolean;
   selectedappointment: string;
   currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy")
-  currenttime = this.datePipe.transform(new Date(), "h:mm a")
   date = new Date();
 
   usermessage: any[] = [
@@ -180,6 +179,7 @@ export class ChatboxComponent implements OnInit {
   }
 
   sendMessage(message) {
+    var currenttime = this.datePipe.transform(new Date(), "h:mm a")
     var personuid = this.selectedappointment;
     var message = message; 
     for (var i = 0; i < this.appointmentdoc.length; i++) {
@@ -230,7 +230,7 @@ export class ChatboxComponent implements OnInit {
         senderuid: this.displayuid,
         timestamp: this.date,
         date: this.currentdate,
-        time: this.currenttime,
+        time: currenttime,
         receiver: person,
         receiveruid: personuid
       })

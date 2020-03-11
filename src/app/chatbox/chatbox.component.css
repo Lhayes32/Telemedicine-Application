@@ -176,6 +176,7 @@
   background-color: #eee;
   box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
   white-space: pre;
+  margin: 7px;
 }
 
 .isOwnMessageContainer{
