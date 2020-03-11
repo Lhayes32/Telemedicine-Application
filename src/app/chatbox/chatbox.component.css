@@ -5,7 +5,7 @@
   
   .appointment-card {
     width: 80%;
-    padding: 4%;
+    padding: 2%;
   }
   
   .container{
@@ -139,7 +139,8 @@
 
 .feedWrapper {
   /* background-color: #fff; */
-  background: #3E6E8C;
+  background: #f6f6f6;
+  height: 380px;
   font-family: "Open Sans", sans-serif;
   font-size: 1.2em;
   flex: 5;
@@ -150,7 +151,7 @@
 
 .messageForm{
   width: 90%;
-  padding-right: 5%;
+  padding-right: 1%;
 }
 
 .chatFormWrapper {
@@ -168,7 +169,7 @@
 .messageContainer{
   display: flex;
   height: auto;
-  width: 70%;
+  width: 95%;
   min-width: 400px;
   border-radius: 5px;
   align-items:stretch;
