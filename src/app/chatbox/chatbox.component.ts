@@ -6,6 +6,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+
+
 export interface userdoc {
   doctor: string;
   email: string;
@@ -32,6 +34,12 @@ export class ChatboxComponent implements OnInit {
   flag: boolean;
   date = new Date();
 
+  usermessage: any[] = [
+    {sender:"Ronak", timestamp: "3/10/20", content:"Hello"},
+    {sender:"Rohan", timestamp: "3/12/20", content:"World"},
+  ];
+ 
+
   constructor(
     private authService: AuthService,
     public afAuth: AngularFireAuth,
@@ -42,6 +50,7 @@ export class ChatboxComponent implements OnInit {
   
 
   ) { }
+  
 
   ngOnInit() {
     try {

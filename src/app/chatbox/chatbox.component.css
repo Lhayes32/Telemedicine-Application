@@ -118,3 +118,104 @@
       text-align: left;
       max-width: 300px;
   }
+
+
+
+  .mainContent{
+    display: flex;
+}
+
+  .userListWrapper {
+    background-color: #ffffff;
+    color: #fff;
+    display: flex;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.2em;
+    flex: 1;
+    order: 1;
+    padding: 20px 20px 40px 0px;
+    border-right: 1px solid #ffffff;
+}
+
+.feedWrapper {
+  /* background-color: #fff; */
+  background: #3E6E8C;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2em;
+  flex: 5;
+  order: 2;
+  overflow-y: scroll;
+  padding:20px 0px 0px 24px;
+}
+
+.messageForm{
+  width: 90%;
+  padding-right: 5%;
+}
+
+.chatFormWrapper {
+  display: flex;
+  height: 50px;
+  z-index: 3;
+}
+
+#scroll-style::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.messageContainer{
+  display: flex;
+  height: auto;
+  width: 70%;
+  min-width: 400px;
+  border-radius: 5px;
+  align-items:stretch;
+  background-color: #eee;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
+  white-space: pre;
+}
+
+.isOwnMessageContainer{
+  background-color: #01579B;
+}
+
+.messageData{
+  flex: 1;
+  padding: 10px;
+  font-size: 0.7em;
+}
+
+.sender{
+  display: block;
+  color: #222;
+  font-weight: bold;
+}
+
+.isOwnSender{
+  color: #E1F5FE;
+}
+
+.timestamp {
+  color: #555;
+  font-style: italic;
+}
+
+.isOwnTimestamp{
+  color: #4FC3F7;
+}
+
+.messageContent{
+  height: auto;
+  flex: 9;
+  background-color: #fff;
+  padding: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.isOwnMessageContent{
+  background-color: #E3F2FD;
+  color: #01579B;
+}
