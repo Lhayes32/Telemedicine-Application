@@ -42,6 +42,8 @@ export class ChatboxComponent implements OnInit {
   checkbool: boolean;
   flag: boolean;
   selectedappointment: string;
+  currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy")
+  currenttime = this.datePipe.transform(new Date(), "h:mm a")
   date = new Date();
 
   usermessage: any[] = [
@@ -177,7 +179,7 @@ export class ChatboxComponent implements OnInit {
     })
   }
 
-  sendMessagePatient(message) {
+  sendMessage(message) {
     var personuid = this.selectedappointment;
     var message = message; 
     for (var i = 0; i < this.appointmentdoc.length; i++) {
@@ -227,82 +229,20 @@ export class ChatboxComponent implements OnInit {
         sender: this.firstNameDisplay + " " + this.lastNameDisplay,
         senderuid: this.displayuid,
         timestamp: this.date,
+        date: this.currentdate,
+        time: this.currenttime,
         receiver: person,
         receiveruid: personuid
       })
       }
     })
-    this.ngOnInit();
-  };
-
-  sendMessageDoctor(Doctor, Patient, Appointment, message) {
-    var data = [Doctor, Patient, Appointment, message];
-    var appointmentdoc = this.appointmentdoc;
-    var patientdoc = this.patientdoc;
-    var doctordoc = this.doctordoc;
-    var filtered = data.filter(x => x! !== undefined);
-    var personuid = filtered[0];
-    var message = filtered[1];
-    if (Doctor == undefined && Patient == undefined) {
-      for (var i = 0; i < this.appointmentdoc.length; i++) {
-        if (appointmentdoc[i].uid == personuid)
-          {
-          var person = appointmentdoc[i].doctor;
-          }
-        }
-    }
-    if (Doctor == undefined && Appointment == undefined) {
-      for (var i = 0; i < this.patientdoc.length; i++) {
-        if (patientdoc[i].uid == personuid)
-          {
-          var person = patientdoc[i].doctor;
-          }
-        }
-    }
-    if (Patient == undefined && Appointment == undefined) {
-      for (var i = 0; i < this.doctordoc.length; i++) {
-        if (doctordoc[i].uid == personuid)
-          {
-          var person = doctordoc[i].doctor;
-          }
-        }
-    }
-    let autoid = this.afs.createId()
-    if (this.displayuid < personuid)
-    {
-      var id = this.displayuid + personuid;
-    } else {
-      var id = personuid + this.displayuid;
-    }
-    var docRef = this.afs.collection('chats').doc(id);
-    docRef.get().toPromise().then((doc) => {
-    if (doc.exists)
-      {
-        docRef.collection('messages').doc(autoid).set({
-          message: message,
-          from: this.firstNameDisplay + " " + this.lastNameDisplay,
-          timestamp: this.date
-        })
-      } else {
-      var docRef2 = this.afs.collection('chats').doc(id).collection('messages').doc(autoid);
-      docRef2.set({
-        message: message,
-        sender: this.firstNameDisplay + " " + this.lastNameDisplay,
-        senderuid: this.displayuid,
-        timestamp: this.date,
-        receiver: person,
-        receiveruid: personuid
-      })
-      }
-    })
-    this.ngOnInit();
   };
 
   isMenuOpen = true;
   contentMargin = 240;
 
   showMessages(Doctor) {
-    this.messagedoc = [];
+    this.usermessage = [];
     var personuid = Doctor;
     if (this.displayuid < personuid)
     {
@@ -315,22 +255,21 @@ export class ChatboxComponent implements OnInit {
       querySnapshot.docs.forEach(doc => {
         if (doc.data().senderuid == this.displayuid)
         {
-          var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().timestamp}
-          var test3 = {sender: "Me", timestamp: doc.data().timestamp, content: doc.data().message};
+          var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
           this.usermessage.push(test);
-          this.messagedoc.push(test);
         }
         if (doc.data().receiveruid == this.displayuid)
         {
-          var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().timestamp}
-          this.messagedoc.push(test2);
+          var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
           this.usermessage.push(test2);
         }
       });
-      this.messagedoc = this.messagedoc.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)
+      this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
     });
-    console.log(this.messagedoc);
     this.selectedappointment = Doctor;
-    console.log(this.selectedappointment);
+  }
+
+  refresh() {
+    this.showMessages(this.selectedappointment);
   }
 }

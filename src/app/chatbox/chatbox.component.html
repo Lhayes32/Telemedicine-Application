@@ -40,51 +40,6 @@
         <h2 style="padding-right: 55%;">Messages</h2>
         <br>
         <mat-card class="appointment-card">
-          <!-- <div *ngIf="isDoctor == true">
-                <br>
-                <mat-form-field appearance="fill">
-                  <mat-label>All Doctors:</mat-label>
-                  <mat-select #Doctor (selectionChange)="showMessages(Doctor.value)">
-                    <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.uid" >Dr. {{doctordoc.doctor}} {{doctordoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <br>
-                <mat-form-field appearance="fill">
-                  <mat-label>All Patients:</mat-label>
-                  <mat-select #Patient (selectionChange)="showMessages(Patient.value)">
-                    <mat-option *ngFor="let patientdoc of patientdoc" [value]="patientdoc.uid" >{{patientdoc.doctor}} {{patientdoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <br>
-                <mat-form-field appearance="fill">
-                  <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
-                    <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid" >{{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
-                  </mat-select>
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Type Message Here</mat-label>
-                    <input matInput placeholder="Type Message Here" value="" #message>
-                  </mat-form-field>
-                  <button type="submit" class="btn btn-danger" (click)="sendMessageDoctor(Doctor.value, Patient.value, Appointment.value, message.value)">Send Message</button>
-              </div> -->
-              <!--
-              <div *ngIf="isDoctor == false">
-                <br>
-                <mat-form-field appearance="fill">
-                  <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
-                    <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid" >Dr. {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <br>
-              <mat-form-field class="example-full-width">
-                <mat-label>Type Message Here</mat-label>
-                <input matInput placeholder="Type Message Here" value="" #message>
-              </mat-form-field>
-              <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment.value, message.value)">Send Message</button>
-            </div>
-            -->
           <div>
             <h3>{{selectedValue}}</h3>
           </div>
@@ -100,12 +55,6 @@
                   </mat-select>
                 </mat-form-field>
                 <br>
-                <!--<mat-form-field class="messageForm">
-                  <mat-label>Type Message Here</mat-label>
-                  <input matInput placeholder="Type Message Here" value="" #message>
-                </mat-form-field>
-                <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment.value, message.value)">Send Message</button>
-                -->
               </div>
 
               <div *ngIf="isDoctor == true">
@@ -143,6 +92,7 @@
                     {{usermessage.sender}}
                   </span>
                   <span class="timestamp">
+                    {{usermessage.date}}<br>
                     {{usermessage.time}}
                   </span>
                 </div>
@@ -156,7 +106,7 @@
             <mat-label>Type Message Here</mat-label>
             <input matInput placeholder="Type Message Here" value="" #message>
           </mat-form-field>
-          <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(message.value)">Send Message</button>
+          <button type="submit" class="btn btn-danger" (click)="[sendMessage(message.value), refresh()]">Send Message</button>
         </mat-card>
       </div>
     </div>
