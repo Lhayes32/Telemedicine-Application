@@ -72,8 +72,6 @@ export class ChatboxComponent implements OnInit {
 
     // Update appointments
     this.updateappointments()
-
-    console.log(this.appointmentdoc);
   }
 
   fetchuserdata() {
@@ -207,6 +205,7 @@ export class ChatboxComponent implements OnInit {
       })
       }
     })
+    this.ngOnInit();
   };
 
   sendMessageDoctor(Doctor, Patient, Appointment, message) {
@@ -217,8 +216,6 @@ export class ChatboxComponent implements OnInit {
     var filtered = data.filter(x => x! !== undefined);
     var personuid = filtered[0];
     var message = filtered[1];
-    console.log(personuid);
-    console.log(message);
     if (Doctor == undefined && Patient == undefined) {
       for (var i = 0; i < this.appointmentdoc.length; i++) {
         if (appointmentdoc[i].uid == personuid)
@@ -271,6 +268,7 @@ export class ChatboxComponent implements OnInit {
       })
       }
     })
+    this.ngOnInit();
   };
 
   isMenuOpen = true;
