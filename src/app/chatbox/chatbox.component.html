@@ -67,7 +67,8 @@
                     <input matInput placeholder="Type Message Here" value="" #message>
                   </mat-form-field>
                   <button type="submit" class="btn btn-danger" (click)="sendMessageDoctor(Doctor.value, Patient.value, Appointment.value, message.value)">Send Message</button>
-              </div>
+              </div> -->
+              <!--
               <div *ngIf="isDoctor == false">
                 <br>
                 <mat-form-field appearance="fill">
@@ -82,7 +83,8 @@
                 <input matInput placeholder="Type Message Here" value="" #message>
               </mat-form-field>
               <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment.value, message.value)">Send Message</button>
-            </div> -->
+            </div>
+            -->
           <div>
             <h3>{{selectedValue}}</h3>
           </div>
@@ -92,19 +94,25 @@
                 <br>
                 <mat-form-field>
                   <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment>
+                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
                     <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">Dr.
                       {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <br>
+                <!--<mat-form-field class="messageForm">
+                  <mat-label>Type Message Here</mat-label>
+                  <input matInput placeholder="Type Message Here" value="" #message>
+                </mat-form-field>
+                <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment.value, message.value)">Send Message</button>
+                -->
               </div>
 
               <div *ngIf="isDoctor == true">
                 <br>
                 <mat-form-field>
                   <mat-label>All Doctors:</mat-label>
-                  <mat-select #Doctor [(ngModel)]="selectedValue" name="doctordoc">
+                  <mat-select #Doctor id="Appointment1" [(ngModel)]="selectedValue" name="doctordoc">
                     <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.doctor">Dr. {{doctordoc.doctor}}
                       {{doctordoc.email}}</mat-option>
                   </mat-select>
@@ -135,11 +143,11 @@
                     {{usermessage.sender}}
                   </span>
                   <span class="timestamp">
-                    {{usermessage.timestamp}}
+                    {{usermessage.time}}
                   </span>
                 </div>
                 <div class="messageContent">
-                  {{usermessage.content}}
+                  {{usermessage.message}}
                 </div>
               </div>
             </div>
@@ -149,8 +157,7 @@
             <mat-label>Type Message Here</mat-label>
             <input matInput placeholder="Type Message Here" value="" #message>
           </mat-form-field>
-          <button mat-button mat-flat-button color="warn"
-            (click)="sendMessagePatient(Appointment.value, message.value)">Send</button>
+          <button type="submit" class="btn btn-danger" (click)="sendMessagePatient(Appointment1.value, message.value)">Send Message</button>
           <!-- </div> -->
 
         </mat-card>

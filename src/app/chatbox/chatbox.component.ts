@@ -5,6 +5,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Timestamp } from 'rxjs';
 
 
 
@@ -43,8 +44,6 @@ export class ChatboxComponent implements OnInit {
   date = new Date();
 
   usermessage: any[] = [
-    {sender:"Ronak", timestamp: "3/10/20", content:"Hello"},
-    {sender:"Rohan", timestamp: "3/12/20", content:"World"},
   ];
  
 
@@ -298,12 +297,15 @@ export class ChatboxComponent implements OnInit {
         if (doc.data().senderuid == this.displayuid)
         {
           var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().timestamp}
+          var test3 = {sender: "Me", timestamp: doc.data().timestamp, content: doc.data().message};
+          this.usermessage.push(test);
           this.messagedoc.push(test);
         }
         if (doc.data().receiveruid == this.displayuid)
         {
           var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().timestamp}
           this.messagedoc.push(test2);
+          this.usermessage.push(test2);
         }
       });
       this.messagedoc = this.messagedoc.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)
