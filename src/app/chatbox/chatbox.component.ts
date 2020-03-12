@@ -270,6 +270,6 @@ export class ChatboxComponent implements OnInit {
   }
 
   refresh() {
-    this.showMessages(this.selectedappointment);
+    setTimeout(() => {this.showMessages(this.selectedappointment);}, 2000); 
   }
 }
