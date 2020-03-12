@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
-import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -17,8 +16,17 @@ import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import { FormsModule } from '@angular/forms'
+import { MatTableModule} from '@angular/material'
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
+import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleappointments.component';
+import { DatePipe } from '@angular/common';
+import { MatMenuModule} from '@angular/material/menu';
+import { ChatboxComponent } from './chatbox/chatbox.component';
 
 
 
@@ -30,16 +38,29 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
     SignupComponent,
     MyaccountComponent,
     MyfilesComponent,
-    ResetpasswordComponent
+    ResetpasswordComponent,
+    ScheduleappointmentsComponent,
+    ChatboxComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatInputModule,
+    MatDialogModule,
+    MatMenuModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    FormsModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatInputModule,
+    MatButtonModule,
+    MatInputModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatFormFieldModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
@@ -47,12 +68,22 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
     MatCardModule,
     MatTableModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRippleModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule, 
+    MatOptionModule,
   ],
 
   providers: [
-    AuthService
+    AuthService,
+    DatePipe
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ScheduleappointmentsComponent]
 })
 export class AppModule {
   constructor(private db: AngularFirestore) {

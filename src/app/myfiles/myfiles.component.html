@@ -13,8 +13,8 @@
           <mat-card-header>
             <div mat-card-avatar class="avatar"></div>
   
-            <mat-card-title>{{displayemail}}</mat-card-title>
-            <mat-card-subtitle>Patient</mat-card-subtitle>
+            <mat-card-title>{{surname}}{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
+          <mat-card-subtitle>{{isDoctorDisplay}}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
         <mat-nav-list class="menu-item">
@@ -23,6 +23,9 @@
           </a>
           <a mat-list-item [routerLink]="'/myfiles'" [routerLinkActive]="['active']">
             <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">upload_file</mat-icon>My Files
+          </a>
+          <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
+            <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
           </a>
           <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
             <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My
@@ -39,7 +42,10 @@
         <div class="container">
           <h2> My Files </h2><br>
           <mat-card class="appointment-card">
-            <mat-card-title>File Uploads</mat-card-title>
+            <mat-card-title>File Uploads <input #file type="file"  [hidden]="true" (change)="onFileChanged($event)">
+              <button  mat-button (click)="[onUpload(), refresh()]"  mat-flat-button color="warn" style="float: right; margin-left: 1%;">Upload</button>
+              <button mat-button (click)="file.click()" mat-flat-button color="primary" style="float: right;">Choose File</button>
+              </mat-card-title>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           
             <!--- Note that these columns can be defined in any order.
@@ -50,21 +56,48 @@
                     <th mat-header-cell *matHeaderCellDef> Name </th>
                     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                 </ng-container>
+
+                <ng-container matColumnDef="action">
+                  <th mat-header-cell *matHeaderCellDef> Sender </th>
+                  <td mat-cell *matCellDef="let element"> {{element.action}} </td>
+              </ng-container>
           
             <!-- Weight Column -->
-                <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef> Date </th>
-                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                <ng-container matColumnDef="download">
+                    <th mat-header-cell *matHeaderCellDef> Download </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <a href="{{element.download}}" target="_blank">Download</a></td>
                 </ng-container>
+
+            <!-- Delete Column -->
+                <ng-container matColumnDef="delete">
+                  <th mat-header-cell *matHeaderCellDef> Delete </th>
+                  <td mat-cell *matCellDef="let element"> 
+                    <button mat-button mat-flat-button color="primary" (click)="[onDelete(element.name, element.user, element.download, element.fileid), refresh()]" mat-flat-button color="green">Delete</button></td>
+                </ng-container>
+                
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+
+            <div style="display: none;" id="docsf">
+            <mat-card-title>Send Files</mat-card-title>
+            <mat-form-field>
+              <mat-label>User</mat-label>
+              <mat-select [(ngModel)]="selectedValue" name="PickToSend">
+                <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend._uid">
+                  {{PickToSend._name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p> Selected User: {{selectedValue}} </p>
+
+            <input #file type="file" [hidden]="true" (change)="onFileChanged($event)">
+            <button mat-button (click)="[onSend(), refresh()]" mat-flat-button color="warn"
+              style="float: right; margin-left: 1%;">Send</button>
+            <button mat-button (click)="file.click()" mat-flat-button color="primary" style="float: right;">Choose File</button>
+            </div>
             <br>
-
-            <h1>Upload</h1>
-            <input type="file" (change)="onFileChanged($event)">
-            <button type="button" (click)="onUpload()">Upload</button>
-
         </mat-card>
         </div>
       </div>

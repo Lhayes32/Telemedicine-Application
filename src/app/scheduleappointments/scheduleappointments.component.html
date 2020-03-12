@@ -1,0 +1,24 @@
+<mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [matDatepickerFilter]="myFilter" (dateChange)="filterdoctor(Date.value)" [min]="currentdate" #Date>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>Appointment with:</mat-label> <!-- updateTimeSelection(Date.value, Doctor.value) -->
+    <mat-select #Doctor (selectionChange)="filtertimes(Doctor.value, Date.value)">
+      <mat-option *ngFor="let userdoc of userdoc" [value]="userdoc.doctor" #doctor >{{surname}}{{userdoc.doctor}} {{userdoc.email}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Time</mat-label>
+    <mat-select #Time required>
+      <mat-option *ngFor="let time of time" [value]="time.value">{{time.value}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <div mat-dialog-actions style="float: right;"><button mat-raised-button (click)="[saveAppointment(Date.value, Time.value, Doctor.value), refresh()]" color="accent">Save</button></div>
+
+

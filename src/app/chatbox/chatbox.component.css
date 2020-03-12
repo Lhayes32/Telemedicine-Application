@@ -1,0 +1,223 @@
+ table {
+    width: 90%;
+  }
+  
+  
+  .appointment-card {
+    width: 80%;
+    padding: 2%;
+  }
+  
+  .container{
+    padding: 4%;
+  }
+  
+  .home-icon{
+  margin-right: 5%;
+  font-weight: 500;
+  }
+  
+  .mat-list-item.active { 
+  color: #2A8Bf2; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  
+  }
+  
+  .mat-list-item {
+  font-size: 14px;
+  font-weight: 500;
+  }
+  
+  .mat-card-header .mat-card-title{
+  font-size: 16px;
+  }
+  
+  .mat-toolbar{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  }
+  
+  .mat-toolbar.mat-primary {
+  background: #3E6E8C;
+  }
+  
+  #toolbarMenu {
+  cursor: pointer;
+  margin-right: 20px;
+  }
+  #mainToolbar .toolbar-spacer {
+  flex: 1 1 auto;
+  }
+  
+  #mainToolbar .toolbar-icon {
+  cursor: pointer;
+  margin: 0 8px;
+  }
+  
+  #sidenavContainer {
+  margin-top: 64px;
+  background: linear-gradient(180deg, #F3F3FB 0%, #FDFBFD 100%);
+  }
+  
+  #sidenav {
+  width: 240px;
+  }
+  
+  #sidenav.menu-close {
+  width: 74px
+  }
+  
+  #sidenav.menu-open {
+  width: 240px
+  }
+  
+  #sidenav .avatar {
+  background-image: url('http://i.pravatar.cc/300');
+  background-size: cover;
+  }
+  
+  #sidenav .mat-list-item-content {
+  padding: 0;
+  }
+  
+  #sidenav .menu-item {
+  width: 100%;
+  border-radius: 0;
+  text-align: left;
+  padding: 0px;
+  }
+  
+  
+  #sidenav .menu-item mat-icon {
+  margin-right: 20px;
+  margin-left: 12px;
+  }
+  
+  .dash-list h3 {
+  padding: 12px;
+  }
+  
+  .example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100px;
+  }
+  
+  .example-full-width {
+  width: 100%;
+  }
+  
+  table {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      min-width: 500px;
+  }
+   
+  th.mat-header-cell {
+      text-align: left;
+      max-width: 300px;
+  }
+
+
+
+  .mainContent{
+    display: flex;
+}
+
+  .userListWrapper {
+    background-color: #ffffff;
+    color: #fff;
+    display: flex;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.2em;
+    flex: 1;
+    order: 1;
+    padding: 20px 20px 40px 0px;
+    border-right: 1px solid #ffffff;
+}
+
+.feedWrapper {
+  /* background-color: #fff; */
+  background: #f6f6f6;
+  height: 380px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2em;
+  flex: 5;
+  order: 2;
+  overflow-y: scroll;
+  padding:20px 0px 0px 24px;
+}
+
+.messageForm{
+  width: 90%;
+  padding-right: 1%;
+}
+
+.chatFormWrapper {
+  display: flex;
+  height: 50px;
+  z-index: 3;
+}
+
+#scroll-style::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.messageContainer{
+  display: flex;
+  height: auto;
+  width: 95%;
+  min-width: 400px;
+  border-radius: 5px;
+  align-items:stretch;
+  background-color: #eee;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
+  white-space: pre;
+  margin: 7px;
+}
+
+.isOwnMessageContainer{
+  background-color: #01579B;
+}
+
+.messageData{
+  flex: 1;
+  padding: 10px;
+  font-size: 0.7em;
+}
+
+.sender{
+  display: block;
+  color: #222;
+  font-weight: bold;
+}
+
+.isOwnSender{
+  color: #E1F5FE;
+}
+
+.timestamp {
+  color: #555;
+  font-style: italic;
+}
+
+.isOwnTimestamp{
+  color: #4FC3F7;
+}
+
+.messageContent{
+  height: auto;
+  flex: 9;
+  background-color: #fff;
+  padding: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.isOwnMessageContent{
+  background-color: #E3F2FD;
+  color: #01579B;
+}

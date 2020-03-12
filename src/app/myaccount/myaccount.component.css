@@ -1,3 +1,8 @@
+.appointment-card {
+  width: 80%;
+  padding: 4%;
+}
+
 table {
     width: 90%;
   }
@@ -95,4 +100,14 @@ table {
 
 .dash-list h3 {
   padding: 12px;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100px;
+}
+
+.example-full-width {
+  width: 100%;
 }
