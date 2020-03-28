@@ -5,9 +5,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Timestamp } from 'rxjs';
-
-
+import { Timestamp, Observable, of } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 export interface userdoc {
   doctor: string;
@@ -44,9 +43,7 @@ export class ChatboxComponent implements OnInit {
   selectedappointment: string;
   date = new Date();
 
-  usermessage: any[] = [
-  ];
- 
+  usermessage: Observable<Array<any>>;
 
   constructor(
     private authService: AuthService,
@@ -55,8 +52,6 @@ export class ChatboxComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private snackbar: MatSnackBar,
-  
-
   ) { }
   
 
@@ -81,7 +76,14 @@ export class ChatboxComponent implements OnInit {
 
     // Update appointments
     this.updateappointments()
+
+    // setInterval(() => {this.showMessages(this.selectedappointment);}, 5000)
   }
+
+  // ngOnChanges() {
+  //   this.showMessages(this.selectedappointment);
+  // }
+
 
   fetchuserdata() {
     // Retrieve user data
@@ -211,8 +213,6 @@ export class ChatboxComponent implements OnInit {
     } else {
       var id = personuid + this.displayuid;
     }
-    console.log(id);
-    console.log(person);
     var docRef = this.afs.collection('chats').doc(id);
     docRef.get().toPromise().then((doc) => {
     if (doc.exists)
@@ -241,8 +241,9 @@ export class ChatboxComponent implements OnInit {
   isMenuOpen = true;
   contentMargin = 240;
 
-  showMessages(Doctor) {
-    this.usermessage = [];
+  async showMessages(Doctor) {
+    //this.usermessage = [];
+    this.usermessage = of([]);
     var personuid = Doctor;
     if (this.displayuid < personuid)
     {
@@ -256,15 +257,24 @@ export class ChatboxComponent implements OnInit {
         if (doc.data().senderuid == this.displayuid)
         {
           var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
-          this.usermessage.push(test);
+          // this.usermessage.push(test);
+          this.usermessage.subscribe(current => {
+            current.push(test);
+          })
         }
         if (doc.data().receiveruid == this.displayuid)
         {
           var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
-          this.usermessage.push(test2);
+          // this.usermessage.push(test2);
+          this.usermessage.subscribe(current => {
+            current.push(test2);
+          })
         }
       });
-      this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+      // this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+      this.usermessage.pipe(tap(results => {
+        results.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+      }))
     });
     this.selectedappointment = Doctor;
   }

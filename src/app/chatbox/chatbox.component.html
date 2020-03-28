@@ -80,7 +80,7 @@
               </div>
 
             <div #scroller class="feedWrapper">
-              <div class="messageContainer" *ngFor="let usermessage of usermessage">
+              <div class="messageContainer" *ngFor="let usermessage of usermessage | async">
                 <div class="messageData" >
                   <span class="sender" >
                     {{usermessage.sender}}
