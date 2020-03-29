@@ -7,8 +7,6 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Timestamp } from 'rxjs';
 
-
-
 export interface userdoc {
   doctor: string;
   email: string;
@@ -43,6 +41,8 @@ export class ChatboxComponent implements OnInit {
   flag: boolean;
   selectedappointment: string;
   date = new Date();
+  expenses: any;
+  books: any;
 
   usermessage: any[] = [
   ];
@@ -81,7 +81,9 @@ export class ChatboxComponent implements OnInit {
 
     // Update appointments
     this.updateappointments()
+
   }
+
 
   fetchuserdata() {
     // Retrieve user data
@@ -242,6 +244,7 @@ export class ChatboxComponent implements OnInit {
   contentMargin = 240;
 
   showMessages(Doctor) {
+    var newcount = ''
     this.usermessage = [];
     var personuid = Doctor;
     if (this.displayuid < personuid)
@@ -250,6 +253,13 @@ export class ChatboxComponent implements OnInit {
     } else {
       var id = personuid + this.displayuid;
     }
+    
+    // Listener
+    //this.afs.collection('chats').doc(id).collection('messages').valueChanges()
+    //.subscribe((data) => console.log('new data logic'))
+
+
+    // Retrieve the messages
     this.afs.collection('chats').doc(id).collection('messages').get().toPromise()
     .then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
@@ -267,9 +277,29 @@ export class ChatboxComponent implements OnInit {
       this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
     });
     this.selectedappointment = Doctor;
+
+    this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(doc => {
+      // Loop through every document
+      for (var i = 0; i < doc.length; i++)
+      {
+        // Loop through all of the data in every document and compare it to the data in usermessage
+        for (var j = 0; j < this.usermessage.length; j++)
+        {
+          if (doc[6].toString() == this.displayuid) {
+            var test = {sender: "Me", receiver: doc[2], message: doc[1], time: doc[6], date: doc[0], timestamp: doc[7]};
+            this.usermessage.push(test);
+          }
+          if (doc[4].toString() == this.displayuid) {
+            var test = {sender: "Me", receiver: doc[2], message: doc[1], time: doc[6], date: doc[0], timestamp: doc[7]};
+            this.usermessage.push(test);
+          }
+        }
+      }
+      console.log(this.usermessage);
+    });
   }
 
   refresh() {
-    this.showMessages(this.selectedappointment);
+    setTimeout(() => {this.showMessages(this.selectedappointment);}, 2000); 
   }
 }
