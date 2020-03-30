@@ -246,9 +246,8 @@ export class ChatboxComponent implements OnInit {
   isMenuOpen = true;
   contentMargin = 240;
 
-  async showMessages(Doctor) {
-    //this.usermessage = [];
-    this.usermessage = of([]);
+  showMessages(Doctor) {
+    this.usermessage = [];
     var personuid = Doctor;
     // Used to create a folder on the sender and receiver can access.
     if (this.displayuid < personuid)
