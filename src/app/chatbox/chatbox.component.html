@@ -79,7 +79,7 @@
                 </mat-form-field>
               </div>
 
-            <div #scroller class="feedWrapper">
+            <div #scroller [scrollTop]="scroller.scrollHeight" class="feedWrapper" style="overflow:scroll; height: xyz;">
               <div class="messageContainer" *ngFor="let usermessage of usermessage">
                 <div class="messageData" >
                   <span class="sender" >
@@ -99,7 +99,7 @@
             <!-- This is the sending box -->
           <mat-form-field class="messageForm">
             <mat-label>Type Message Here</mat-label>
-            <input matInput placeholder="Type Message Here" value="" #message>
+            <input matInput placeholder="Type Message Here" [(ngModel)]="value" #message>
           </mat-form-field>
 
           <!-- This is the sending button -->

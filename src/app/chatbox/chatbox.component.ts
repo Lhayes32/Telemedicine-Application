@@ -44,6 +44,7 @@ export class ChatboxComponent implements OnInit {
   selectedappointment: string;
   expenses: any;
   books: any;
+  value: any;
 
   usermessage: usermessage[] = [
   ];
@@ -241,6 +242,7 @@ export class ChatboxComponent implements OnInit {
       })
       }
     })
+    this.value = "";
   };
 
   isMenuOpen = true;
