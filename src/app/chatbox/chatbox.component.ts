@@ -5,7 +5,6 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Timestamp } from 'rxjs';
 
 export interface userdoc {
   doctor: string;
@@ -13,11 +12,15 @@ export interface userdoc {
   uid: string;
 }
 
-export interface messagedoc {
-  sender: any;
-  receiver: any;
+export interface usermessage {
+  date: any;
   message: any;
+  receiver: any;
+  receiveruid: string;
+  sender: string;
+  senderuid: string;
   time: any;
+  timestamp: string;
 }
 
 @Component({
@@ -36,15 +39,16 @@ export class ChatboxComponent implements OnInit {
   doctordoc:userdoc[] = [];
   patientdoc:userdoc[] = [];
   appointmentdoc:userdoc[] = [];
-  messagedoc:messagedoc[] = [];
   checkbool: boolean;
   flag: boolean;
   selectedappointment: string;
-  date = new Date();
   expenses: any;
   books: any;
 
-  usermessage: any[] = [
+  usermessage: usermessage[] = [
+  ];
+
+  messagedoc: usermessage[] = [
   ];
  
 
@@ -108,6 +112,7 @@ export class ChatboxComponent implements OnInit {
   });
   }
 
+  // This method updates the selection list on the chat page with doctors and patients.
   updateDoctorsPatients() {
     this.afs.collection('users').get().toPromise()
     .then(querySnapshot => {
@@ -140,8 +145,8 @@ export class ChatboxComponent implements OnInit {
         });
     }
 
+    // This method updates the selection list on the chat page with people who you have appointments.
     updateappointments() {
-      var appointmentlist = [];
       this.afs.collection('appointments').get().toPromise()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(doc => {
@@ -179,7 +184,9 @@ export class ChatboxComponent implements OnInit {
     })
   }
 
+  // This method is called when you send a message.
   sendMessage(message) {
+    var date = new Date();
     var currenttime = this.datePipe.transform(new Date(), "h:mm a")
     var currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy")
     var personuid = this.selectedappointment;
@@ -222,7 +229,7 @@ export class ChatboxComponent implements OnInit {
         docRef.collection('messages').doc(autoid).set({
           message: message,
           from: this.firstNameDisplay + " " + this.lastNameDisplay,
-          timestamp: this.date
+          timestamp: date
         })
       } else {
       var docRef2 = this.afs.collection('chats').doc(id).collection('messages').doc(autoid);
@@ -230,7 +237,7 @@ export class ChatboxComponent implements OnInit {
         message: message,
         sender: this.firstNameDisplay + " " + this.lastNameDisplay,
         senderuid: this.displayuid,
-        timestamp: this.date,
+        timestamp: date,
         date: currentdate,
         time: currenttime,
         receiver: person,
@@ -244,62 +251,28 @@ export class ChatboxComponent implements OnInit {
   contentMargin = 240;
 
   showMessages(Doctor) {
-    var newcount = ''
     this.usermessage = [];
     var personuid = Doctor;
+    // Used to create a folder on the sender and receiver can access.
     if (this.displayuid < personuid)
     {
       var id = this.displayuid + personuid;
     } else {
       var id = personuid + this.displayuid;
     }
+
+    this.selectedappointment = Doctor;
     
-    // Listener
-    //this.afs.collection('chats').doc(id).collection('messages').valueChanges()
-    //.subscribe((data) => console.log('new data logic'))
-
-
-    // Retrieve the messages
-    this.afs.collection('chats').doc(id).collection('messages').get().toPromise()
-    .then(querySnapshot => {
-      querySnapshot.docs.forEach(doc => {
-        if (doc.data().senderuid == this.displayuid)
-        {
-          var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
-          this.usermessage.push(test);
-        }
-        if (doc.data().receiveruid == this.displayuid)
-        {
-          var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
-          this.usermessage.push(test2);
-        }
-      });
+    // Activate Listener
+    this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
+    // Clear the message list when there is a new message added, updated or deleted.
+    this.usermessage = [];
+    // Put all of the remaining documents in the message list.
+    docs.forEach(doc => {
+      var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
+      this.usermessage.push(test);
       this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
     });
-    this.selectedappointment = Doctor;
-
-    this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(doc => {
-      // Loop through every document
-      for (var i = 0; i < doc.length; i++)
-      {
-        // Loop through all of the data in every document and compare it to the data in usermessage
-        for (var j = 0; j < this.usermessage.length; j++)
-        {
-          if (doc[6].toString() == this.displayuid) {
-            var test = {sender: "Me", receiver: doc[2], message: doc[1], time: doc[6], date: doc[0], timestamp: doc[7]};
-            this.usermessage.push(test);
-          }
-          if (doc[4].toString() == this.displayuid) {
-            var test = {sender: "Me", receiver: doc[2], message: doc[1], time: doc[6], date: doc[0], timestamp: doc[7]};
-            this.usermessage.push(test);
-          }
-        }
-      }
-      console.log(this.usermessage);
-    });
-  }
-
-  refresh() {
-    setTimeout(() => {this.showMessages(this.selectedappointment);}, 2000); 
+  });
   }
 }
