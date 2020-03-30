@@ -80,7 +80,7 @@
               </div>
 
             <div #scroller class="feedWrapper">
-              <div class="messageContainer" *ngFor="let usermessage of usermessage | async">
+              <div class="messageContainer" *ngFor="let usermessage of usermessage">
                 <div class="messageData" >
                   <span class="sender" >
                     {{usermessage.sender}}
@@ -96,12 +96,14 @@
               </div>
             </div>
 
+            <!-- This is the sending box -->
           <mat-form-field class="messageForm">
             <mat-label>Type Message Here</mat-label>
             <input matInput placeholder="Type Message Here" value="" #message>
           </mat-form-field>
 
-          <button mat-button (click)="[sendMessage(message.value), refresh()]"><mat-icon>send</mat-icon></button>
+          <!-- This is the sending button -->
+          <button mat-button (click)="sendMessage(message.value)"><mat-icon>send</mat-icon></button>
           <!-- <button type="submit" class="btn btn-danger" (click)="[sendMessage(message.value), refresh()]"><mat-icon>send</mat-icon></button> -->
         </mat-card>
       </div>
