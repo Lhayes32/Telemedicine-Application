@@ -59,7 +59,7 @@
               <mat-select [formControl]="userControl" #allUser (selectionChange)="showMessages(allUser.value)">
                 <mat-optgroup *ngFor="let group of userGroups" [label]="group._category">
                   <mat-option *ngFor="let allUsers of group._allUsers" [value]="allUsers.uid">
-                    {{allUsers.doctor}} {{allUsers.email}}
+                    {{allUsers.doctor}} - {{allUsers.email}}
                   </mat-option>
                 </mat-optgroup>
               </mat-select>

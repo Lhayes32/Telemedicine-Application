@@ -86,11 +86,10 @@
               <mat-label>User</mat-label>
               <mat-select [(ngModel)]="selectedValue" name="PickToSend">
                 <mat-option *ngFor="let PickToSend of PickToSend" [value]="PickToSend._uid">
-                  {{PickToSend._name}}
+                  {{PickToSend._name}} {{PickToSend._lastName}} - {{PickToSend._email}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <p> Selected User: {{selectedValue}} </p>
 
             <input #file type="file" [hidden]="true" (change)="onFileChanged($event)">
             <button mat-button (click)="[onSend(), refresh()]" mat-flat-button color="warn"
