@@ -27,8 +27,8 @@ import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleap
 import { DatePipe } from '@angular/common';
 import { MatMenuModule} from '@angular/material/menu';
 import { ChatboxComponent } from './chatbox/chatbox.component';
-
-
+import { NgxAgoraModule } from 'ngx-agora';
+import { VideocallComponent } from './videocall/videocall.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
     ResetpasswordComponent,
     ScheduleappointmentsComponent,
     ChatboxComponent,
+    VideocallComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +78,7 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
     MatFormFieldModule,
     MatSelectModule, 
     MatOptionModule,
+    NgxAgoraModule.forRoot({ AppID: environment.firebaseConfig.agora.appId }),
   ],
 
   providers: [

@@ -13,7 +13,10 @@ export const environment = {
     storageBucket: "telemedicine-application.appspot.com",
     messagingSenderId: "882346150232",
     appId: "1:882346150232:web:3bde3e28c2d93e9f2ffd2d",
-    measurementId: "G-14XEFS4CSD"
+    measurementId: "G-14XEFS4CSD",
+  agora: {
+    appId: '803773dfd3bc49f6919b065aaf4cc89c'
+  }
   }
   
 };
