@@ -20,7 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatTableModule} from '@angular/material'
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule } from  '@angular/material';
 import { ScheduleappointmentsComponent } from './scheduleappointments/scheduleappointments.component';
@@ -53,6 +53,7 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
     AngularFirestoreModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatMenuModule,
     MatInputModule,
