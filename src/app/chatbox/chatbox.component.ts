@@ -5,11 +5,18 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {FormControl} from '@angular/forms';
+
 
 export interface userdoc {
   doctor: string;
   email: string;
   uid: string;
+}
+
+interface userGroup {
+  _category: string;
+  _allUsers: any;
 }
 
 export interface usermessage {
@@ -52,6 +59,18 @@ export class ChatboxComponent implements OnInit {
   messagedoc: usermessage[] = [
   ];
  
+  userControl = new FormControl();
+  userGroups: userGroup[] = [
+    {
+      _category: 'Doctor',
+      _allUsers: this.doctordoc,
+    },
+    {
+      _category: 'Patient',
+      _allUsers: this.patientdoc,
+    },
+  ];
+
 
   constructor(
     private authService: AuthService,
