@@ -62,6 +62,10 @@ export class ChatboxComponent implements OnInit {
   userControl = new FormControl();
   userGroups: userGroup[] = [
     {
+      _category: 'Appointments With',
+      _allUsers: this.appointmentdoc,
+    },
+    {
       _category: 'Doctor',
       _allUsers: this.doctordoc,
     },
