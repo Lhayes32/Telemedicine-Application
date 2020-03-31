@@ -38,10 +38,10 @@
     <div style="height: 80vh;">
       <div class="container">
         <h2 style="padding-right: 55%;">Messages</h2>
+        <br>
         <mat-card class="appointment-card">
 
           <div *ngIf="isDoctor == false">
-            <br>
             <mat-form-field>
               <mat-label>Appointments with:</mat-label>
               <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
