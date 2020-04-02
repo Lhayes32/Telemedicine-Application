@@ -301,6 +301,17 @@ export class ChatboxComponent implements OnInit {
         this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
         }
       }
+    /*// Activate Listener (Old switching method)
+    this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
+      // Clear the message list when there is a new message added, updated or deleted.
+      this.usermessage = [];
+      // Put all of the remaining documents in the message list.
+      docs.forEach(doc => {
+        var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
+        this.usermessage.push(test);
+        this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+      });
+    }); */
     });
   });
   }
