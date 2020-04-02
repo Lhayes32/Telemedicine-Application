@@ -52,6 +52,7 @@ export class ChatboxComponent implements OnInit {
   expenses: any;
   books: any;
   value: any;
+  selecteduid: string;
 
   usermessage: usermessage[] = [
   ];
@@ -272,14 +273,13 @@ export class ChatboxComponent implements OnInit {
   contentMargin = 240;
 
   showMessages(Doctor) {
-    this.usermessage = [];
-    var personuid = Doctor;
+    this.selecteduid = Doctor;
     // Used to create a folder on the sender and receiver can access.
-    if (this.displayuid < personuid)
+    if (this.displayuid < Doctor)
     {
-      var id = this.displayuid + personuid;
+      var id = this.displayuid + Doctor;
     } else {
-      var id = personuid + this.displayuid;
+      var id = Doctor + this.displayuid;
     }
 
     this.selectedappointment = Doctor;
@@ -287,12 +287,20 @@ export class ChatboxComponent implements OnInit {
     // Activate Listener
     this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
     // Clear the message list when there is a new message added, updated or deleted.
-    this.usermessage = [];
+    if (docs[0].senderuid == this.selecteduid || docs[0].receiveruid == this.selecteduid) {
+      if (docs[0].senderuid == this.displayuid || docs[0].receiveruid == this.displayuid) {
+        this.usermessage = [];
+      }
+    }
     // Put all of the remaining documents in the message list.
     docs.forEach(doc => {
-      var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
-      this.usermessage.push(test);
-      this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+      if (doc.senderuid == this.selecteduid || doc.receiveruid == this.selecteduid) {
+        if (doc.senderuid == this.displayuid || doc.receiveruid == this.displayuid) {
+        var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
+        this.usermessage.push(test);
+        this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+        }
+      }
     });
   });
   }
