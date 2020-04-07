@@ -49,7 +49,7 @@ export class ChatboxComponent implements OnInit {
  
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
     private dialog: MatDialog,
@@ -238,9 +238,6 @@ export class ChatboxComponent implements OnInit {
     })
   };
 
-  isMenuOpen = true;
-  contentMargin = 240;
-
   showMessages(Doctor) {
     this.usermessage = [];
     var personuid = Doctor;
@@ -271,5 +268,19 @@ export class ChatboxComponent implements OnInit {
 
   refresh() {
     setTimeout(() => {this.showMessages(this.selectedappointment);}, 2000); 
+  }
+
+  isMenuOpen = true;
+  contentMargin = 240;
+
+  onToolbarMenuToggle() {
+    console.log('On toolbar toggled', this.isMenuOpen);
+    this.isMenuOpen = !this.isMenuOpen;
+
+    if (!this.isMenuOpen) {
+      this.contentMargin = 70;
+    } else {
+      this.contentMargin = 240;
+    }
   }
 }

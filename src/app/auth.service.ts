@@ -14,7 +14,7 @@ export class AuthService {
   userData: any; // Save logged in user data
 
   constructor(
-    private snackBar: MatSnackBar,
+    public snackBar: MatSnackBar,
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,

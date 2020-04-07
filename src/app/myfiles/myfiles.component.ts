@@ -62,7 +62,7 @@ export class MyfilesComponent implements OnInit {
   selectedValue: string;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
   ) { }

@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
   fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
     private dialog: MatDialog,

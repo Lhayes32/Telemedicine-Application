@@ -34,7 +34,7 @@ export class MyaccountComponent implements OnInit {
   isDoctor: boolean;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
   ) {
