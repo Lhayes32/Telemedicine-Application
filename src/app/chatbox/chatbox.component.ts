@@ -312,7 +312,6 @@ export class ChatboxComponent implements OnInit {
     });
   });
   }
-<<<<<<< HEAD
 
   isMenuOpen = true;
   contentMargin = 240;
@@ -328,6 +327,3 @@ export class ChatboxComponent implements OnInit {
     }
   }
 }
-=======
-}
->>>>>>> 25c11630db95c511c554798441d6599bb3751222
