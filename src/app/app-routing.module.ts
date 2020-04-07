@@ -7,7 +7,7 @@ import { MyaccountComponent } from './myaccount/myaccount.component';
 import { MyfilesComponent } from './myfiles/myfiles.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { ChatboxComponent } from './chatbox/chatbox.component';
-
+import { VideocallComponent } from './videocall/videocall.component';
 
 const routes: Routes = [
 
@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'myfiles', component: MyfilesComponent },
   { path: 'resetpassword', component: ResetpasswordComponent },
   { path: 'chatbox', component: ChatboxComponent },
+  { path: 'videocall', component: VideocallComponent },
 
 ];
 
