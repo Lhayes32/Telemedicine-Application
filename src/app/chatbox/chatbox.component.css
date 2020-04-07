@@ -166,6 +166,12 @@
 	background-color: #F5F5F5;
 }
 
+.apt-col {
+  position: relative;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .messageContainer{
   display: flex;
   height: auto;

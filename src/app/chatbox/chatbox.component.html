@@ -24,6 +24,9 @@
         <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
           <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
         </a>
+        <a mat-list-item [routerLink]="'/videocall'" [routerLinkActive]="['active']">
+          <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">duo</mat-icon>Video Call
+        </a>
         <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
           <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My
           Account
@@ -40,68 +43,61 @@
         <h2 style="padding-right: 55%;">Messages</h2>
         <br>
         <mat-card class="appointment-card">
-              <div *ngIf="isDoctor == false">
-                <br>
-                <mat-form-field>
-                  <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
-                    <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">Dr.
-                      {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <br>
-              </div>
 
-              <div class="row" *ngIf="isDoctor == true">
-                <br>
-                <mat-form-field class="col">
-                  <mat-label>All Doctors:</mat-label>
-                  <mat-select #Doctor (selectionChange)="showMessages(Doctor.value)">
-                    <mat-option *ngFor="let doctordoc of doctordoc" [value]="doctordoc.uid">Dr. {{doctordoc.doctor}}
-                      {{doctordoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <br>
-                <mat-form-field class="col">
-                  <mat-label>All Patients:</mat-label>
-                  <mat-select #Patient (selectionChange)="showMessages(Patient.value)">
-                    <mat-option *ngFor="let patientdoc of patientdoc" [value]="patientdoc.uid">{{patientdoc.doctor}}
-                      {{patientdoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <br>
-                <mat-form-field class="col">
-                  <mat-label>Appointments with:</mat-label>
-                  <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
-                    <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">
-                      {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+          <div *ngIf="isDoctor == false">
+            <mat-form-field>
+              <mat-label>Appointments with:</mat-label>
+              <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
+                <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">Dr.
+                  {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+          </div>
 
-            <div #scroller class="feedWrapper">
-              <div class="messageContainer" *ngFor="let usermessage of usermessage">
-                <div class="messageData" >
-                  <span class="sender" >
-                    {{usermessage.sender}}
-                  </span>
-                  <span class="timestamp">
-                    {{usermessage.date}}<br>
-                    {{usermessage.time}}
-                  </span>
-                </div>
-                <div class="messageContent">
-                  {{usermessage.message}}
-                </div>
+          <div class="col" *ngIf="isDoctor == true">
+            <br>
+            <mat-form-field>
+              <mat-label>Chat With</mat-label>
+              <mat-select [formControl]="userControl" #allUser (selectionChange)="showMessages(allUser.value)">
+                <mat-optgroup *ngFor="let group of userGroups" [label]="group._category">
+                  <mat-option *ngFor="let allUsers of group._allUsers" [value]="allUsers.uid">
+                    {{allUsers.doctor}} - {{allUsers.email}}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div #scroller [scrollTop]="scroller.scrollHeight" class="feedWrapper" style="overflow:scroll; height: xyz;">
+            <div class="messageContainer" *ngFor="let usermessage of usermessage">
+              <div class="messageData">
+                <span class="sender">
+                  {{usermessage.sender}}
+                </span>
+                <span class="timestamp">
+                  {{usermessage.date}}<br>
+                  {{usermessage.time}}
+                </span>
+              </div>
+              <div class="messageContent">
+                {{usermessage.message}}
               </div>
             </div>
+          </div>
 
+          <br>
+
+          <!-- This is the sending box -->
           <mat-form-field class="messageForm">
             <mat-label>Type Message Here</mat-label>
-            <input matInput placeholder="Type Message Here" value="" #message>
+            <input matInput placeholder="Type Message Here" [(ngModel)]="value" #message>
           </mat-form-field>
 
-          <button mat-button (click)="[sendMessage(message.value), refresh()]"><mat-icon>send</mat-icon></button>
+          <!-- This is the sending button -->
+          <button mat-button (click)="sendMessage(message.value)">
+            <mat-icon>send</mat-icon>
+          </button>
           <!-- <button type="submit" class="btn btn-danger" (click)="[sendMessage(message.value), refresh()]"><mat-icon>send</mat-icon></button> -->
         </mat-card>
       </div>

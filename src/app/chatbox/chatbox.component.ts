@@ -5,8 +5,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Timestamp } from 'rxjs';
-
+import {FormControl} from '@angular/forms';
 
 
 export interface userdoc {
@@ -15,11 +14,20 @@ export interface userdoc {
   uid: string;
 }
 
-export interface messagedoc {
-  sender: any;
-  receiver: any;
+interface userGroup {
+  _category: string;
+  _allUsers: any;
+}
+
+export interface usermessage {
+  date: any;
   message: any;
+  receiver: any;
+  receiveruid: string;
+  sender: string;
+  senderuid: string;
   time: any;
+  timestamp: string;
 }
 
 @Component({
@@ -38,15 +46,36 @@ export class ChatboxComponent implements OnInit {
   doctordoc:userdoc[] = [];
   patientdoc:userdoc[] = [];
   appointmentdoc:userdoc[] = [];
-  messagedoc:messagedoc[] = [];
   checkbool: boolean;
   flag: boolean;
   selectedappointment: string;
-  date = new Date();
+  expenses: any;
+  books: any;
+  value: any;
+  selecteduid: string;
 
-  usermessage: any[] = [
+  usermessage: usermessage[] = [
+  ];
+
+  messagedoc: usermessage[] = [
   ];
  
+  userControl = new FormControl();
+  userGroups: userGroup[] = [
+    {
+      _category: 'Appointments With',
+      _allUsers: this.appointmentdoc,
+    },
+    {
+      _category: 'Doctor',
+      _allUsers: this.doctordoc,
+    },
+    {
+      _category: 'Patient',
+      _allUsers: this.patientdoc,
+    },
+  ];
+
 
   constructor(
     private authService: AuthService,
@@ -55,8 +84,6 @@ export class ChatboxComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private snackbar: MatSnackBar,
-  
-
   ) { }
   
 
@@ -81,7 +108,9 @@ export class ChatboxComponent implements OnInit {
 
     // Update appointments
     this.updateappointments()
+
   }
+
 
   fetchuserdata() {
     // Retrieve user data
@@ -106,6 +135,7 @@ export class ChatboxComponent implements OnInit {
   });
   }
 
+  // This method updates the selection list on the chat page with doctors and patients.
   updateDoctorsPatients() {
     this.afs.collection('users').get().toPromise()
     .then(querySnapshot => {
@@ -138,8 +168,8 @@ export class ChatboxComponent implements OnInit {
         });
     }
 
+    // This method updates the selection list on the chat page with people who you have appointments.
     updateappointments() {
-      var appointmentlist = [];
       this.afs.collection('appointments').get().toPromise()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(doc => {
@@ -177,7 +207,9 @@ export class ChatboxComponent implements OnInit {
     })
   }
 
+  // This method is called when you send a message.
   sendMessage(message) {
+    var date = new Date();
     var currenttime = this.datePipe.transform(new Date(), "h:mm a")
     var currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy")
     var personuid = this.selectedappointment;
@@ -211,8 +243,6 @@ export class ChatboxComponent implements OnInit {
     } else {
       var id = personuid + this.displayuid;
     }
-    console.log(id);
-    console.log(person);
     var docRef = this.afs.collection('chats').doc(id);
     docRef.get().toPromise().then((doc) => {
     if (doc.exists)
@@ -220,7 +250,7 @@ export class ChatboxComponent implements OnInit {
         docRef.collection('messages').doc(autoid).set({
           message: message,
           from: this.firstNameDisplay + " " + this.lastNameDisplay,
-          timestamp: this.date
+          timestamp: date
         })
       } else {
       var docRef2 = this.afs.collection('chats').doc(id).collection('messages').doc(autoid);
@@ -228,7 +258,7 @@ export class ChatboxComponent implements OnInit {
         message: message,
         sender: this.firstNameDisplay + " " + this.lastNameDisplay,
         senderuid: this.displayuid,
-        timestamp: this.date,
+        timestamp: date,
         date: currentdate,
         time: currenttime,
         receiver: person,
@@ -236,40 +266,53 @@ export class ChatboxComponent implements OnInit {
       })
       }
     })
+    this.value = "";
   };
 
   isMenuOpen = true;
   contentMargin = 240;
 
   showMessages(Doctor) {
-    this.usermessage = [];
-    var personuid = Doctor;
-    if (this.displayuid < personuid)
+    this.selecteduid = Doctor;
+    // Used to create a folder on the sender and receiver can access.
+    if (this.displayuid < Doctor)
     {
-      var id = this.displayuid + personuid;
+      var id = this.displayuid + Doctor;
     } else {
-      var id = personuid + this.displayuid;
+      var id = Doctor + this.displayuid;
     }
-    this.afs.collection('chats').doc(id).collection('messages').get().toPromise()
-    .then(querySnapshot => {
-      querySnapshot.docs.forEach(doc => {
-        if (doc.data().senderuid == this.displayuid)
-        {
-          var test = {sender: "Me", receiver: doc.data().receiver, message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
-          this.usermessage.push(test);
-        }
-        if (doc.data().receiveruid == this.displayuid)
-        {
-          var test2 = {sender: doc.data().sender, receiver: "Me", message: doc.data().message, time: doc.data().time, date: doc.data().date, timestamp: doc.data().timestamp}
-          this.usermessage.push(test2);
-        }
-      });
-      this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
-    });
-    this.selectedappointment = Doctor;
-  }
 
-  refresh() {
-    setTimeout(() => {this.showMessages(this.selectedappointment);}, 2000); 
+    this.selectedappointment = Doctor;
+    
+    // Activate Listener
+    this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
+    // Clear the message list when there is a new message added, updated or deleted.
+    if (docs[0].senderuid == this.selecteduid || docs[0].receiveruid == this.selecteduid) {
+      if (docs[0].senderuid == this.displayuid || docs[0].receiveruid == this.displayuid) {
+        this.usermessage = [];
+      }
+    }
+    // Put all of the remaining documents in the message list.
+    docs.forEach(doc => {
+      if (doc.senderuid == this.selecteduid || doc.receiveruid == this.selecteduid) {
+        if (doc.senderuid == this.displayuid || doc.receiveruid == this.displayuid) {
+        var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
+        this.usermessage.push(test);
+        this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+        }
+      }
+    /*// Activate Listener (Old switching method)
+    this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
+      // Clear the message list when there is a new message added, updated or deleted.
+      this.usermessage = [];
+      // Put all of the remaining documents in the message list.
+      docs.forEach(doc => {
+        var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
+        this.usermessage.push(test);
+        this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+      });
+    }); */
+    });
+  });
   }
 }

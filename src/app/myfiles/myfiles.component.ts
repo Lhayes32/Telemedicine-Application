@@ -20,6 +20,8 @@ export interface FileList {
 export interface PickToSend {
   _uid: string;
   _name: string;
+  _lastName: string;
+  _email: string;
 }
 
 var FILE_DATA: FileList[] = [
@@ -57,7 +59,6 @@ export class MyfilesComponent implements OnInit {
   isDoctor: boolean;
 
 	filenameSend: string;
-  // Ronak: string = "76w98uRJcOUSdFqUwWXhMZx8U952";
   
   selectedValue: string;
 
@@ -146,7 +147,7 @@ export class MyfilesComponent implements OnInit {
       querySnapshot.docs.forEach(doc => {
         if(this.isDoctorDisplay == "Doctor"){
           if(doc.exists){
-            var test = {_uid: doc.data().uid, _name: doc.data().firstName}
+            var test = {_uid: doc.data().uid, _name: doc.data().firstName, _lastName: doc.data().lastName, _email: doc.data().email}
             this.PickToSend.push(test);
           }
         }
