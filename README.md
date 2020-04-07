@@ -1,3 +1,7 @@
+Check out our application here: https://telemedicine-application.web.app/
+
+[(Sample account only used for others to view) Email: 'test123@gmail.com', Password: 'test123']
+
 # TelemedicineApplication
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.22.
