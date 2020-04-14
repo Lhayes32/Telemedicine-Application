@@ -2,11 +2,13 @@ Check out our application here: https://telemedicine-application.web.app/
 
 [(Sample account only used for others to view) Email: 'test123@gmail.com', Password: 'test123']
 
-# TelemedicineApplication
+# Project Description
+
+# Components Used
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.22.
 
-## Development server
+# How to run the project
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
