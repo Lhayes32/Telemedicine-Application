@@ -1,5 +1,6 @@
 Check out our application here: https://telemedicine-application.web.app/
-For testing purposes, please use email: Test123@gmail.com password: test123
+
+For testing purposes, please use email: test123@gmail.com password: test123
 
 # Telemedicine Application 
 
