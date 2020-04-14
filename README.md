@@ -17,16 +17,15 @@ This application was designed to be used as an online web portal for patients an
 ** Special Note: Please contact a server admin if you would like to register as a doctor. *** 
 
 ### Appointments 
-- Both patients and doctors can create appointments with one another. Doctors can only create appointments with patients, and patients can only create appointments with doctors. This is to ensure our project is being used for the right purposes. Appointments can be cancelled at anytime, by either the initial sender or receiver. Cancelled voids the option for video chat, but keeps the option open for text chat. Appointments are automatically deleted by the server by the next day. Cancelled appointments still show after they are cancelled, and are deleted along with the outdated appointments.
+Both patients and doctors can create appointments with one another. Doctors can only create appointments with patients, and patients can only create appointments with doctors. This is to ensure our project is being used for the right purposes. Appointments can be cancelled at anytime, by either the initial sender or receiver. Cancelled voids the option for video chat, but keeps the option open for text chat. Appointments are automatically deleted by the server by the next day. Cancelled appointments still show after they are cancelled, and are deleted along with the outdated appointments.
 
 ### Text Chat 
-- Text Chat - 
 Text chat is handled sychronously by Google Firebase between the doctor and the patient. They are ordered by ascending time, and can only be seen by the respective parties. Patients can only communicate with the doctors they've made appointments with, to ensure our project is being used for the right reasons. Doctors can talk to patients and other doctors. Unlike appointments, chats are not automatically deleted after a set time.
 
-- Video Chat - 
+### Video Chat 
 Video chat is handled by Agar.io, which allows a computer to send a video and audio feed to another computer. When an appointment is created, so is a room that only allows the patient and doctor access to that specific room. 
 
-- File Uploads - 
+### File Uploads 
 File Uploads allow for patients to upload their own files which can be viewed by Doctors. Doctors also have their own file storage. Files can be sent from Doctors to patients' personal file folders for them to view later. Only a patient can see their respective uploads.
 
 ## Components Used
