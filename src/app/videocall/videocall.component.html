@@ -68,11 +68,13 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
+                
+                <div class="test">
                 <div class="videoContainer">
                     <div [id]="localCallId" class="local"></div>
                     <div *ngFor="let callId of remoteCalls" [id]="callId" class="remote"></div>
                 </div>
-                
+            </div>
             </mat-card>
           </div>
         </div>
