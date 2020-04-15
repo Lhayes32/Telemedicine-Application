@@ -48,6 +48,7 @@
             <mat-form-field>
               <mat-label>Appointments with:</mat-label>
               <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
+                <mat-option [value]="0">{{checkAstring}}</mat-option>
                 <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">Dr.
                   {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
               </mat-select>
