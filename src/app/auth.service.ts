@@ -84,6 +84,12 @@ export class AuthService {
 
   // Sign up with email/password
   SignUp(email, password) {
+    const hasNumbers = /\d/.test(password)
+    if(password.length < 8 || !hasNumbers)
+    {
+      let snackBarRef = this.snackBar.open('Password must include at least 8 characters and a number!', 'Dismiss', {duration: 6000});
+    }
+    else {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         this.SetUserData(result.user);
@@ -91,6 +97,7 @@ export class AuthService {
       }).catch((error) => {
         let snackBarRef = this.snackBar.open(error.message, 'Dismiss', {duration: 5000});
       })
+    }
   }
 
   // Reset Forgot password

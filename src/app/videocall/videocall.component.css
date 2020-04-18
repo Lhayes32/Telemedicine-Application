@@ -10,9 +10,151 @@
 }
 
 .remote {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    background-color: #404040;
+    border: black 1px solid;
+    height: 490px;
+    width: 900px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.video-buttons {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.video-buttons i {
+    cursor: pointer;
+}
+
+.endCall {
+    color: red;
+}
+
+.startCall {
+    color: red;
+}
+
+.mic {
+    color: red;
+}
+
+/*********************/
+
+table {
+    width: 90%;
+}
+
+.appointment-card {
+    width: 100%;
+}
+
+.container {
+    padding: 2%;
+}
+
+.home-icon {
+    margin-right: 5%;
+    font-weight: 500;
+}
+
+.mat-list-item.active {
+    color: #2a8bf2;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-list-item {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mat-card-header .mat-card-title {
+    font-size: 16px;
+}
+
+.mat-toolbar {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 18px;
+}
+
+.mat-toolbar.mat-primary {
+    background: #3e6e8c;
+}
+
+#toolbarMenu {
+    cursor: pointer;
+    margin-right: 20px;
+}
+#mainToolbar .toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+#mainToolbar .toolbar-icon {
+    cursor: pointer;
+    margin: 0 8px;
+}
+
+#sidenavContainer {
+    margin-top: 64px;
+    background: linear-gradient(180deg, #f3f3fb 0%, #fdfbfd 100%);
+}
+
+#sidenav {
+    width: 240px;
+}
+
+#sidenav.menu-close {
+    width: 74px;
+}
+
+#sidenav.menu-open {
+    width: 240px;
+}
+
+#sidenav .avatar {
+    background-image: url("http://i.pravatar.cc/300");
+    background-size: cover;
+}
+
+#sidenav .mat-list-item-content {
+    padding: 0;
+}
+
+#sidenav .menu-item {
+    width: 100%;
+    border-radius: 0;
+    text-align: left;
+    padding: 0px;
+}
+
+#sidenav .menu-item mat-icon {
+    margin-right: 20px;
+    margin-left: 12px;
+}
+
+.dash-list h3 {
+    padding: 12px;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100px;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 500px;
+}
+
+th.mat-header-cell {
+    text-align: left;
+    max-width: 300px;
 }
