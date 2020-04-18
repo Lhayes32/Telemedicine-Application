@@ -1,3 +1,102 @@
-<div [id]="localCallId" class="local"></div>
+<mat-toolbar id="mainToolbar" color="primary">
+    <mat-icon (click)="onToolbarMenuToggle()" id="toolbarMenu">subject</mat-icon>
+    Telemedicine Application
+    <span class="toolbar-spacer"></span>
+</mat-toolbar>
 
-<div *ngFor="let callId of remoteCalls" [id]="callId" class="remote"></div>
+<mat-sidenav-container id="sidenavContainer" fullscreen>
+    <mat-sidenav mode="side" #sidenav id="sidenav" [class.menu-open]="isMenuOpen" [class.menu-close]="!isMenuOpen"
+        opened>
+        <mat-list id="menus">
+            <mat-card>
+                <mat-card-header>
+                    <div mat-card-avatar class="avatar"></div>
+                    <mat-card-title>{{surname}}{{firstNameDisplay}} {{lastNameDisplay}}</mat-card-title>
+                    <mat-card-subtitle>{{isDoctorDisplay}}</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
+            <mat-nav-list class="menu-item">
+                <a mat-list-item [routerLink]="'/home'" [routerLinkActive]="['active']">
+                    <mat-icon class="home-icon" aria-hidden="false" aria-label="Example home icon">home</mat-icon>Home
+                </a>
+                <a mat-list-item [routerLink]="'/myfiles'" [routerLinkActive]="['active']">
+                    <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">upload_file
+                    </mat-icon>My Files
+                </a>
+                <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
+                    <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
+                </a>
+                <a mat-list-item [routerLink]="'/videocall'" [routerLinkActive]="['active']">
+                    <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">duo</mat-icon>Video
+                    Call
+                </a>
+                <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
+                    <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle
+                    </mat-icon>My
+                    Account
+                </a>
+                <a mat-list-item (click)="authService.SignOut()">
+                    <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">logout</mat-icon>Sign
+                    Out
+                </a>
+            </mat-nav-list>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div style="height: 80vh;">
+            <div class="container">
+                <h2 style="padding-right: 55%;">Video Chat</h2>
+                <br>
+                <mat-card class="appointment-card">
+
+                    <div *ngIf="isDoctor == false">
+                        <mat-form-field>
+                            <mat-label>Appointments with:</mat-label>
+                            <mat-select #Appointment (selectionChange)="createVideoStream(Appointment.value)">
+                                <mat-option [value]="0">{{checkAstring}}</mat-option>
+                                <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">
+                                    Dr.
+                                    {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                    </div>
+
+                    <div class="col" *ngIf="isDoctor == true">
+                        <br>
+                        <mat-form-field>
+                            <mat-label>Video Chat With</mat-label>
+                            <mat-select [formControl]="userControl" #allUser
+                                (selectionChange)="createVideoStream(allUser.value)">
+                                <mat-optgroup *ngFor="let group of userGroups" [label]="group._category">
+                                    <mat-option *ngFor="let allUsers of group._allUsers" [value]="allUsers.uid">
+                                        {{allUsers.doctor}} - {{allUsers.email}}
+                                    </mat-option>
+                                </mat-optgroup>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="wrapper">
+                        <div *ngFor="let callId of remoteCalls" [id]="callId" class="remote"></div>
+                        <div class="video-buttons">
+                            <ng-container>
+                                <i class="endCall material-icons" (click)="leave()">phone</i>
+
+                                <i class="mic material-icons" (click)="toggleAudio()" *ngIf="audioEnabled">mic</i>
+                                <i class="mic material-icons" (click)="toggleAudio()" *ngIf="!audioEnabled">mic_off</i>
+
+                                <i class="mic material-icons" (click)="toggleVideo()" *ngIf="videoEnabled">videocam</i>
+                                <i class="mic material-icons" (click)="toggleVideo()"
+                                    *ngIf="!videoEnabled">videocam_off</i>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div [id]="localCallId" class="local"></div>
+
+                </mat-card>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
