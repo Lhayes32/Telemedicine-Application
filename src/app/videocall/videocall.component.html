@@ -47,7 +47,7 @@
                 <div *ngIf="isDoctor == false">
                   <mat-form-field>
                     <mat-label>Appointments with:</mat-label>
-                    <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
+                    <mat-select #Appointment (selectionChange)="createVideoStream(Appointment.value)">
                       <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">Dr.
                         {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
                     </mat-select>
@@ -59,7 +59,7 @@
                   <br>
                   <mat-form-field>
                     <mat-label>Chat With</mat-label>
-                    <mat-select [formControl]="userControl" #allUser (selectionChange)="showMessages(allUser.value)">
+                    <mat-select [formControl]="userControl" #allUser (selectionChange)="createVideoStream(allUser.value)">
                       <mat-optgroup *ngFor="let group of userGroups" [label]="group._category">
                         <mat-option *ngFor="let allUsers of group._allUsers" [value]="allUsers.uid">
                           {{allUsers.doctor}} - {{allUsers.email}}

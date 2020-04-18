@@ -65,6 +65,7 @@ export class VideocallComponent implements OnInit {
   private client: AgoraClient;
   private localStream: Stream;
   private uid: any;
+  private gen_uid: any;
 
   constructor(
     private authService: AuthService,
@@ -99,12 +100,11 @@ export class VideocallComponent implements OnInit {
     }
     
     this.client = this.ngxAgoraService.createClient({ mode: 'rtc', codec: 'h264' });
-    this.assignClientHandlers();
+    console.log(this.client + ":client")
+    
 
     // Added in this step to initialize the local A/V stream
-    this.localStream = this.ngxAgoraService.createStream({ streamID: this.uid, audio: true, video: true, screen: false });
-    this.assignLocalStreamHandlers();
-    this.initLocalStream(() => this.join(uid => this.publish(), error => console.error(error)));
+    
     // Fetch user's data
     this.fetchuserdata()
 
@@ -211,11 +211,28 @@ export class VideocallComponent implements OnInit {
     })
   }
 
+  createVideoStream(vUid){
+    if (this.displayuid < vUid)
+    {
+      this.gen_uid = this.displayuid + vUid;
+    } else {
+      this.gen_uid = vUid + this.displayuid;
+    }
+    var finalUID = this.gen_uid;
+    console.log(finalUID + " test");
+    this.localStream = this.ngxAgoraService.createStream({ streamID: this.gen_uid, audio: true, video: true, screen: false });
+    this.assignLocalStreamHandlers();
+    this.initLocalStream(() => this.join(finalUID => this.publish(), error => console.error(error)));
+    this.assignClientHandlers();
+  }
+
+
   /**
  * Attempts to connect to an online chat room where users can host and receive A/V streams.
  */
 join(onSuccess?: (uid: number | string) => void, onFailure?: (error: Error) => void): void {
-  this.client.join(null, 'foo-bar', this.uid, onSuccess, onFailure);
+  
+  this.client.join(null, this.gen_uid, this.uid, onSuccess, onFailure);
 }
 
 /**
