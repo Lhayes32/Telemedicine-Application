@@ -76,7 +76,7 @@ export class VideocallComponent implements OnInit {
   ];
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,   // Inject Firestore service
     private ngxAgoraService: NgxAgoraService,
