@@ -360,4 +360,10 @@ export class VideocallComponent implements OnInit {
     }
   }
 
+  refresh() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  }
+
 }

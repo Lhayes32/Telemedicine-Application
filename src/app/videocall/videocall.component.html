@@ -45,7 +45,7 @@
     <mat-sidenav-content>
         <div style="height: 80vh;">
             <div class="container">
-                <h2 style="padding-right: 55%;">Video Chat</h2>
+                <h2 style="padding-right: 55%; margin: 0;">Video Chat</h2>
                 <br>
                 <mat-card class="appointment-card">
 
@@ -81,7 +81,7 @@
                         <div *ngFor="let callId of remoteCalls" [id]="callId" class="remote"></div>
                         <div class="video-buttons">
                             <ng-container>
-                                <i class="endCall material-icons" (click)="leave()">phone</i>
+                                <i class="endCall material-icons" (click)="[leave(), refresh()]">phone</i>
 
                                 <i class="mic material-icons" (click)="toggleAudio()" *ngIf="audioEnabled">mic</i>
                                 <i class="mic material-icons" (click)="toggleAudio()" *ngIf="!audioEnabled">mic_off</i>
