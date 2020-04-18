@@ -32,6 +32,8 @@ export class MyaccountComponent implements OnInit {
   isDoctorDisplay:string;
   surname: string;
   isDoctor: boolean;
+  minDate: Date;
+  maxDate: Date;
 
   constructor(
     public authService: AuthService,
@@ -60,6 +62,12 @@ export class MyaccountComponent implements OnInit {
       this.displayemail = localStorage.getItem("displayemail");
       console.log(this.displayemail);
     }
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const currentDay = new Date().getDate();
+   
+    this.minDate = new Date(currentYear - 120, 0, 1);
+    this.maxDate = new Date(currentYear - 18, currentMonth, currentDay);
 
     // fetch user's data
     this.fetchuserdata()

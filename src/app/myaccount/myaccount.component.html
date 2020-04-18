@@ -55,13 +55,14 @@
                 <mat-label>Last Name</mat-label>
                 <input matInput placeholder="Your Last Name" value="{{lastNameDisplay}}" #lastName>
               </mat-form-field>
-              <mat-form-field class="example-full-width">
+              <mat-form-field appearance="fill" class="example-full-width">
                 <mat-label>Email Address</mat-label>
                 <input matInput placeholder="Your Email Address" value="{{displayemail}}" readonly #email>
               </mat-form-field>
               <mat-form-field class="example-full-width">
-                <mat-label>Date of Birth</mat-label>
-                <input matInput placeholder="Your Date of Birth" value="{{dobDisplay}}" #dateofbirth>
+                <input matInput placeholder ="mm/dd/yyyy" [min]="minDate" [max]="maxDate" [matDatepicker]="picker" value="{{dateofbirth}}" #dateofbirth >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker> 
               </mat-form-field>
               <mat-form-field class="example-full-width">
                 <mat-label>Address</mat-label>
