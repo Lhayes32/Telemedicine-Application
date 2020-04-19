@@ -24,9 +24,6 @@
         <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
           <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">chat</mat-icon>Chats
         </a>
-        <a mat-list-item [routerLink]="'/videocall'" [routerLinkActive]="['active']">
-          <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">duo</mat-icon>Video Call
-        </a>
         <a mat-list-item [routerLink]="'/myaccount'" [routerLinkActive]="['active']">
           <mat-icon class="home-icon" aria-hidden="false" aria-label="Example file icon">account_circle</mat-icon>My
           Account
@@ -48,7 +45,6 @@
             <mat-form-field>
               <mat-label>Appointments with:</mat-label>
               <mat-select #Appointment (selectionChange)="showMessages(Appointment.value)">
-                <mat-option [value]="0">{{checkAstring}}</mat-option>
                 <mat-option *ngFor="let appointmentdoc of appointmentdoc" [value]="appointmentdoc.uid">Dr.
                   {{appointmentdoc.doctor}} {{appointmentdoc.email}}</mat-option>
               </mat-select>
@@ -105,3 +101,15 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
