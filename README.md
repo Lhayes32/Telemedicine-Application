@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 Check out our application here: https://telemedicine-application.web.app/
 
 For testing purposes, please use email: test123@gmail.com password: test123
 
 # Telemedicine Application 
+=======
+# TelemedicineApplication
+>>>>>>> parent of 337b365... Update README.md
 
 ## Project Purpose
 
