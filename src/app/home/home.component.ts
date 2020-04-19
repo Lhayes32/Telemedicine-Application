@@ -8,6 +8,7 @@ import {MatTableDataSource} from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { timer } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 export interface userapp {
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private snackbar: MatSnackBar,
+    private route: Router,
   ) {
   }
 
@@ -168,12 +170,12 @@ export class HomeComponent implements OnInit {
   }
 
   // This will be the button that goes to the current open appointment.,
-  goToVideoAppointment(whom) { 
-    this.snackbar.open("Going to a video appointment with " + whom + "...")._dismissAfter(2000);
+  goToVideoAppointment() { 
+    this.route.navigate(['/videocall']);
   }
 
-  goToTextAppointment(whom) {
-    this.snackbar.open("Opening text chat with " + whom + "...")._dismissAfter(2000);
+  goToTextAppointment() {
+    this.route.navigate(['/chatbox']);
   }
 
   // This method cancels the currently selected appointment.

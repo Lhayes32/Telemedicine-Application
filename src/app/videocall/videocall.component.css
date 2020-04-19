@@ -32,12 +32,12 @@
     color: red;
 }
 
-.startCall {
-    color: red;
+.videocam {
+    color: green;
 }
 
 .mic {
-    color: red;
+    color: blue;
 }
 
 /*********************/

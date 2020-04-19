@@ -150,5 +150,3 @@ export class MyaccountComponent implements OnInit {
       // hi
   }
 }
-
-
