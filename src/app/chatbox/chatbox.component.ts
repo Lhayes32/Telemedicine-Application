@@ -52,10 +52,13 @@ export class ChatboxComponent implements OnInit {
   expenses: any;
   books: any;
   value: any;
+<<<<<<< HEAD
   selecteduid: string;
   checkAstring: string;
   checkAnumD: number = 0;
   checkAnumP: number = 0;
+=======
+>>>>>>> parent of 05a4bfe... Merge branch 'Tyler2' of github.com:Lhayes32/Telemedicine-Application into Rohan-Desai
 
   usermessage: usermessage[] = [
   ];
@@ -278,6 +281,7 @@ export class ChatboxComponent implements OnInit {
   };
 
   showMessages(Doctor) {
+<<<<<<< HEAD
 
     if (this.checkAnumD != 0 && this.checkAnumP != 0) {
       this.checkAstring = "";
@@ -287,14 +291,23 @@ export class ChatboxComponent implements OnInit {
     // Used to create a folder on the sender and receiver can access.
     if (this.displayuid < Doctor) {
       var id = this.displayuid + Doctor;
+=======
+    this.usermessage = [];
+    var personuid = Doctor;
+    // Used to create a folder on the sender and receiver can access.
+    if (this.displayuid < personuid)
+    {
+      var id = this.displayuid + personuid;
+>>>>>>> parent of 05a4bfe... Merge branch 'Tyler2' of github.com:Lhayes32/Telemedicine-Application into Rohan-Desai
     } else {
-      var id = Doctor + this.displayuid;
+      var id = personuid + this.displayuid;
     }
 
     this.selectedappointment = Doctor;
 
     // Activate Listener
     this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
+<<<<<<< HEAD
       // Clear the message list when there is a new message added, updated or deleted.
       if (docs[0].senderuid == this.selecteduid || docs[0].receiveruid == this.selecteduid) {
         if (docs[0].senderuid == this.displayuid || docs[0].receiveruid == this.displayuid) {
@@ -322,8 +335,18 @@ export class ChatboxComponent implements OnInit {
           });
         }); */
       });
+=======
+    // Clear the message list when there is a new message added, updated or deleted.
+    this.usermessage = [];
+    // Put all of the remaining documents in the message list.
+    docs.forEach(doc => {
+      var test = {sender: doc.sender, receiver: doc.receiver, message: doc.message, time: doc.time, date: doc.date, timestamp: doc.timestamp, receiveruid: doc.receiveruid, senderuid: doc.senderuid}
+      this.usermessage.push(test);
+      this.usermessage = this.usermessage.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+>>>>>>> parent of 05a4bfe... Merge branch 'Tyler2' of github.com:Lhayes32/Telemedicine-Application into Rohan-Desai
     });
   }
+<<<<<<< HEAD
 
   isMenuOpen = true;
   contentMargin = 240;
@@ -338,4 +361,6 @@ export class ChatboxComponent implements OnInit {
       this.contentMargin = 240;
     }
   }
+=======
+>>>>>>> parent of 05a4bfe... Merge branch 'Tyler2' of github.com:Lhayes32/Telemedicine-Application into Rohan-Desai
 }
