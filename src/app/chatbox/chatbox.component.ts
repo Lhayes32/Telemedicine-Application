@@ -274,7 +274,7 @@ export class ChatboxComponent implements OnInit {
 
   refresh() {
     setTimeout(() => {
-    }, 500);
+    }, 2000);
   }
 
   showMessages(Doctor) {
@@ -309,12 +309,7 @@ export class ChatboxComponent implements OnInit {
     // Activate Listener
     this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
     // Clear the message list when there is a new message added, updated or deleted.
-    this.messagedoc = [];
-    if (docs[0].senderuid == this.selecteduid || docs[0].receiveruid == this.selecteduid) {
-      if (docs[0].senderuid == this.displayuid || docs[0].receiveruid == this.displayuid) {
-        this.usermessage = [];
-      }
-    }
+    this.usermessage = [];
     // Put all of the remaining documents in the message list.
     docs.forEach(doc => {
       if (doc.senderuid == this.selecteduid || doc.receiveruid == this.selecteduid) {
