@@ -272,7 +272,14 @@ export class ChatboxComponent implements OnInit {
   isMenuOpen = true;
   contentMargin = 240;
 
+  refresh() {
+    setTimeout(() => {
+    }, 500);
+  }
+
   showMessages(Doctor) {
+    this.usermessage = [];
+    let autoid = this.afs.createId()
     this.selecteduid = Doctor;
     // Used to create a folder on the sender and receiver can access.
     if (this.displayuid < Doctor)
@@ -283,10 +290,26 @@ export class ChatboxComponent implements OnInit {
     }
 
     this.selectedappointment = Doctor;
+
+    var docRef = this.afs.collection('chats').doc(id).collection('messages').doc(id);
+    docRef.get().toPromise().then((doc) => {
+    if (doc.exists)
+      {
+        console.log("Found")!
+      } else {
+        console.log("Not Found!")
+        var docRef2 = this.afs.collection('chats').doc(id).collection('messages').doc(id);
+        docRef2.set({
+          message: "",
+        })
+        this.refresh()
+        }
+    }) 
     
     // Activate Listener
     this.afs.collection('chats').doc(id).collection('messages').valueChanges().subscribe(docs => {
     // Clear the message list when there is a new message added, updated or deleted.
+    this.messagedoc = [];
     if (docs[0].senderuid == this.selecteduid || docs[0].receiveruid == this.selecteduid) {
       if (docs[0].senderuid == this.displayuid || docs[0].receiveruid == this.displayuid) {
         this.usermessage = [];
