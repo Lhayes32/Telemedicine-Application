@@ -227,3 +227,9 @@
   background-color: #E3F2FD;
   color: #01579B;
 }
+
+.noApptText {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  text-align: center;
+}
