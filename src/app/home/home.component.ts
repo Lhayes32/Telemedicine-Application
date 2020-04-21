@@ -127,6 +127,7 @@ export class HomeComponent implements OnInit {
   fetchappointments () {
     // Clear the table when refreshing or going back to the page.
     ELEMENT_DATA = [];
+    this.appointmentdoc = [];
     this.dataSource = new MatTableDataSource(ELEMENT_DATA);
 
     // Loop to find and update the home page with all appointments relevant to the user.

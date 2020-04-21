@@ -87,7 +87,7 @@
               <th mat-header-cell *matHeaderCellDef>Chat</th>
               <td mat-cell *matCellDef="let element">
                 <a mat-list-item [routerLink]="'/chatbox'" [routerLinkActive]="['active']">
-                  <mat-icon alignment="center" aria-hidden="false" aria-label="Example file icon">message</mat-icon>
+                  <mat-icon [ngStyle]="{'color':'green'}" alignment="center" aria-hidden="false" aria-label="Example file icon">message</mat-icon>
                 </a>
               </td>
             </ng-container>
@@ -108,7 +108,7 @@
               <td mat-cell *matCellDef="let element">
                 <button *ngIf="element.date == currentdate && element.status == 'Active'" mat-icon-button color=red (click)="goToVideoAppointment()">
                   <a mat-list-item [routerLink]="'/videocall'" [routerLinkActive]="['active']">
-                    <mat-icon alignment="center" aria-hidden="false" aria-label="Example file icon">camera_enhance</mat-icon>
+                    <mat-icon [ngStyle]="{'color':'blue'}" alignment="center" aria-hidden="false" aria-label="Example file icon">camera_enhance</mat-icon>
                     </a>
                 </button>
               </td>
