@@ -54,6 +54,7 @@ export class ChatboxComponent implements OnInit {
   value: any;
   selecteduid: string;
   noappt: boolean;
+  messagebool: boolean;
 
   usermessage: usermessage[] = [
   ];
@@ -93,14 +94,6 @@ export class ChatboxComponent implements OnInit {
       _category: 'Messages With',
       _allUsers: this.messagewithdoc,
     },
-    {
-      _category: 'All Doctors',
-      _allUsers: this.doctordoc,
-    },
-    {
-      _category: 'All Patients',
-      _allUsers: this.patientdoc,
-    },
   ];
 
 
@@ -137,8 +130,6 @@ export class ChatboxComponent implements OnInit {
     this.updateappointments()
 
     this.updateMessages()
-
-    console.log(this.messagewithdoc);
 
   }
 
@@ -206,6 +197,9 @@ export class ChatboxComponent implements OnInit {
           if (doc.exists) {
             var test = {doctor: doc.data().user_name, email: doc.data().user_email, uid: doc.data().user_uid};
             this.messagewithdoc.push(test);
+            this.noappt = false;
+          } else {
+            this.noappt = true;
           }
       });
     });
@@ -247,16 +241,16 @@ export class ChatboxComponent implements OnInit {
               }
               } 
       });
-      if (this.appointmentdoc.length == 0)
-      {
-        if (this.isDoctor == false)
+      if (this.noappt = true) {
+        if (this.appointmentdoc.length == 0)
         {
-          if (this.messagewithdoc.length == 0) {
+          if (this.isDoctor == false)
+          {
             this.noappt = true;
           }
-        }
-      } else {
+        } else {
         this.noappt = false;
+        } 
       }
       //console.log(this.noappt)
     })
