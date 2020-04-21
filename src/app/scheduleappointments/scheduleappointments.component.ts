@@ -73,6 +73,42 @@ export class ScheduleappointmentsComponent implements OnInit {
     this.updateappointments();
   }
 
+  findMilitaryValue(value) {
+    if (value == "8 AM") {
+      return "8:00"
+    }
+    if (value == "9 AM") {
+      return "9:00"
+    }
+    if (value == "10 AM") {
+      return "10:00"
+    }
+    if (value == "11 AM") {
+      return "11:00"
+    }
+    if (value == "12 PM") {
+      return "12:00"
+    }
+    if (value == "1 PM") {
+      return "13:00"
+    }
+    if (value == "2 PM") {
+      return "14:00"
+    }
+    if (value == "3 PM") {
+      return "15:00"
+    }
+    if (value == "4 PM") {
+      return "16:00"
+    }
+    if (value == "5 PM") {
+      return "17:00"
+    }
+    if (value == "6 PM") {
+      return "18:00"
+    }
+  }
+
   fetchuserdata() {
     var docRef = this.afs.collection('users').doc(this.displayuid);
     docRef.get().toPromise().then((doc) => {
@@ -138,6 +174,7 @@ export class ScheduleappointmentsComponent implements OnInit {
   // Saves the selected appointment data as a document to firebase.
   // Note: The variable "Doctor" is just the person selected for the appointment, and can either be a patient or a doctor.
   saveAppointment(Date2, Time, Doctor) {
+    var timestamp = new Date(Date2 + " " + this.findMilitaryValue(Time))
     let id = this.afs.createId()
     for (var i = 0; i < this.userdoc.length; i++) {
       if (this.userdoc[i].doctor == Doctor)
@@ -156,7 +193,8 @@ export class ScheduleappointmentsComponent implements OnInit {
       isActive: true,
       Date: Date2,
       Time: Time,
-      receiver: Doctor
+      receiver: Doctor,
+      timestamp: timestamp
     });
     this.dialogRef.close();
   }

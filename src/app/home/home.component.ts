@@ -10,6 +10,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { timer } from 'rxjs';
 import { Router } from '@angular/router';
 
+export interface userdoc {
+  whom: string;
+  date: string;
+  time: string;
+  status: string;
+  appointment_id: string;
+  timestamp: string;
+}
 
 export interface userapp {
   whom: string;
@@ -42,6 +50,7 @@ export class HomeComponent implements OnInit {
   patients:string[] = [];
   appointment_id: string;
   currentdate = this.datePipe.transform(new Date(), "M/dd/yyyy");
+  appointmentdoc:userdoc[] = [];
 
   fileNameDialogRef: MatDialogRef<ScheduleappointmentsComponent>;
 
@@ -75,7 +84,22 @@ export class HomeComponent implements OnInit {
     // Fetch all appointments for the user when opening or refreshing the page.
     this.fetchappointments()
 
+    this.testFunction()
+
   }
+
+  testFunction() {
+    var date = new Date();
+    var date2 = new Date("12/20/2019 08:00")
+    console.log(date.toUTCString());
+    console.log(date2.toUTCString());
+    if (date > date2) {
+      console.log("date is greater")
+    } else {
+      console.log("date2 is greater")
+    }
+  }
+
     fetchuserdata() {
     // Retrieve user data
     var docRef = this.afs.collection('users').doc(this.displayuid);
@@ -130,12 +154,13 @@ export class HomeComponent implements OnInit {
             }
             if (this.isDoctor == false)
             {
-            var test = {whom: "Dr. " + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+              var test = {whom: "Dr. " + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id, timestamp: doc.data().timestamp};
             } else {
-            var test = {whom: "" + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+              var test = {whom: "" + doc.data().receiver, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id, timestamp: doc.data().timestamp};
             }
-            ELEMENT_DATA.push(test);
-            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            //ELEMENT_DATA.push(test);
+            this.appointmentdoc.push(test);
+            //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             }
           // If you are the receiver
           if (doc.data().receiveruid == this.displayuid) {
@@ -145,15 +170,24 @@ export class HomeComponent implements OnInit {
             }
             if (this.isDoctor == true)
             {
-            var test = {whom: "" + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+              var test = {whom: "" + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id, timestamp: doc.data().timestamp};
             } else {
-            var test = {whom: "Dr. " + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id};
+              var test = {whom: "Dr. " + doc.data().sender, date: date, time: doc.data().Time, status: apptstatus, appointment_id: doc.data().appointment_id, timestamp: doc.data().timestamp};
             }
-            ELEMENT_DATA.push(test);
-            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+              //ELEMENT_DATA.push(test);
+              this.appointmentdoc.push(test);
+              //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
             } 
             }
           });
+          console.log(this.appointmentdoc)
+          //this.appointmentdoc = this.appointmentdoc.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0)
+          this.appointmentdoc = this.appointmentdoc.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0)
+          for (var i = 0; i < this.appointmentdoc.length; i++)
+          {
+            ELEMENT_DATA.push(this.appointmentdoc[i])
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+          }
         });
     }
 

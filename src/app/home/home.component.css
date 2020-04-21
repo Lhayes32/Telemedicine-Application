@@ -117,4 +117,9 @@ table {
 th.mat-header-cell {
     text-align: left;
     max-width: 300px;
+    padding: 3px;
+}
+
+.mat-icon {
+  vertical-align: middle;
 }

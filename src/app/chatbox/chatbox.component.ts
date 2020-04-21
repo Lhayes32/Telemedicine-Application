@@ -53,25 +53,52 @@ export class ChatboxComponent implements OnInit {
   books: any;
   value: any;
   selecteduid: string;
+  noappt: boolean;
 
   usermessage: usermessage[] = [
   ];
 
   messagedoc: usermessage[] = [
   ];
+
+  messagewithdoc: userdoc[] = [
+  ];
  
   userControl = new FormControl();
-  userGroups: userGroup[] = [
+  doctoruserGroups: userGroup[] = [
     {
       _category: 'Appointments With',
       _allUsers: this.appointmentdoc,
     },
     {
-      _category: 'Doctor',
+      _category: 'Messages With',
+      _allUsers: this.messagewithdoc,
+    },
+    {
+      _category: 'All Doctors',
       _allUsers: this.doctordoc,
     },
     {
-      _category: 'Patient',
+      _category: 'All Patients',
+      _allUsers: this.patientdoc,
+    },
+  ];
+
+  patientuserGroups: userGroup[] = [
+    {
+      _category: 'Appointments With',
+      _allUsers: this.appointmentdoc,
+    },
+    {
+      _category: 'Messages With',
+      _allUsers: this.messagewithdoc,
+    },
+    {
+      _category: 'All Doctors',
+      _allUsers: this.doctordoc,
+    },
+    {
+      _category: 'All Patients',
       _allUsers: this.patientdoc,
     },
   ];
@@ -109,8 +136,11 @@ export class ChatboxComponent implements OnInit {
     // Update appointments
     this.updateappointments()
 
-  }
+    this.updateMessages()
 
+    console.log(this.messagewithdoc);
+
+  }
 
   fetchuserdata() {
     // Retrieve user data
@@ -168,6 +198,19 @@ export class ChatboxComponent implements OnInit {
         });
     }
 
+    // This method 
+    updateMessages() {
+      this.afs.collection('chats').doc(this.displayuid).collection('chatswith').get().toPromise()
+      .then(querySnapshot => {
+        querySnapshot.docs.forEach(doc => {
+          if (doc.exists) {
+            var test = {doctor: doc.data().user_name, email: doc.data().user_email, uid: doc.data().user_uid};
+            this.messagewithdoc.push(test);
+          }
+      });
+    });
+    }
+
     // This method updates the selection list on the chat page with people who you have appointments.
     updateappointments() {
       this.afs.collection('appointments').get().toPromise()
@@ -204,7 +247,26 @@ export class ChatboxComponent implements OnInit {
               }
               } 
       });
+      if (this.appointmentdoc.length == 0)
+      {
+        if (this.isDoctor == false)
+        {
+          if (this.messagewithdoc.length == 0) {
+            this.noappt = true;
+          }
+        }
+      } else {
+        this.noappt = false;
+      }
+      //console.log(this.noappt)
     })
+  }
+
+  // This snackbar box will trigger if the current user is a patient and has no appointments.
+  noApptDialog() {
+    if (this.appointmentdoc.length == 0) {
+      this.snackbar.open("No appointments found for the current user. Please schedule an appointment to chat.", 'Dismiss', {duration: 10000});
+    }
   }
 
   // This method is called when you send a message.
@@ -284,20 +346,66 @@ export class ChatboxComponent implements OnInit {
     // Used to create a folder on the sender and receiver can access.
     if (this.displayuid < Doctor)
     {
-      var id = this.displayuid + Doctor;
+      var id = this.displayuid + "" + Doctor;
     } else {
-      var id = Doctor + this.displayuid;
+      var id = Doctor + "" + this.displayuid;
     }
+
+    // These next 2 loops are to find the selected UID's name and email.
+    for (var i = 0; i < this.patientdoc.length; i++)
+    {
+      if (this.patientdoc[i].uid == this.selecteduid)
+      {
+        var DoctorName = this.patientdoc[i].doctor;
+        var DoctorEmail = this.patientdoc[i].email;
+      }
+    }
+    for (var i = 0; i < this.doctordoc.length; i++)
+    {
+      if (this.doctordoc[i].uid == this.selecteduid)
+      {
+        var DoctorName = this.doctordoc[i].doctor;
+        var DoctorEmail = this.doctordoc[i].email;
+      }
+
+    }    
 
     this.selectedappointment = Doctor;
 
-    var docRef = this.afs.collection('chats').doc(id).collection('messages').doc(id);
+    var docRef = this.afs.collection('chats').doc(this.displayuid).collection('chatswith').doc(this.selecteduid);
     docRef.get().toPromise().then((doc) => {
+      if (doc.exists)
+        {
+          console.log("Found")!
+        } else {
+          console.log("Not Found!")
+          var docRef2 = this.afs.collection('chats').doc(this.displayuid).collection('chatswith').doc(this.selecteduid);
+          docRef2.set({
+            user_uid: this.selecteduid,
+            user_name: DoctorName,
+            user_email: DoctorEmail,
+          })
+          var docRef3 = this.afs.collection('chats').doc(this.selecteduid).collection('chatswith').doc(this.displayuid);
+          docRef3.set({
+            user_uid: this.displayuid,
+            user_name: this.firstNameDisplay + " " + this.lastNameDisplay,
+            user_email: this.displayemail,
+          })
+          this.refresh()
+          }
+      })
+
+    var docRef2 = this.afs.collection('chats').doc(id).collection('messages').doc(id);
+    docRef2.get().toPromise().then((doc) => {
     if (doc.exists)
       {
         console.log("Found")!
       } else {
         console.log("Not Found!")
+        //var docRef3 = this.afs.collection('chats').doc(id);
+        //docRef3.set({
+          //initialsender: this.displayuid
+        //})
         var docRef2 = this.afs.collection('chats').doc(id).collection('messages').doc(id);
         docRef2.set({
           message: "",
