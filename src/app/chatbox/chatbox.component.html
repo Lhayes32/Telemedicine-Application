@@ -92,7 +92,7 @@
             <!-- This is the sending box -->
             <mat-form-field class="messageForm">
               <mat-label>Type Message Here</mat-label>
-              <input matInput placeholder="Type Message Here" [(ngModel)]="value" #message>
+              <input (keyup.enter)="sendMessage(message.value)" matInput placeholder="Type Message Here" [(ngModel)]="value" #message>
             </mat-form-field>
   
             <!-- This is the sending button -->
