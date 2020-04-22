@@ -76,11 +76,6 @@ table {
   width: 240px
 }
 
-#sidenav .avatar {
-  background-image: url('http://i.pravatar.cc/300');
-  background-size: cover;
-}
-
 #sidenav .mat-list-item-content {
   padding: 0;
 }
